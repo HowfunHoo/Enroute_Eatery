@@ -1,5 +1,7 @@
 package com.enroute.enroute;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
@@ -27,8 +29,9 @@ public class RestDataParser {
         try {
             jResults = jObject.getJSONArray("results");
             List path = new ArrayList<>();
+            System.out.println("Inside parser class   ==== >                       <<<<  " + jResults.length());
             /** Traversing all results only if we have results > 1 */
-            if ( jResults.length() > 1 ) {
+            if ( jResults.length() > 0 ) {
                 for(int i=0;i<jResults.length();i++) {
                     // Restaurant name
                     //jResults.getJSONObject(i).getString("name");
@@ -37,6 +40,7 @@ public class RestDataParser {
                     hm.put("lng", jResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
 
                     path.add(hm);
+                    Log.d("Inside parser class", hm.toString());
                 }
                 restList.add(path);
             }
@@ -44,6 +48,7 @@ public class RestDataParser {
             e.printStackTrace();
         }catch (Exception e){
         }
+        //Log.d("Inside parser class", restList.toString());
         return restList;
     }
 
