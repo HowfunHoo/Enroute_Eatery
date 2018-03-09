@@ -247,34 +247,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    // Fetches data from url passed for restaurant search in near by API
-    private class FetchRestUrl extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... url) {
-            // For storing data from web service
-            String data = "";
-            try {
-                // Fetching the data from web service
-                data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
-            } catch (Exception e) {
-                Log.d("Background Task", e.toString());
-            }
-            return data;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            // Write new data parser class to parse nearby data
-            ParserRestaurantTask parserRestTask = new ParserRestaurantTask();
-            // Invokes the thread for parsing the JSON data
-            parserRestTask.execute(result);
-        }
-    }
-
-
     /**
      * A class to parse the Google Places in JSON format
      */
@@ -515,6 +487,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected String[] doInBackground(String... params) {
             String response;
             try {
+                // Todo : why mumbai here
                 response = getLatLongByURL("http://maps.google.com/maps/api/geocode/json?address=mumbai&sensor=false");
                 Log.d("response",""+response);
                 return new String[]{response};
@@ -570,11 +543,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } catch (IOException e) { // TODO Auto-generated catch block
             e.printStackTrace(); }
 
-        // X------X
+        //LatLng origin = currentLoc;
+        //LatLng dest = new LatLng(latitude, longtitude);
 
-        LatLng origin = currentLoc;
-        //LatLng origin = new LatLng(44.642750, -63.578449);
-        LatLng dest = new LatLng(latitude, longtitude);
+        LatLng origin = new LatLng(44.642750, -63.578449);
+        LatLng dest    = new LatLng(44.640676, -63.578326);
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest);
@@ -630,6 +603,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return response;
     }
 
+    // Fetches data from url passed for restaurant search in near by API
+    private class FetchRestUrl extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... url) {
+            // For storing data from web service
+            String data = "";
+            try {
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+                Log.d("Background Task data", data.toString());
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // Write new data parser class to parse nearby data
+            ParserRestaurantTask parserRestTask = new ParserRestaurantTask();
+            // Invokes the thread for parsing the JSON data
+            parserRestTask.execute(result);
+        }
+    }
+
+
     // Class for restaurants pin-ups
     private class ParserRestaurantTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
@@ -674,15 +675,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     HashMap<String, String> point = restaurant.get(j);
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
+                    String restName = point.get("name");
                     LatLng position = new LatLng(lat, lng);
                     // Setting the position of the marker
                     options.position(position);
+                    options.title(restName);
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));  //For the restaurants location, the color of marker is Yellow
                 }
                 System.out.println("??????????????????????????????????: " + options);
                 // Drawing marker in the Google Map on route
                 if(options != null) {
                     mMap.addMarker(options);                  // Setting the position of the marker
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));  //For the restaurants location, the color of marker is Yellow
                 }
                 else {
                     Log.d("onPostExecute","without any restaurants drawn");
