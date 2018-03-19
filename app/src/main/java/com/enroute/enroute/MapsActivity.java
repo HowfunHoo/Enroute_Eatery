@@ -167,6 +167,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        //change the position of MyLocation Button
+        mMap.setPadding(0,200,0,0);
+
         // on click listener for cycle mode
         cycle.setOnClickListener(new View.OnClickListener() {
             @Override
