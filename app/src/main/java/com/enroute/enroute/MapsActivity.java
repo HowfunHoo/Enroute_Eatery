@@ -23,11 +23,16 @@ import com.enroute.enroute.DataParser;
 import com.enroute.enroute.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,6 +44,7 @@ import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
@@ -92,9 +98,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private boolean conditionCheckWalk; //for checking cycle or walk mode
 
-    //////////
+    //lat&lng for destination
     private double dst_lat;
     private double dst_lng;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,9 +123,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //////////
+        //automatic completion
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        //set the range for automatically completed places be around Halifax
+        autocompleteFragment.setBoundsBias(new LatLngBounds(
+                new LatLng(44.6375656 - 1, -63.5871266 - 1),
+                new LatLng(44.6375656 + 1, -63.5871266 + 1)));
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -136,6 +148,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("test", "An error occurred: " + status);
             }
         });
+
+        
+//        //current place
+//        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
+//                .getCurrentPlace(mGoogleApiClient, null);
+//        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
+//            @Override
+//            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+//                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+//
+//                    //set the range for automatically completed places be around the current location
+////                    autocompleteFragment.setBoundsBias(new LatLngBounds(
+////                            new LatLng(placeLikelihood.getPlace().getLatLng().latitude + 2, placeLikelihood.getPlace().getLatLng().longitude + 2),
+////                            new LatLng(placeLikelihood.getPlace().getLatLng().latitude - 2, placeLikelihood.getPlace().getLatLng().longitude - 2)));
+//
+//                    Log.i("TEST", String.format("Place '%s' has likelihood: %g",
+//                            placeLikelihood.getPlace().getName(),
+//                            placeLikelihood.getLikelihood()));
+//                }
+//                likelyPlaces.release();
+//            }
+//        });
+
+
+
     }
 
 
@@ -379,7 +416,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lineOptions.color(Color.BLUE);
 
                 // condition check for walk or cycle mode
-                if(conditionCheckWalk == true){
+                if(conditionCheckWalk){
                     // for walking mode
                     lineOptions.width(12);
                     lineOptions.pattern(Arrays.<PatternItem>asList(
@@ -388,7 +425,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Log.d("onPostExecute","onPostExecute lineoptions decoded");
                 }
 
-                else if (conditionCheckWalk = false){
+                else if (!conditionCheckWalk){
                     // for cycle mode
                     lineOptions.width(12);
                     lineOptions.pattern(Arrays.<PatternItem>asList(
@@ -396,7 +433,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     Log.d("onPostExecute","onPostExecute lineoptions decoded");
                 }
-                    else {;}
             }
 
             // Drawing polyline in the Google Map for the i-th route
@@ -463,6 +499,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
+
+        System.out.println("Cur Lat"+currentLoc.latitude);
+        System.out.println("Cur lng"+currentLoc.longitude);
 
     }
 
