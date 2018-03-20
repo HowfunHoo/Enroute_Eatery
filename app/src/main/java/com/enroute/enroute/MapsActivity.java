@@ -166,10 +166,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
         String output = "json";                     // Output format
+        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
 
-        // Building the url to the web service
-        // https://maps.googleapis.com/maps/api/place/nearbysearch/json?
-        // location=44.63579,-63.59289&radius=500&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE
+        return url;
+    }
+
+
+    private String getConvenienceUrl(LatLng poi) {
+        String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
+        String radius = "radius=100";                                                // Radius in meters
+        // Building the parameters to the web service
+        String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
+        //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
+        String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
 
         return url;
@@ -187,15 +196,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // Creating an http connection to communicate with url
             urlConnection = (HttpURLConnection) url.openConnection();
-
             // Connecting to url
             urlConnection.connect();
-
             // Reading data from url
             iStream = urlConnection.getInputStream();
 
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
             StringBuffer sb = new StringBuffer();
 
             String line = "";
@@ -224,7 +230,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // For storing data from web service
             String data = "";
-
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
@@ -238,12 +243,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
             ParserTask parserTask = new ParserTask();
-
             // Invokes the thread for parsing the JSON data
             parserTask.execute(result);
-
         }
     }
 
@@ -308,6 +310,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // Start downloading json data from Google search nearby API
                     FetchRestUrl.execute(restUrl);
 
+                    //Start showing convenience store
+                    String convenienceUrl = getConvenienceUrl(position);
+                    FetchConvenienceUrl FetchConvenienceUrl = new FetchConvenienceUrl();
+                    // Start downloading json data from Google search nearby API
+                    FetchConvenienceUrl.execute(convenienceUrl);
+
                 }
 
                 // Adding all the points in the route to LineOptions
@@ -371,7 +379,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        // Do nothing
     }
 
     @Override
@@ -404,6 +412,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
+        // DO nothing
 
     }
 
@@ -461,7 +470,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     }
 
                 } else {
-
                     // Permission denied, Disable the functionality that depends on this permission.
                     Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                 }
@@ -547,7 +555,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //LatLng dest = new LatLng(latitude, longtitude);
 
         LatLng origin = new LatLng(44.642750, -63.578449);
-        LatLng dest    = new LatLng(44.640676, -63.578326);
+        LatLng dest    = new LatLng(44.643875, -63.578472);
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest);
@@ -623,7 +631,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            // Write new data parser class to parse nearby data
+            // New data parser class to parse nearby data
             ParserRestaurantTask parserRestTask = new ParserRestaurantTask();
             // Invokes the thread for parsing the JSON data
             parserRestTask.execute(result);
@@ -664,9 +672,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             ArrayList<LatLng> points;
 
-            System.out.println("########################################" + result.size());
             // Creating MarkerOptions
-
             MarkerOptions options = new MarkerOptions();
             for (int i = 0; i < result.size(); i++) {
                 List<HashMap<String, String>> restaurant = result.get(i);             // Fetching i-th restaurant
@@ -682,7 +688,96 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     options.title(restName);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));  //For the restaurants location, the color of marker is Yellow
                 }
-                System.out.println("??????????????????????????????????: " + options);
+                // Drawing marker in the Google Map on route
+                if(options != null) {
+                    mMap.addMarker(options);                  // Setting the position of the marker
+                }
+                else {
+                    Log.d("onPostExecute","without any restaurants drawn");
+                }
+            }
+        }
+    }
+
+
+    // Fetches data from url passed for restaurant search in near by API
+    private class FetchConvenienceUrl extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... url) {
+            // For storing data from web service
+            String data = "";
+            try {
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+                Log.d("Background Task data", data.toString());
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // New data parser class to parse nearby data
+            ParserConvenienceTask parserRestTask = new ParserConvenienceTask();
+            // Invokes the thread for parsing the JSON data
+            parserRestTask.execute(result);
+        }
+    }
+
+
+    // Class for restaurants pin-ups
+    private class ParserConvenienceTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+
+        // Parsing the data in non-ui thread
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+            List<List<HashMap<String, String>>> convenience = null;
+            JSONObject jObject;
+
+            try {
+                jObject = new JSONObject(jsonData[0]);
+                Log.d("Convenience data => ",jsonData[0].toString());
+                RestDataParser restParser = new RestDataParser();
+                Log.d("ParserConvenienceTask", restParser.toString());
+
+                // Starts parsing data
+                convenience = restParser.parse(jObject);
+
+                Log.d("ParserConvenienceTask","Executing restaurants");
+                Log.d("ParserConvenienceTask",convenience.toString());
+
+            } catch (Exception e) {
+                Log.d("ParserConvenienceTask",e.toString());
+                e.printStackTrace();
+            }
+            return convenience;
+        }
+
+        // Executes in UI thread, after the parsing process
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            ArrayList<LatLng> points;
+
+            // Creating MarkerOptions
+            MarkerOptions options = new MarkerOptions();
+            for (int i = 0; i < result.size(); i++) {
+                List<HashMap<String, String>> convenience = result.get(i);             // Fetching i-th Convenience
+                // Fetching all the points in i-th route
+                for (int j = 0; j < convenience.size(); j++) {
+                    HashMap<String, String> point = convenience.get(j);
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    String restName = point.get("name");
+                    LatLng position = new LatLng(lat, lng);
+                    // Setting the position of the marker
+                    options.position(position);
+                    options.title(restName);
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));  //For the convenience location, the color of marker is Orange
+                }
+
                 // Drawing marker in the Google Map on route
                 if(options != null) {
                     mMap.addMarker(options);                  // Setting the position of the marker
