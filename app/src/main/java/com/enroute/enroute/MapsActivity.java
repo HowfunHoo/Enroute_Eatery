@@ -23,10 +23,18 @@ import com.enroute.enroute.DataParser;
 import com.enroute.enroute.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceLikelihood;
+import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,6 +44,7 @@ import com.google.android.gms.maps.model.Dash;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
@@ -57,6 +66,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
+
+////
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -86,6 +98,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private boolean conditionCheckWalk; //for checking cycle or walk mode
 
+    //lat&lng for destination
+    private double dst_lat;
+    private double dst_lng;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         walk = findViewById(R.id.walk);
         cycle = findViewById(R.id.cycle);
-        editText = findViewById(R.id.editText1);
+        //editText = findViewById(R.id.editText1);
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -105,6 +122,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        //automatic completion
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        //set the range for automatically completed places be around Halifax
+        autocompleteFragment.setBoundsBias(new LatLngBounds(
+                new LatLng(44.6375656 - 1, -63.5871266 - 1),
+                new LatLng(44.6375656 + 1, -63.5871266 + 1)));
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                dst_lat = place.getLatLng().latitude;
+                dst_lng = place.getLatLng().longitude;
+                Log.i("test", "Place: " + place.getName());
+                Log.i("test", "Address: " + place.getAddress());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i("test", "An error occurred: " + status);
+            }
+        });
+
+        
+//        //current place
+//        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
+//                .getCurrentPlace(mGoogleApiClient, null);
+//        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
+//            @Override
+//            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
+//                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
+//
+//                    //set the range for automatically completed places be around the current location
+////                    autocompleteFragment.setBoundsBias(new LatLngBounds(
+////                            new LatLng(placeLikelihood.getPlace().getLatLng().latitude + 2, placeLikelihood.getPlace().getLatLng().longitude + 2),
+////                            new LatLng(placeLikelihood.getPlace().getLatLng().latitude - 2, placeLikelihood.getPlace().getLatLng().longitude - 2)));
+//
+//                    Log.i("TEST", String.format("Place '%s' has likelihood: %g",
+//                            placeLikelihood.getPlace().getName(),
+//                            placeLikelihood.getLikelihood()));
+//                }
+//                likelyPlaces.release();
+//            }
+//        });
+
+
+
     }
 
 
@@ -136,6 +204,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        //change the position of MyLocation Button
+        mMap.setPadding(0,200,0,0);
+
         // on click listener for cycle mode
         cycle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +226,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String parameters = str_origin + "&" + str_dest + "&" + sensor;                     // Building the parameters to the web service
         String output = "json";                                                             // Output format
         // Building the url to the web service
+//        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+
         return url;
     }
 
@@ -163,7 +236,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
         String radius = "radius=20";                                                // Radius in meters
         // Building the parameters to the web service
-        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
+        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c";
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
         String output = "json";                     // Output format
 
@@ -343,7 +416,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lineOptions.color(Color.BLUE);
 
                 // condition check for walk or cycle mode
-                if(conditionCheckWalk == true){
+                if(conditionCheckWalk){
                     // for walking mode
                     lineOptions.width(12);
                     lineOptions.pattern(Arrays.<PatternItem>asList(
@@ -352,7 +425,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Log.d("onPostExecute","onPostExecute lineoptions decoded");
                 }
 
-                else if (conditionCheckWalk = false){
+                else if (!conditionCheckWalk){
                     // for cycle mode
                     lineOptions.width(12);
                     lineOptions.pattern(Arrays.<PatternItem>asList(
@@ -360,7 +433,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     Log.d("onPostExecute","onPostExecute lineoptions decoded");
                 }
-                    else {;}
             }
 
             // Drawing polyline in the Google Map for the i-th route
@@ -427,6 +499,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mGoogleApiClient != null) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         }
+
+        System.out.println("Cur Lat"+currentLoc.latitude);
+        System.out.println("Cur lng"+currentLoc.longitude);
 
     }
 
@@ -551,30 +626,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
     public void conditionFunction(){
         mMap.clear(); // clearing the map first
-        String searchText = editText.getText().toString(); // getting user's input and converting into string
+        //String searchText = editText.getText().toString(); // getting user's input and converting into string
 
         MarkerOptions options = new MarkerOptions();
 
         // X------X Converting address into location so that it can be useful to draw path
-        String addressStr = searchText;
-        Geocoder geoCoder = new Geocoder(MapsActivity.this);
-        System.out.println("Value: " + addressStr);
-        try {
-            List<Address> addresses =
-                    geoCoder.getFromLocationName(addressStr, 1);
-            System.out.println("Error: " + addresses.size());
-            if (addresses.size() >  0) {
-                latitude = addresses.get(0).getLatitude();
-                longtitude = addresses.get(0).getLongitude(); }
-
-        } catch (IOException e) { // TODO Auto-generated catch block
-            e.printStackTrace(); }
+//        String addressStr = searchText;
+//        Geocoder geoCoder = new Geocoder(MapsActivity.this);
+//        System.out.println("Value: " + addressStr);
+//        try {
+//            List<Address> addresses =
+//                    geoCoder.getFromLocationName(addressStr, 5);
+//            System.out.println("Error: " + addresses.size());
+//            if (addresses.size() >=  0) {
+//                latitude = addresses.get(0).getLatitude();
+//                longtitude = addresses.get(0).getLongitude(); }
+////
+////            if (addresses.size() >= 0) {
+////                LatLng dest = new LatLng(
+////                        (int) (addresses.get(0).getLatitude() * 1E6),
+////                        (int) (addresses.get(0).getLongitude() * 1E6));
+////            }
+//
+//        } catch (IOException e) { // TODO Auto-generated catch block
+//            e.printStackTrace(); }
 
         // X------X
 
         LatLng origin = currentLoc;
         //LatLng origin = new LatLng(44.642750, -63.578449);
-        LatLng dest = new LatLng(latitude, longtitude);
+//        LatLng dest = new LatLng(latitude, longtitude);
+
+        LatLng dest = new LatLng(dst_lat ,dst_lng);
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest);
