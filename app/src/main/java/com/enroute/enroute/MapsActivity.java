@@ -145,31 +145,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("test", "An error occurred: " + status);
             }
         });
-
-        
-//        //current place
-//        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
-//                .getCurrentPlace(mGoogleApiClient, null);
-//        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-//            @Override
-//            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-//                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-//
-//                    //set the range for automatically completed places be around the current location
-////                    autocompleteFragment.setBoundsBias(new LatLngBounds(
-////                            new LatLng(placeLikelihood.getPlace().getLatLng().latitude + 2, placeLikelihood.getPlace().getLatLng().longitude + 2),
-////                            new LatLng(placeLikelihood.getPlace().getLatLng().latitude - 2, placeLikelihood.getPlace().getLatLng().longitude - 2)));
-//
-//                    Log.i("TEST", String.format("Place '%s' has likelihood: %g",
-//                            placeLikelihood.getPlace().getName(),
-//                            placeLikelihood.getLikelihood()));
-//                }
-//                likelyPlaces.release();
-//            }
-//        });
-
-
-
     }
 
 
