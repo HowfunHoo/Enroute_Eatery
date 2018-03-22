@@ -67,6 +67,9 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
+////
+
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -233,7 +236,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
         String radius = "radius=20";                                                // Radius in meters
         // Building the parameters to the web service
-        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
+        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c";
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
         String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
