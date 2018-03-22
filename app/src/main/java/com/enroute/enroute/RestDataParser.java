@@ -29,7 +29,6 @@ public class RestDataParser {
         try {
             jResults = jObject.getJSONArray("results");
             List path = new ArrayList<>();
-            System.out.println("Inside parser class   ==== >                       <<<<  " + jResults.length());
             /** Traversing all results only if we have results > 1 */
             if ( jResults.length() > 0 ) {
                 for(int i=0;i<jResults.length();i++) {
