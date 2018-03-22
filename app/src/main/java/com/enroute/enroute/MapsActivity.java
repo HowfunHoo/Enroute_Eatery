@@ -148,31 +148,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("test", "An error occurred: " + status);
             }
         });
-
-        
-//        //current place
-//        PendingResult<PlaceLikelihoodBuffer> result = Places.PlaceDetectionApi
-//                .getCurrentPlace(mGoogleApiClient, null);
-//        result.setResultCallback(new ResultCallback<PlaceLikelihoodBuffer>() {
-//            @Override
-//            public void onResult(PlaceLikelihoodBuffer likelyPlaces) {
-//                for (PlaceLikelihood placeLikelihood : likelyPlaces) {
-//
-//                    //set the range for automatically completed places be around the current location
-////                    autocompleteFragment.setBoundsBias(new LatLngBounds(
-////                            new LatLng(placeLikelihood.getPlace().getLatLng().latitude + 2, placeLikelihood.getPlace().getLatLng().longitude + 2),
-////                            new LatLng(placeLikelihood.getPlace().getLatLng().latitude - 2, placeLikelihood.getPlace().getLatLng().longitude - 2)));
-//
-//                    Log.i("TEST", String.format("Place '%s' has likelihood: %g",
-//                            placeLikelihood.getPlace().getName(),
-//                            placeLikelihood.getLikelihood()));
-//                }
-//                likelyPlaces.release();
-//            }
-//        });
-
-
-
     }
 
 
@@ -239,14 +214,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c";
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
         String output = "json";                     // Output format
-
-        // Building the url to the web service
-        // https://maps.googleapis.com/maps/api/place/nearbysearch/json?
-        // location=44.63579,-63.59289&radius=500&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
 
         return url;
     }
+
+
+    private String getConvenienceUrl(LatLng poi) {
+        String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
+        String radius = "radius=100";                                                // Radius in meters
+        // Building the parameters to the web service
+        String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
+        //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
+        String output = "json";                     // Output format
+        String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
+
+        return url;
+    }
+
 
     /**
      * A method to download json data from url
@@ -263,12 +248,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // Connecting to url
             urlConnection.connect();
-
             // Reading data from url
             iStream = urlConnection.getInputStream();
-
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
             StringBuffer sb = new StringBuffer();
 
             String line = "";
@@ -297,7 +279,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             // For storing data from web service
             String data = "";
-
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
@@ -311,12 +292,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-
             ParserTask parserTask = new ParserTask();
-
             // Invokes the thread for parsing the JSON data
             parserTask.execute(result);
-
         }
     }
 
@@ -409,6 +387,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // Start downloading json data from Google search nearby API
                     FetchRestUrl.execute(restUrl);
 
+                    //Start showing convenience store
+                    String convenienceUrl = getConvenienceUrl(position);
+                    FetchConvenienceUrl FetchConvenienceUrl = new FetchConvenienceUrl();
+                    // Start downloading json data from Google search nearby API
+                    FetchConvenienceUrl.execute(convenienceUrl);
+
                 }
 
                 // Adding all the points in the route to LineOptions
@@ -471,7 +455,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        // Do Nothing
     }
 
     @Override
@@ -507,7 +491,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        // Do Nothing
     }
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
@@ -570,9 +554,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 return;
             }
-
-            // other 'case' lines to check for other permissions this app might request.
-            // You can add here other case statements according to your requirement.
         }
     }
 
@@ -626,38 +607,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     // mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
     public void conditionFunction(){
         mMap.clear(); // clearing the map first
-        //String searchText = editText.getText().toString(); // getting user's input and converting into string
-
         MarkerOptions options = new MarkerOptions();
 
-        // X------X Converting address into location so that it can be useful to draw path
-//        String addressStr = searchText;
-//        Geocoder geoCoder = new Geocoder(MapsActivity.this);
-//        System.out.println("Value: " + addressStr);
-//        try {
-//            List<Address> addresses =
-//                    geoCoder.getFromLocationName(addressStr, 5);
-//            System.out.println("Error: " + addresses.size());
-//            if (addresses.size() >=  0) {
-//                latitude = addresses.get(0).getLatitude();
-//                longtitude = addresses.get(0).getLongitude(); }
-////
-////            if (addresses.size() >= 0) {
-////                LatLng dest = new LatLng(
-////                        (int) (addresses.get(0).getLatitude() * 1E6),
-////                        (int) (addresses.get(0).getLongitude() * 1E6));
-////            }
-//
-//        } catch (IOException e) { // TODO Auto-generated catch block
-//            e.printStackTrace(); }
-
-        // X------X
-
         LatLng origin = currentLoc;
-        //LatLng origin = new LatLng(44.642750, -63.578449);
-//        LatLng dest = new LatLng(latitude, longtitude);
-
         LatLng dest = new LatLng(dst_lat ,dst_lng);
+
+        // Fixed Origin and Destination for test run
+        /*LatLng origin = new LatLng(44.642750, -63.578449);
+        LatLng dest = new LatLng(44.643875, -63.578472);*/
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest);
@@ -668,8 +625,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         FetchUrl.execute(url);
 
         // Setting the position of the marker
+        options.position(origin);
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         options.position(dest);
-
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
 
         // Add destination marker to the Google Map Android API V2
@@ -746,9 +704,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             ArrayList<LatLng> points;
 
-            System.out.println("########################################" + result.size());
             // Creating MarkerOptions
-
             MarkerOptions options = new MarkerOptions();
             for (int i = 0; i < result.size(); i++) {
                 List<HashMap<String, String>> restaurant = result.get(i);             // Fetching i-th restaurant
@@ -757,15 +713,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     HashMap<String, String> point = restaurant.get(j);
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
+                    String restName = point.get("name");
                     LatLng position = new LatLng(lat, lng);
                     // Setting the position of the marker
                     options.position(position);
+                    options.title(restName);
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));  //For the restaurants location, the color of marker is Yellow
                 }
-                System.out.println("??????????????????????????????????: " + options);
                 // Drawing marker in the Google Map on route
                 if(options != null) {
                     mMap.addMarker(options);                  // Setting the position of the marker
-                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));  //For the restaurants location, the color of marker is Yellow
                 }
                 else {
                     Log.d("onPostExecute","without any restaurants drawn");
@@ -773,5 +730,94 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
-}
 
+
+    // Fetches data from url passed for restaurant search in near by API
+    private class FetchConvenienceUrl extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... url) {
+            // For storing data from web service
+            String data = "";
+            try {
+                // Fetching the data from web service
+                data = downloadUrl(url[0]);
+                Log.d("Background Task data", data.toString());
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            // New data parser class to parse nearby data
+            MapsActivity.ParserConvenienceTask parserRestTask = new MapsActivity.ParserConvenienceTask();
+            // Invokes the thread for parsing the JSON data
+            parserRestTask.execute(result);
+        }
+    }
+
+
+    // Class for restaurants pin-ups
+    private class ParserConvenienceTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+
+        // Parsing the data in non-ui thread
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(String... jsonData) {
+            List<List<HashMap<String, String>>> convenience = null;
+            JSONObject jObject;
+
+            try {
+                jObject = new JSONObject(jsonData[0]);
+                Log.d("Convenience data => ",jsonData[0].toString());
+                RestDataParser restParser = new RestDataParser();
+                Log.d("ParserConvenienceTask", restParser.toString());
+
+                // Starts parsing data
+                convenience = restParser.parse(jObject);
+
+                Log.d("ParserConvenienceTask","Executing restaurants");
+                Log.d("ParserConvenienceTask",convenience.toString());
+
+            } catch (Exception e) {
+                Log.d("ParserConvenienceTask",e.toString());
+                e.printStackTrace();
+            }
+            return convenience;
+        }
+
+        // Executes in UI thread, after the parsing process
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> result) {
+            ArrayList<LatLng> points;
+
+            // Creating MarkerOptions
+            MarkerOptions options = new MarkerOptions();
+            for (int i = 0; i < result.size(); i++) {
+                List<HashMap<String, String>> convenience = result.get(i);             // Fetching i-th Convenience
+                // Fetching all the points in i-th route
+                for (int j = 0; j < convenience.size(); j++) {
+                    HashMap<String, String> point = convenience.get(j);
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    String storeName = point.get("name");
+                    LatLng position = new LatLng(lat, lng);
+                    // Setting the position of the marker
+                    options.position(position);
+                    options.title(storeName);
+                    options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));  //For the convenience location, the color of marker is Orange
+                }
+
+                // Drawing marker in the Google Map on route
+                if(options != null) {
+                    mMap.addMarker(options);                  // Setting the position of the marker
+                }
+                else {
+                    Log.d("onPostExecute","without any convenience store drawn");
+                }
+            }
+        }
+    }
+}

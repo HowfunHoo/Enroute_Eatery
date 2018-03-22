@@ -29,15 +29,14 @@ public class RestDataParser {
         try {
             jResults = jObject.getJSONArray("results");
             List path = new ArrayList<>();
-            System.out.println("Inside parser class   ==== >                       <<<<  " + jResults.length());
             /** Traversing all results only if we have results > 1 */
             if ( jResults.length() > 0 ) {
                 for(int i=0;i<jResults.length();i++) {
-                    // Restaurant name
-                    //jResults.getJSONObject(i).getString("name");
                     HashMap<String, String> hm = new HashMap<>();
                     hm.put("lat", jResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
                     hm.put("lng", jResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
+                    // Restaurant name
+                    hm.put("name",jResults.getJSONObject(i).getString("name"));
 
                     path.add(hm);
                     Log.d("Inside parser class", hm.toString());
