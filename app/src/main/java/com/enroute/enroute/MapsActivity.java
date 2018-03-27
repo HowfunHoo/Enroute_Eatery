@@ -82,9 +82,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        walk = findViewById(R.id.walk);
-        cycle = findViewById(R.id.cycle);
-
+        walk = findViewById(R.id.walk); // for walk
+        cycle = findViewById(R.id.cycle); // for cycle
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -165,7 +164,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
+    /**
+     *
+     * @param origin: take latlang of origin which will be user's live or current location
+     * @param dest: take user's converted latlang from the entered string
+     * @return: which gives the whole url
+     */
     private String getUrl(LatLng origin, LatLng dest) {
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;           // Origin of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;            // Destination of route
@@ -178,6 +182,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return url;
     }
 
+    /**
+     *
+     * @param poi: takes latlang of restaurants
+     * @return gives the url for displaying restaurants
+     */
     private String getRestaurantUrl(LatLng poi) {
         String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
         String radius = "radius=20";                                                // Radius in meters
@@ -189,7 +198,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return url;
     }
 
-
+    /**
+     *
+     * @param poi: takes latlang for Convenience store
+     * @return a url which will be used to marked down Convenience store
+     */
     private String getConvenienceUrl(LatLng poi) {
         String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
         String radius = "radius=100";                                                // Radius in meters
@@ -349,7 +362,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     points.add(position);
 
-
                     //Start showing restaurants
                     String restUrl = getRestaurantUrl(position);
                     FetchRestUrl FetchRestUrl = new FetchRestUrl();
@@ -361,7 +373,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     FetchConvenienceUrl FetchConvenienceUrl = new FetchConvenienceUrl();
                     // Start downloading json data from Google search nearby API
                     FetchConvenienceUrl.execute(convenienceUrl);
-
                 }
 
                 // Adding all the points in the route to LineOptions
@@ -419,7 +430,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-
     }
 
     @Override
@@ -573,7 +583,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    // mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
+    /**
+     * mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
+     */
+
     public void conditionFunction(){
         mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
@@ -607,7 +620,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15)); //search path zoom
     }
 
-
+    /**
+     *
+     * @param requestURL we will provide a prepared url which will be used to find latlang of a place
+     * @return
+     */
     public String getLatLongByURL(String requestURL) {
         URL url;
         String response = "";
