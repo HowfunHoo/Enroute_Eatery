@@ -53,24 +53,25 @@
 
         <Button
             android:id="@+id/cycle"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="45dp"
             android:layout_gravity="right|top"
-            android:text="Cycle"
+            android:background="@drawable/ic_cycle"
+            android:clickable="true"
             android:padding="5dp"
-            android:background="@android:color/white"
-            android:textColor="@android:color/black"
-            />
+            android:text=""
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/walk"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="45dp"
             android:layout_gravity="right|top"
-            android:text="Walk"
+            android:text=""
             android:padding="5dp"
-            android:background="@android:color/white"
+            android:background="@drawable/ic_walk"
             android:textColor="@android:color/black"
+            android:clickable="true"
             />
     </LinearLayout>
 
