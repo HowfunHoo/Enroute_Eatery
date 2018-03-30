@@ -35,7 +35,7 @@
             android:value="AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".log_in"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +43,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".log_in"></activity>
+        <activity android:name=".sign_up"></activity>
+        <activity android:name=".MapsActivity"></activity>
     </application>
 
 </manifest>
