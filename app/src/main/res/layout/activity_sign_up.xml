@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.enroute.enroute.sign_up">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@null">
+
+        <LinearLayout
+            android:id="@+id/signUpForm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="140dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/trans_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/signUpMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Let's Get Started"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+
+            <EditText
+                android:id="@+id/signUpEmail"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignLeft="@+id/signUpPassword"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/signUpPassword"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Enter your Email"
+                android:inputType="textEmailAddress"
+                android:visibility="visible"
+                android:background="@null"
+                android:textColorHint="@color/black"
+                />
+
+            <EditText
+                android:id="@+id/signUpPassword"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/signUpEmail"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:background="@null"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:visibility="visible"
+                android:textColorHint="@color/black"/>
+
+            <Button
+                android:id="@+id/signUpBtn"
+                style="@style/login_btn_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Sign Up"
+                android:visibility="visible"
+
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimary"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
