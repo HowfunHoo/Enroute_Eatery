@@ -62,6 +62,7 @@ Use IEEE citation style.
 What to include in your project sources:
 - Stock images
 - Design guides
+	 https://developer.android.com/reference/android/support/design/widget/BottomNavigationView.html
 - Programming tutorials
 - Research material
 - Android libraries
