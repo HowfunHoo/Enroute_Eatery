@@ -7,4 +7,5 @@
     <color name="black">#000000</color>
     <color name="gray">#818181</color>
     <color name="lightGray">#d3d3d3</color>
+    <color name="icon_color">#FF1212</color>
 </resources>
