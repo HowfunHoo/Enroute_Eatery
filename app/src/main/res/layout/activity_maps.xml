@@ -1,80 +1,87 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivity">
-
-
-    <fragment
-        android:id="@+id/map"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <LinearLayout
-        android:layout_width="400dp"
-        android:layout_height="45dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/card_view"
-            android:layout_width="280dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            card_view:cardCornerRadius="4dp">
-
-            <fragment
-                android:id="@+id/place_autocomplete_fragment"
-                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </android.support.v7.widget.CardView>
-        <Button
-            android:id="@+id/cycle"
-            android:layout_width="60dp"
-            android:layout_height="45dp"
-            android:layout_gravity="right|top"
-            android:background="@drawable/ic_cycle_default"
-            android:clickable="true"
-            android:padding="5dp"
-            android:text=""
-            android:textColor="@android:color/black" />
-
-        <Button
-            android:id="@+id/walk"
-            android:layout_width="60dp"
-            android:layout_height="45dp"
-            android:layout_gravity="right|top"
-            android:background="@drawable/ic_walk_default"
-            android:clickable="true"
-            android:padding="5dp"
-            android:text=""
-            android:textColor="@android:color/black" />
-    </LinearLayout>
-
-    <!-- Bottom links for user profile, home page and Special offers -->
+    >
     <FrameLayout
-        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/navigation"
-        android:orientation="vertical">
+        tools:context=".Maps.MapsActivity"
+        >
+
+
+        <fragment
+            android:id="@+id/map"
+            class="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorWhite"
+            android:layout_marginTop="20dp">
+
+
+            <!--TSET-->
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/card_view"
+                android:layout_gravity="center"
+                android:layout_width="180dp"
+                android:layout_height="40dp"
+                card_view:cardCornerRadius="4dp">
+
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    />
+
+            </android.support.v7.widget.CardView>
+
+            <!--<EditText-->
+            <!--android:id="@+id/editText1"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:background="@color/colorWhite"-->
+            <!--android:gravity="left"-->
+            <!--android:hint="Enter Your Destination"-->
+            <!--android:scrollHorizontally="true"-->
+            <!--android:singleLine="true"-->
+            <!--android:padding="5dp"-->
+            <!--android:textColor="@android:color/black" />-->
+
+            <Button
+                android:id="@+id/cycle"
+                android:layout_width="60dp"
+                android:layout_height="45dp"
+                android:layout_gravity="right|top"
+                android:background="@drawable/ic_cycle_default"
+                android:clickable="true"
+                android:padding="5dp"
+                android:text=""
+                android:textColor="@android:color/black" />
+
+            <Button
+                android:id="@+id/walk"
+                android:layout_width="60dp"
+                android:layout_height="45dp"
+                android:layout_gravity="right|top"
+                android:text=""
+                android:padding="5dp"
+                android:background="@drawable/ic_walk_default"
+                android:textColor="@android:color/black"
+                android:clickable="true"
+                />
+        </LinearLayout>
+
 
     </FrameLayout>
-    <android.support.design.widget.BottomNavigationView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="30sp"
-        app:itemIconTint="@color/icon_color"
-        app:itemTextColor="@color/colorPrimary"
-        app:menu="@menu/bottom_navigation_items" />
+    <include layout="@layout/layout_buttom_navigation_view"/>
 
-</FrameLayout>
+</RelativeLayout>

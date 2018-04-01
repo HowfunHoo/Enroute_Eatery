@@ -2,6 +2,7 @@ package com.enroute.enroute;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +49,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,9 +89,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double dst_lat;
     private double dst_lng;
 
-    private BottomNavigationView bottomNavigationView;
+//    private BottomNavigationView bottomNavigationView;
 
 
+    private static final String TAG = "MapsActivity";
+    private Context mcontext=MapsActivity.this;
+    private static final int ACTIVITY_NUM=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,21 +102,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         walk = findViewById(R.id.walk); // for walk
         cycle = findViewById(R.id.cycle); // for cycle
-
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-        if (bottomNavigationView != null) {
-            // Set action to perform when any menu-item is selected.
-            bottomNavigationView.setOnNavigationItemSelectedListener(
-                    new BottomNavigationView.OnNavigationItemSelectedListener() {
-                        @Override
-                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                            // Write code to perform some actions.
-                            selectFragment(item);
-                            return false;
-                        }
-                    });
-        }
-
+//
+//        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
+//        if (bottomNavigationView != null) {
+//            // Set action to perform when any menu-item is selected.
+//            bottomNavigationView.setOnNavigationItemSelectedListener(
+//                    new BottomNavigationView.OnNavigationItemSelectedListener() {
+//                        @Override
+//                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                            // Write code to perform some actions.
+//                            selectFragment(item);
+//                            return false;
+//                        }
+//                    });
+//        }
 
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -146,6 +152,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("test", "An error occurred: " + status);
             }
         });
+        setupBottomNavigationView();
+
     }
 
 
@@ -834,28 +842,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    /**
-     * Perform action when any item is selected.
-     *
-     * @param item Item that is selected.
-     */
-    protected void selectFragment(MenuItem item) {
+    private void setupBottomNavigationView(){
+        Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.buttomNavViewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+//        BottomNavigationViewHelper.enableNavigation(mcontext, bottomNavigationViewEx);
+        Menu menu=bottomNavigationViewEx.getMenu();
+        MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
 
-        item.setChecked(true);
-        switch (item.getItemId()) {
-            case R.id.home:
-                // Action to perform when Home Menu item is selected.
-                startActivity(new Intent(this, MapsActivity.class));
-                break;
-            case R.id.userprofile:
-                // Action to perform when Bag Menu item is selected.
-                startActivity(new Intent(this, log_in.class));
-                break;
-            case R.id.specialoffers:
-                // Action to perform when Account Menu item is selected.
-                startActivity(new Intent(this, SpecialOffer.class));
-                break;
-        }
+        menuItem.setChecked(true);
     }
+
+
+//    protected void selectFragment(MenuItem item) {
+//
+//        item.setChecked(true);
+//        switch (item.getItemId()) {
+//            case R.id.home:
+//                // Action to perform when Home Menu item is selected.
+//                startActivity(new Intent(this, MapsActivity.class));
+//                break;
+//            case R.id.userprofile:
+//                // Action to perform when Bag Menu item is selected.
+//                startActivity(new Intent(this, log_in.class));
+//                break;
+//            case R.id.specialoffers:
+//                // Action to perform when Account Menu item is selected.
+//                startActivity(new Intent(this, SpecialOffer.class));
+//                break;
+//        }
+//    }
 
 }

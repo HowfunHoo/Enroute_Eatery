@@ -8,4 +8,10 @@
     <color name="gray">#818181</color>
     <color name="lightGray">#d3d3d3</color>
     <color name="icon_color">#FF1212</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGreen">#33ff66</color>
+    <color name="colorgary">#bfbfbf</color>
+    <color name="colorwhite">#ffffff</color>
+    <color name="main">#90CAF9</color>
+    <color name="gary">#bfbfbf</color>
 </resources>
