@@ -6,11 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
 import android.view.MenuItem;
-
-
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
-//import com.enroute.enroute.Maps.MapsActivity;
 
 /**
  * Created by youranzhang on 2018-03-23.

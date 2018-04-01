@@ -78,6 +78,31 @@ public class UserSignUpActivity extends AppCompatActivity {
                             ,Toast.LENGTH_SHORT).show();
                 }
                 else{
+//                    firebaseAuth.createUserWithEmailAndPassword(et_SignUp_Email.getText().toString()
+//                            ,et_SignUp_Password.getText().toString())
+//                            .addOnCompleteListener(UserSignUpActivity.this
+//                                    , new OnCompleteListener<AuthResult>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<AuthResult> task) {
+//                                            if(task.isSuccessful()){
+//                                                Toast.makeText(UserSignUpActivity.this,
+//                                                        "Sign Up successful",
+//                                                        Toast.LENGTH_SHORT).show();
+//                                                startActivity(new Intent(getApplicationContext(),UserActivity.class));
+//                                            }
+//                                            else{
+//                                                Toast.makeText(UserSignUpActivity.this,
+//                                                        "sign up failed",
+//                                                        Toast.LENGTH_SHORT).show();
+//                                            }
+//                                        }
+//                                    });
+//                    Intent loginintent= new Intent(getApplicationContext(),UserActivity.class);
+//                    startActivity(loginintent);
+//                }
+//
+//            }
+//        });
                     firebaseAuth.createUserWithEmailAndPassword(et_SignUp_Email.getText().toString()
                             ,et_SignUp_Password.getText().toString())
                             .addOnCompleteListener(UserSignUpActivity.this
@@ -103,7 +128,6 @@ public class UserSignUpActivity extends AppCompatActivity {
 
             }
         });
-
 
 //        btn_login_link.setOnClickListener(new View.OnClickListener() {
 //            @Override

@@ -88,8 +88,8 @@ public class RestSignUpActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
-                    Intent loginintent= new Intent(getApplicationContext(),RestActivity.class);
-                    startActivity(loginintent);
+//                    Intent loginintent= new Intent(getApplicationContext(),RestActivity.class);
+//                    startActivity(loginintent);
                 }
 
             }
