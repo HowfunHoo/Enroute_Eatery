@@ -95,24 +95,6 @@ public class UserLoginActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
                 else{
-//                    (mAuth.signInWithEmailAndPassword(et_LoginEmail.getText().toString(),
-//                            et_LoginPassword.getText().toString()))
-//                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-//                                @Override
-//                                public void onComplete(@NonNull Task<AuthResult> task) {
-//                                    if(task.isSuccessful()){
-//                                        Toast.makeText(UserLoginActivity.this,
-//                                                "login successful",
-//                                                Toast.LENGTH_SHORT).show();
-//                                        startActivity(new Intent(getApplicationContext(),UserActivity.class));
-//                                    }
-//                                    else{Toast.makeText(
-//                                            UserLoginActivity.this,
-//                                            "login failed",
-//                                            Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//                            });
                     (mAuth.signInWithEmailAndPassword(et_LoginEmail.getText().toString(),
                             et_LoginPassword.getText().toString()))
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -122,7 +104,8 @@ public class UserLoginActivity extends AppCompatActivity {
                                         Toast.makeText(UserLoginActivity.this,
                                                 "login successful",
                                                 Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getApplicationContext(),RestActivity.class));
+                                        Intent userlogin= new Intent(getApplicationContext(),UserActivity.class);
+                                        startActivity(userlogin);
                                     }
                                     else{Toast.makeText(
                                             UserLoginActivity.this,

@@ -78,31 +78,6 @@ public class UserSignUpActivity extends AppCompatActivity {
                             ,Toast.LENGTH_SHORT).show();
                 }
                 else{
-//                    firebaseAuth.createUserWithEmailAndPassword(et_SignUp_Email.getText().toString()
-//                            ,et_SignUp_Password.getText().toString())
-//                            .addOnCompleteListener(UserSignUpActivity.this
-//                                    , new OnCompleteListener<AuthResult>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                                            if(task.isSuccessful()){
-//                                                Toast.makeText(UserSignUpActivity.this,
-//                                                        "Sign Up successful",
-//                                                        Toast.LENGTH_SHORT).show();
-//                                                startActivity(new Intent(getApplicationContext(),UserActivity.class));
-//                                            }
-//                                            else{
-//                                                Toast.makeText(UserSignUpActivity.this,
-//                                                        "sign up failed",
-//                                                        Toast.LENGTH_SHORT).show();
-//                                            }
-//                                        }
-//                                    });
-//                    Intent loginintent= new Intent(getApplicationContext(),UserActivity.class);
-//                    startActivity(loginintent);
-//                }
-//
-//            }
-//        });
                     firebaseAuth.createUserWithEmailAndPassword(et_SignUp_Email.getText().toString()
                             ,et_SignUp_Password.getText().toString())
                             .addOnCompleteListener(UserSignUpActivity.this
@@ -113,8 +88,11 @@ public class UserSignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(UserSignUpActivity.this,
                                                         "Sign Up successful",
                                                         Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(getApplicationContext(),UserActivity.class));
-                                            }
+                                                //TODO: error with jump to user avtivity
+                                                // leave it temporary
+                                                      Intent loginintent= new Intent(getApplicationContext(),UserActivity.class);
+                                                      startActivity(loginintent);
+                                                                                           }
                                             else{
                                                 Toast.makeText(UserSignUpActivity.this,
                                                         "sign up failed",
@@ -122,20 +100,12 @@ public class UserSignUpActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
-                    Intent loginintent= new Intent(getApplicationContext(),UserActivity.class);
-                    startActivity(loginintent);
+
                 }
 
             }
         });
 
-//        btn_login_link.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view2) {
-//                Intent tologinintent= new Intent(getApplicationContext(),UserActivity.class);
-//                startActivity(tologinintent);
-//            }
-//        });
 
     }
 
