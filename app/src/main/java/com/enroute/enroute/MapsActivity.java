@@ -846,7 +846,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.buttomNavViewbar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
-//        BottomNavigationViewHelper.enableNavigation(mcontext, bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mcontext, bottomNavigationViewEx);
         Menu menu=bottomNavigationViewEx.getMenu();
         MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
 

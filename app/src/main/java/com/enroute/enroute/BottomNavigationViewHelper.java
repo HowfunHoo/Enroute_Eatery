@@ -28,16 +28,16 @@ public class BottomNavigationViewHelper {
     }
     public static boolean signedin=true;
 //
-//    public static void enableNavigation(final Context context,BottomNavigationViewEx view){
-//        view.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//
-//                switch (item.getItemId()){
-//                    case R.id.ic_home:
-//                        Intent intent2=new Intent(context, MapsActivity.class);
-//                        context.startActivity(intent2);
-//                        break;
+    public static void enableNavigation(final Context context,BottomNavigationViewEx view){
+        view.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                switch (item.getItemId()){
+                    case R.id.ic_home:
+                        Intent intent2=new Intent(context, MapsActivity.class);
+                        context.startActivity(intent2);
+                        break;
 //                    case R.id.ic_suggestion:
 //                        Intent intent4=new Intent(context,SuggestActivity.class);
 //                        context.startActivity(intent4);
@@ -46,22 +46,22 @@ public class BottomNavigationViewHelper {
 //                        Intent intent3=new Intent(context, SpecialActivity.class);
 //                        context.startActivity(intent3);
 //                        break;
-//                    case R.id.ic_user:
-//                        Intent intent1=new Intent(context, UserActivity.class);
-//                        //todo: change this link back
-//                        Intent intent1_1=new Intent(context, UserLoginActivity.class);
-////                        if(signedin==false)
-////                            context.startActivity(intent1);
-////                        else
-//                            context.startActivity(intent1_1);
-//                        break;
-//
-//
-//
-//
-//                }
-//                return false;
-//            }
-//        });
-//    }
+                    case R.id.ic_user:
+                        Intent intent1=new Intent(context, UserActivity.class);
+                        //todo: change this link back
+                        Intent intent1_1=new Intent(context, UserLoginActivity.class);
+//                        if(signedin==false)
+//                            context.startActivity(intent1);
+//                        else
+                            context.startActivity(intent1_1);
+                        break;
+
+
+
+
+                }
+                return false;
+            }
+        });
+    }
 }
