@@ -45,6 +45,15 @@
         <activity android:name=".log_in"></activity>
         <activity android:name=".sign_up"></activity>
         <activity android:name=".SpecialOffer"></activity>
+        <activity android:name=".SpecialActivity" />
+        <activity android:name=".UserActivity" />
+        <activity android:name=".UserLoginActivity" />
+        <activity android:name=".UserSignUpActivity" />
+        <activity android:name=".UserEditActivity" />
+        <activity android:name=".SuggestActivity" />
+        <activity android:name=".RestLoginActivity" />
+        <activity android:name=".RestActivity" />
+        <activity android:name=".RestSignUpActivity"/>
     </application>
 
 </manifest>
