@@ -6,12 +6,9 @@ import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.enroute.enroute.Singleton.RequestQueueSingleton;
 
 import org.json.JSONArray;
@@ -22,7 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RestaurantRecommendationActivity extends AppCompatActivity {
+public class PreferenceTabsActivity extends AppCompatActivity {
 
     final String cuisines_base_url = "https://developers.zomato.com/api/v2.1/cuisines?city_id=";
 
@@ -33,47 +30,24 @@ public class RestaurantRecommendationActivity extends AppCompatActivity {
     String city = "Halifax";
     int city_id = 3099;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_restaurant_recommendation);
-
-//        ArrayList<String> cuisineList = new ArrayList<>();
-//        cuisineList = getCuisines();
-
-
+        setContentView(R.layout.activity_preference_tabs);
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                ArrayList<String> cuisineList = new ArrayList<>();
-                cuisineList = getCuisines();
+                getCuisines();
 
-                Log.d("cuisineList.size", String.valueOf(cuisineList.size()));
-
-                for (int i=0; i<cuisineList.size(); i++){
-//            Log.d("cuisineList", cuisineList.get(i));
-                    Log.d("cuisineList", String.valueOf(i));
-                }
             }
         };
 
-//        Log.d("cuisineList.size", String.valueOf(cuisineList.size()));
-//
-//        for (int i=0; i<cuisineList.size(); i++){
-////            Log.d("cuisineList", cuisineList.get(i));
-//            Log.d("cuisineList", String.valueOf(i));
-//        }
-
+        //TODO: Shows tabs show the cuisines for users to select
+        //A friendly reminder: try to make this function finished in getCuisines(), not in onCreate().
     }
 
-
-    /**
-     *
-     * @return A list to store all cuisines Zomato supports
-     */
-    public ArrayList<String> getCuisines() {
+    public void getCuisines() {
 
         //A list to store all cuisines Zomato supports
         final ArrayList<String> cuisineList = new ArrayList<>();
@@ -133,7 +107,5 @@ public class RestaurantRecommendationActivity extends AppCompatActivity {
 //        queue.add(cuisineRequest);
 
         RequestQueueSingleton.getmInstance(getApplicationContext()).addToRequestQueue (cuisineRequest);
-        
-        return cuisineList;
     }
 }
