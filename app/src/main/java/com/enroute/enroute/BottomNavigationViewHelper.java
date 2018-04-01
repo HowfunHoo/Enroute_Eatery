@@ -38,14 +38,14 @@ public class BottomNavigationViewHelper {
                         Intent intent2=new Intent(context, MapsActivity.class);
                         context.startActivity(intent2);
                         break;
-//                    case R.id.ic_suggestion:
-//                        Intent intent4=new Intent(context,SuggestActivity.class);
-//                        context.startActivity(intent4);
-//                        break;
-//                    case R.id.ic_discount:
-//                        Intent intent3=new Intent(context, SpecialActivity.class);
-//                        context.startActivity(intent3);
-//                        break;
+                    case R.id.ic_suggestion:
+                        Intent intent4=new Intent(context,SuggestActivity.class);
+                        context.startActivity(intent4);
+                        break;
+                    case R.id.ic_discount:
+                        Intent intent3=new Intent(context, SpecialActivity.class);
+                        context.startActivity(intent3);
+                        break;
                     case R.id.ic_user:
                         Intent intent1=new Intent(context, UserActivity.class);
                         //todo: change this link back
