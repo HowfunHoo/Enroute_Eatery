@@ -40,7 +40,7 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent4);
                         break;
                     case R.id.ic_discount:
-                        Intent intent3=new Intent(context, SpecialActivity.class);
+                        Intent intent3=new Intent(context, SpecialOffersActivity.class);
                         context.startActivity(intent3);
                         break;
                     case R.id.ic_user:

@@ -47,13 +47,19 @@
         <activity android:name=".SpecialOffer"></activity>
         <activity android:name=".SpecialActivity" />
         <activity android:name=".UserActivity" />
-        <activity android:name=".UserLoginActivity" />
+        <activity android:name=".UserLoginActivity">
+
+        </activity>
         <activity android:name=".UserSignUpActivity" />
         <activity android:name=".UserEditActivity" />
         <activity android:name=".SuggestActivity" />
         <activity android:name=".RestLoginActivity" />
         <activity android:name=".RestActivity" />
         <activity android:name=".RestSignUpActivity"/>
+        <activity android:name=".CreateRestaurantActivity"/>
+        <activity android:name=".SpecialOffersActivity">
+
+        </activity>
     </application>
 
 </manifest>
