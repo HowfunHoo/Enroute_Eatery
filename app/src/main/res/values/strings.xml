@@ -4,6 +4,8 @@
     <string name="user_profile">User Profile</string>
     <string name="home">Home</string>
     <string name="offers">Special Offers</string>
-
+    <string name="btn_link_to_signup"><u>No Account yet? Sign up</u></string>
+    <string name="btn_link_to_login"><u>Already have an Account? Sign in</u></string>
+    <string name="btn_rest"><u>Login as a restaurant</u></string>
 
 </resources>
