@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_title1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="14dp"
+            android:text="Please input the information of the restaurant"
+            android:textStyle="bold"
+            android:textSize="18dp"/>
+
+        <EditText
+            android:id="@+id/et_rname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/tv_title1"
+            android:layout_marginTop="14dp"
+            android:hint="Restaurant name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_rpicurl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/et_rname"
+            android:layout_marginTop="29dp"
+            android:hint="Restaurant Picture url"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_raddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/et_rpicurl"
+            android:layout_marginTop="29dp"
+            android:hint="Restaurant address"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_rcity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/et_raddress"
+            android:layout_marginTop="29dp"
+            android:hint="Restaurant city"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_raveragecost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/et_rcity"
+            android:layout_marginTop="29dp"
+            android:hint="Restaurant average cost for two"
+            android:inputType="textPersonName" />
+
+
+        <EditText
+            android:id="@+id/et_rcuisines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/et_raveragecost"
+            android:layout_marginTop="29dp"
+            android:hint="Restaurant cuisines"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_rphone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/et_rcuisines"
+            android:layout_marginTop="29dp"
+            android:hint="Restaurant contact phone number"
+            android:inputType="textPersonName" />
+
+        <CheckBox
+            android:id="@+id/cb_rdalcard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/et_rphone"
+            android:text="Bills can be paid by DalCard" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/cb_rdalcard"
+            android:layout_marginEnd="153dp"
+            android:layout_marginTop="25dp"
+            android:text="Submit" />
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="14dp"
+            android:layout_below="@+id/btn_submit"
+            android:visibility="gone"
+            android:padding="10dp"
+            android:text="Submitted successfully! Please notice: it may take 10 working days to process with your submission."
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+</ScrollView>
