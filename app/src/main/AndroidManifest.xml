@@ -36,7 +36,10 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps">
+
+
+        </activity>
         <activity android:name=".log_in" />
         <activity android:name=".sign_up" />
         <activity android:name=".SpecialOffer" />

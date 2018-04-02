@@ -57,7 +57,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="3dp"
                 android:padding="3dp"
-                android:background="@color/CandyGreen"
+                android:background="@color/main"
                 />
 
             <TextView

@@ -1,14 +1,18 @@
 package com.enroute.enroute;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.enroute.enroute.ZomatoHelpers.ZomatoHelper;
 import com.enroute.enroute.interfaces.CuisineCallbacks;
 import com.enroute.enroute.model.Cuisine;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,13 +22,18 @@ import java.util.ArrayList;
 
 public class WaitForCuisinesActivity extends AppCompatActivity {
 
+    //set navigation parameter
+    private static final String TAG = "WaitForCuisinesActivity";
+    private Context mcontext=WaitForCuisinesActivity.this;
+    private static final int ACTIVITY_NUM=1;
+
     ArrayList<Cuisine> cuisines = new ArrayList<Cuisine>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait_for_cuisines);
-
+        setupBottomNavigationView();
         //TODO: get the preferred cuisines of the current user
         //Hard Code
         String preference = "Asian,BBQ,Mexican,Seafood";
@@ -97,5 +106,18 @@ public class WaitForCuisinesActivity extends AppCompatActivity {
         }
 
         });
+    }
+    private void setupBottomNavigationView(){
+
+        Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
+
+        BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.buttomNavViewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mcontext, bottomNavigationViewEx);
+
+        Menu menu=bottomNavigationViewEx.getMenu();
+        MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
+
     }
 }

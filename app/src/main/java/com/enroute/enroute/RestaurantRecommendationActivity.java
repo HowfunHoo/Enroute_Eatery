@@ -1,9 +1,13 @@
 package com.enroute.enroute;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.ListView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -13,12 +17,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.enroute.enroute.Adapters.RestaurantRecommendAdapter;
 import com.enroute.enroute.Singleton.RequestQueueSingleton;
 import com.enroute.enroute.ZomatoHelpers.ZomatoHelper;
 import com.enroute.enroute.interfaces.CuisineCallbacks;
 import com.enroute.enroute.interfaces.RestaurantCallbacks;
 import com.enroute.enroute.model.Cuisine;
 import com.enroute.enroute.model.Restaurant;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import junit.framework.Assert;
 
@@ -34,6 +40,15 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class RestaurantRecommendationActivity extends AppCompatActivity  {
+
+
+    //set navigation parameter
+    private static final String TAG = "RestaurantRecommendationActivity";
+    private Context mcontext=RestaurantRecommendationActivity.this;
+    private static final int ACTIVITY_NUM=1;
+
+    RestaurantRecommendAdapter adapter;
+    ListView lv_suggest;
 
     //Set the default city as Halifax (The city_id of Halifax in Zomato API is 3099)
     String city_id = "3099";
@@ -57,8 +72,8 @@ public class RestaurantRecommendationActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_recommendation);
-
-
+        setupBottomNavigationView();
+        lv_suggest = (ListView)findViewById(R.id.lv_suggest);
 
         //TODO: get the preferred cuisines of the current user
         //Hard Code
@@ -465,9 +480,23 @@ public class RestaurantRecommendationActivity extends AppCompatActivity  {
                     Log.d("gottenRestaurants", restaurants.get(i).getRname());
                 }
 
-
+                adapter = new RestaurantRecommendAdapter(getApplicationContext(), restaurants);
+                lv_suggest.setAdapter(adapter);
             }
         });
+
+    }
+    private void setupBottomNavigationView(){
+
+        Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
+
+        BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.buttomNavViewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mcontext, bottomNavigationViewEx);
+
+        Menu menu=bottomNavigationViewEx.getMenu();
+        MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
+        menuItem.setChecked(true);
 
     }
 
