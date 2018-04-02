@@ -75,6 +75,7 @@ public class UserActivity extends AppCompatActivity {
                         break;
                     case R.id.profile_signout:
                         Log.d(TAG, "onMenuItemClick: signout");
+                        firebaseAuth.signOut();
                         finish();
                         startActivity(new Intent(getApplicationContext(),UserLoginActivity.class));
                         break;
