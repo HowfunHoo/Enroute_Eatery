@@ -88,7 +88,7 @@ public class ZomatoHelper {
 
     public void getRestaurants(Context context, int[] preferred_cuisineIds, final RestaurantCallbacks restaurantCallbacks){
 
-        ArrayList<Restaurant> restaurants = new ArrayList<>();
+        final ArrayList<Restaurant> restaurants = new ArrayList<>();
 
         //fetch results after offset
         int start = 0;
@@ -122,34 +122,35 @@ public class ZomatoHelper {
                         //LOG
                         Log.d("Response" , response.toString());
 
-                        Restaurant restaurant = new Restaurant();
+                        try {
+                            Restaurant restaurant = new Restaurant();
+
+                            JSONArray restaurantJSONArray = response.getJSONArray("restaurants");
+
+                            for (int i = 0; i < restaurantJSONArray.length(); i++){
 
 
+                                JSONObject restaurantData = restaurantJSONArray.getJSONObject(i).getJSONObject("restaurant");
 
+                                restaurant.setRid(String.valueOf(restaurantData.getJSONObject("R").getInt("res_id")));
+                                restaurant.setRname(restaurantData.getString("name"));
+                                restaurant.setRpicurl(restaurantData.getString("photos_url"));
+                                restaurant.setRaddress(restaurantData.getJSONObject("location").getString("address"));
+                                restaurant.setRcity(restaurantData.getJSONObject("location").getString("city"));
+                                restaurant.setRlat(Double.parseDouble(restaurantData.getJSONObject("location").getString("latitude")));
+                                restaurant.setRlng(Double.parseDouble(restaurantData.getJSONObject("location").getString("longitude")));
+                                restaurant.setRaveragecost(String.valueOf(restaurantData.getInt("average_cost_for_two")));
+                                restaurant.setRrate(restaurantData.getJSONObject("user_rating").getString("aggregate_rating"));
+                                restaurant.setRcuisines(restaurantData.getString("cuisines"));
 
+                                restaurants.add(restaurant);
 
-//                            try{
-//
-//                                JSONArray cuisinesJSONArray = response.getJSONArray("cuisines");
-//
-//                                //LOG
-//                                Log.d("cuisinesJSONArray", cuisinesJSONArray.toString());
-//
-//                                for (int i = 0; i < cuisinesJSONArray.length(); i++){
-//
-//                                    cuisineList.clear();
-//
-//                                    JSONObject cuisineData = cuisinesJSONArray.getJSONObject(i).getJSONObject("cuisine");
-//                                    cuisineList.add(cuisineData.getString("cuisine_name"));
-//
-//                                    /////////
-//                                    Log.d("cuisine_name" , cuisineData.getString("cuisine_name"));
-//
-//                                }
-//
-//                            }catch (JSONException e){
-//                                Log.d("ERROR", "Error (JSONException): " + e.toString());
-//                            }
+                                restaurantCallbacks.onRestaurantCallback(restaurants);
+
+                                }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -169,7 +170,7 @@ public class ZomatoHelper {
             }
         };
 
-//            RequestQueueSingleton.getmInstance(getApplicationContext()).addToRequestQueue (restaurantRequest);
+            RequestQueueSingleton.getmInstance(context).addToRequestQueue (restaurantRequest);
 
 
 
