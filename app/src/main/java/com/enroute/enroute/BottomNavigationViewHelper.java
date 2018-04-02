@@ -45,7 +45,7 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent3);
                         break;
                     case R.id.ic_user:
-                        Intent intent1=new Intent(context, UserActivity.class);
+                        Intent intent1=new Intent(context, UserLoginActivity.class);
                         context.startActivity(intent1);
                         break;
 
