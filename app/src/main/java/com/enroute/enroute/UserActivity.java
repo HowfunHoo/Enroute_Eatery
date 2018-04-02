@@ -35,15 +35,21 @@ public class UserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        //firebase
+        firebaseAuth=FirebaseAuth.getInstance();
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+
+        //todo:set welcome +user name
+        username=(TextView)findViewById(R.id.profile_bar_name);
+        username.setText("Welcome "+ user.getEmail());
+
         //set ui
         setupBottomNavigationView();
         setupToolBar();
 
-        username=(TextView)findViewById(R.id.profile_bar_name);
 
-        //todo:set welcome +user name
-//        username.setText("Welcome"+ user.getname());
-        firebaseAuth=FirebaseAuth.getInstance();
+
 
         //if not login,jup to login activity
         if(firebaseAuth.getCurrentUser() == null){
@@ -52,7 +58,6 @@ public class UserActivity extends AppCompatActivity {
         }
 
         Log.d(TAG, "onCreate: started");
-        FirebaseUser user= firebaseAuth.getCurrentUser();
 
 
 
