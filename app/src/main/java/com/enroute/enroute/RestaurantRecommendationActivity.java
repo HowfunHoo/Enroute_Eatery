@@ -13,6 +13,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.enroute.enroute.Singleton.RequestQueueSingleton;
+import com.enroute.enroute.ZomatoHelpers.ZomatoHelper;
+import com.enroute.enroute.interfaces.CuisineCallbacks;
 import com.enroute.enroute.model.Cuisine;
 
 import org.json.JSONArray;
@@ -47,66 +49,112 @@ public class RestaurantRecommendationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_recommendation);
 
-        String cuisines_url = cuisines_base_url.concat(city_id);
+        ZomatoHelper zomatoHelper = new ZomatoHelper();
 
-        //Set JsonObjectRequest
-        JsonObjectRequest cuisineRequest = new JsonObjectRequest(Request.Method.GET, cuisines_url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //LOG
-                        Log.d("Response", response.toString());
-
-                        try{
-
-                            JSONArray cuisinesJSONArray = response.getJSONArray("cuisines");
-
-                            //LOG
-                            Log.d("cuisinesJSONArray", cuisinesJSONArray.toString());
-
-                            for (int i = 0; i < cuisinesJSONArray.length(); i++){
-
-                                Cuisine cuisine = new Cuisine();
-
-                                JSONObject cuisineData = cuisinesJSONArray.getJSONObject(i).getJSONObject("cuisine");
-
-                                cuisine.setCuisine_id(cuisineData.getInt("cuisine_id"));
-                                cuisine.setCuisine_name(cuisineData.getString("cuisine_name"));
-
-                                cuisines.add(cuisine);
-
-                                /////////
-//                                Log.d("cuisine_name" , cuisineData.getString("cuisine_name"));
-
-                            }
-
-                        }catch (JSONException e){
-                            Log.d("ERROR", "Error (JSONException): " + e.toString());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError e) {
-                        Log.d("ERROR", "Error (onErrorResponse): " + e.toString());
-                    }
-                }
-        ) {
+        zomatoHelper.getCuisines(getApplicationContext(), new CuisineCallbacks() {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("user-key", api_key);
-                params.put("Accept", "application/json");
+            public void onCuisineCallbacks(JSONObject JSONObjectResult) {
 
-                return params;
+                Log.d("JSONObjectResult", JSONObjectResult.toString());
+
+                try{
+
+                    JSONArray cuisinesJSONArray = JSONObjectResult.getJSONArray("cuisines");
+
+                    //LOG
+                    Log.d("cuisinesJSONArray", cuisinesJSONArray.toString());
+
+                    for (int i = 0; i < cuisinesJSONArray.length(); i++){
+
+                        Cuisine cuisine = new Cuisine();
+
+                        JSONObject cuisineData = cuisinesJSONArray.getJSONObject(i).getJSONObject("cuisine");
+
+                        cuisine.setCuisine_id(cuisineData.getInt("cuisine_id"));
+                        cuisine.setCuisine_name(cuisineData.getString("cuisine_name"));
+
+                        cuisines.add(cuisine);
+
+                        Log.d("cuisines.size()", String.valueOf(cuisines.size()));
+                        for (int j=0; j<cuisines.size(); j++){
+                            Log.d("ArrayList-cuisines", cuisines.get(j).getCuisine_name());
+                        }
+
+                    }
+
+                }catch (JSONException e){
+                    Log.d("ERROR", "Error (JSONException): " + e.toString());
+                }
+
             }
-        };
+        });
 
-        RequestQueueSingleton.getmInstance(getApplicationContext()).addToRequestQueue (cuisineRequest);
 
-        for (int i=0; i<cuisines.size(); i++){
-            Log.d("ArrayList-cuisines", cuisines.get(i).getCuisine_name());
-        }
+
+
+
+
+
+
+
+//        String cuisines_url = cuisines_base_url.concat(city_id);
+//
+//        //Set JsonObjectRequest
+//        JsonObjectRequest cuisineRequest = new JsonObjectRequest(Request.Method.GET, cuisines_url, null,
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        //LOG
+//                        Log.d("Response", response.toString());
+//
+//                        try{
+//
+//                            JSONArray cuisinesJSONArray = response.getJSONArray("cuisines");
+//
+//                            //LOG
+//                            Log.d("cuisinesJSONArray", cuisinesJSONArray.toString());
+//
+//                            for (int i = 0; i < cuisinesJSONArray.length(); i++){
+//
+//                                Cuisine cuisine = new Cuisine();
+//
+//                                JSONObject cuisineData = cuisinesJSONArray.getJSONObject(i).getJSONObject("cuisine");
+//
+//                                cuisine.setCuisine_id(cuisineData.getInt("cuisine_id"));
+//                                cuisine.setCuisine_name(cuisineData.getString("cuisine_name"));
+//
+//                                cuisines.add(cuisine);
+//
+//                                /////////
+////                                Log.d("cuisine_name" , cuisineData.getString("cuisine_name"));
+//
+//                            }
+//
+//                        }catch (JSONException e){
+//                            Log.d("ERROR", "Error (JSONException): " + e.toString());
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError e) {
+//                        Log.d("ERROR", "Error (onErrorResponse): " + e.toString());
+//                    }
+//                }
+//        ) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("user-key", api_key);
+//                params.put("Accept", "application/json");
+//
+//                return params;
+//            }
+//        };
+//
+//        RequestQueueSingleton.getmInstance(getApplicationContext()).addToRequestQueue (cuisineRequest);
+
+
 
 
         //TODO: get the preferred cuisines of the current user

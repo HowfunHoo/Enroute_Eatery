@@ -41,7 +41,7 @@ public class ZomatoHelper {
 
     }
 
-    public ArrayList<Cuisine> getCuisines(Context ApplicationContext, final CuisineCallbacks cuisineCallbacks){
+    public void getCuisines(Context ApplicationContext, final CuisineCallbacks cuisineCallbacks){
 
         final ArrayList<Cuisine> cuisines = new ArrayList<Cuisine>();
 
@@ -52,35 +52,11 @@ public class ZomatoHelper {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        //LOG
-                        Log.d("Response", response.toString());
 
-                        try{
+                        Log.d("response_cuisines", String.valueOf(response));
 
-                            JSONArray cuisinesJSONArray = response.getJSONArray("cuisines");
+                        cuisineCallbacks.onCuisineCallbacks(response);
 
-                            //LOG
-                            Log.d("cuisinesJSONArray", cuisinesJSONArray.toString());
-
-                            for (int i = 0; i < cuisinesJSONArray.length(); i++){
-
-                                Cuisine cuisine = new Cuisine();
-
-                                JSONObject cuisineData = cuisinesJSONArray.getJSONObject(i).getJSONObject("cuisine");
-
-                                cuisine.setCuisine_id(cuisineData.getInt("cuisine_id"));
-                                cuisine.setCuisine_name(cuisineData.getString("cuisine_name"));
-
-                                cuisines.add(cuisine);
-
-                                /////////
-//                                Log.d("cuisine_name" , cuisineData.getString("cuisine_name"));
-
-                            }
-
-                        }catch (JSONException e){
-                            Log.d("ERROR", "Error (JSONException): " + e.toString());
-                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -101,8 +77,6 @@ public class ZomatoHelper {
         };
 
         RequestQueueSingleton.getmInstance(ApplicationContext).addToRequestQueue (cuisineRequest);
-
-        return cuisines;
 
     }
 }
