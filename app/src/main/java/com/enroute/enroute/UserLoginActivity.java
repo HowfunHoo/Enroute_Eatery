@@ -5,6 +5,7 @@ package com.enroute.enroute;
  */
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -42,6 +43,8 @@ public class UserLoginActivity extends AppCompatActivity {
     private EditText et_LoginEmail;
     private  EditText et_LoginPassword;
 
+    private ProgressDialog progressDialog;
+
     //firebase
     private FirebaseAuth mAuth;
 
@@ -75,26 +78,40 @@ public class UserLoginActivity extends AppCompatActivity {
         et_LoginEmail=(EditText)findViewById(R.id.LoginEmail);
         et_LoginPassword=(EditText)findViewById(R.id.LoginPassword);
 
+        progressDialog=new ProgressDialog(this);
+
 
         //firebase authentication
         mAuth = FirebaseAuth.getInstance();
 
-//        //firebase realtime database
-//        db=FirebaseDatabase.getInstance().getReference();
-//
-//        //firebase helper
-//        firebasehelper=new FirebaseHelper(db);
+
+        //if already login
+        //jump to activity page
+//        if(mAuth.getCurrentUser() != null){
+//            finish();
+//            Intent userlogin= new Intent(getApplicationContext(),UserActivity.class);
+//            startActivity(userlogin);
+//        }
 
         //login button,to user profile activity
         btn_Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkinputempty()){
+                if(checkpasswordempty()){
                     Toast.makeText(UserLoginActivity.this,
-                            "please vertify your input",
+                            "please enter password",
                             Toast.LENGTH_SHORT).show();
                 }
+                if(checkemailempty()){
+                    Toast.makeText(UserLoginActivity.this,
+                            "please enter email",
+                            Toast.LENGTH_SHORT).show();
+                }
+
                 else{
+                    progressDialog.setMessage("Log...in...");
+                    progressDialog.show();
+
                     (mAuth.signInWithEmailAndPassword(et_LoginEmail.getText().toString(),
                             et_LoginPassword.getText().toString()))
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -104,6 +121,7 @@ public class UserLoginActivity extends AppCompatActivity {
                                         Toast.makeText(UserLoginActivity.this,
                                                 "login successful",
                                                 Toast.LENGTH_SHORT).show();
+                                        finish();
                                         Intent userlogin= new Intent(getApplicationContext(),UserActivity.class);
                                         startActivity(userlogin);
                                     }
@@ -143,12 +161,23 @@ public class UserLoginActivity extends AppCompatActivity {
 
     }
     //return empty or not state
-    private boolean checkinputempty(){
+    private boolean checkemailempty(){
 
         email=et_LoginEmail.getText().toString();
+
+        if(TextUtils.isEmpty(email)){
+            empty=true;
+        }
+
+        else empty=false;
+
+        return empty;
+    }
+    private boolean checkpasswordempty(){
+
         password=et_LoginPassword.getText().toString();
 
-        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+        if(TextUtils.isEmpty(password)){
             empty=true;
         }
 

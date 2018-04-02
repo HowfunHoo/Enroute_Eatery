@@ -26,16 +26,6 @@
                     android:gravity="center"
 
                     />
-                <!---->
-                <!--<ImageView-->
-                    <!--android:layout_width="30dp"-->
-                    <!--android:layout_height="30dp"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:layout_marginEnd="20dp"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:src="@drawable/ic_option"-->
-                    <!--android:id="@+id/profileMenu"/>-->
-
             </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>

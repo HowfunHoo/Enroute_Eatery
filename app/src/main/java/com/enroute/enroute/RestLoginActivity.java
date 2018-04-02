@@ -1,5 +1,6 @@
 package com.enroute.enroute;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class RestLoginActivity extends AppCompatActivity {
     private EditText et_RLogin_Password;
     private Button btn_RLogin;
     private Button btn_RSignup;
+    private ProgressDialog progressDialog;
 
     //check input state
     private boolean empty;
@@ -59,6 +61,7 @@ public class RestLoginActivity extends AppCompatActivity {
 
         et_RLogin_Email=(EditText)findViewById(R.id.RLoginEmail);
         et_RLogin_Password=(EditText)findViewById(R.id.RLoginPassword);
+        progressDialog=new ProgressDialog(this);
 
         //firebase authentication
         mAuth = FirebaseAuth.getInstance();
@@ -66,13 +69,20 @@ public class RestLoginActivity extends AppCompatActivity {
         btn_RLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkinputempty()){
+                if(checkpasswordempty()){
                     Toast.makeText(RestLoginActivity.this,
-                            "please vertify your imput",
+                            "please enter password",
                             Toast.LENGTH_SHORT).show();
                 }
-                else{
+                if(checkemailempty()){
+                    Toast.makeText(RestLoginActivity.this,
+                            "please enter email",
+                            Toast.LENGTH_SHORT).show();
+                }
 
+                else{
+                    progressDialog.setMessage("Log...in...");
+                    progressDialog.show();
                     (mAuth.signInWithEmailAndPassword(et_RLogin_Email.getText().toString(),
                             et_RLogin_Password.getText().toString()))
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -82,6 +92,7 @@ public class RestLoginActivity extends AppCompatActivity {
                                         Toast.makeText(RestLoginActivity.this,
                                                 "login successful",
                                                 Toast.LENGTH_SHORT).show();
+                                        finish();
                                         startActivity(new Intent(getApplicationContext(),RestActivity.class));
                                     }
                                     else{Toast.makeText(
@@ -106,13 +117,12 @@ public class RestLoginActivity extends AppCompatActivity {
 
     }
 
-
-    private boolean checkinputempty(){
+    //return empty or not state
+    private boolean checkemailempty(){
 
         email=et_RLogin_Email.getText().toString();
-        password=et_RLogin_Password.getText().toString();
 
-        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+        if(TextUtils.isEmpty(email)){
             empty=true;
         }
 
@@ -120,7 +130,18 @@ public class RestLoginActivity extends AppCompatActivity {
 
         return empty;
     }
+    private boolean checkpasswordempty(){
 
+        password=et_RLogin_Password.getText().toString();
+
+        if(TextUtils.isEmpty(password)){
+            empty=true;
+        }
+
+        else empty=false;
+
+        return empty;
+    }
 
     private void setupBottomNavigationView(){
 

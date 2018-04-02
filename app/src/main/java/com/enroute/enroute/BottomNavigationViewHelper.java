@@ -15,6 +15,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class BottomNavigationViewHelper {
     private static final String TAG = "BottomNavigationViewHel";
+
     public static void setupBottomNavigationView(BottomNavigationViewEx bottomNavigationViewEx){
         Log.d(TAG, "setupBottomNavigationView: Setting up BottomNavigationView");
         bottomNavigationViewEx.enableAnimation(false);
@@ -23,8 +24,8 @@ public class BottomNavigationViewHelper {
         bottomNavigationViewEx.setTextVisibility(false);
 
     }
-    public static boolean signedin=true;
-//
+
+
     public static void enableNavigation(final Context context,BottomNavigationViewEx view){
         view.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -44,13 +45,9 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent3);
                         break;
                     case R.id.ic_user:
-                        Intent intent1=new Intent(context, UserActivity.class);
                         //todo: change this link back
-                        Intent intent1_1=new Intent(context, UserLoginActivity.class);
-//                        if(signedin==false)
-//                            context.startActivity(intent1);
-//                        else
-                            context.startActivity(intent1_1);
+                        Intent intent1=new Intent(context, UserLoginActivity.class);
+                        context.startActivity(intent1);
                         break;
 
 

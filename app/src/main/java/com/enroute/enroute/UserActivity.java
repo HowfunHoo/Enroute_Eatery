@@ -5,6 +5,7 @@ package com.enroute.enroute;
  */
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,22 +14,46 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class UserActivity extends AppCompatActivity {
+
     private static final String TAG = "UserActivity";
     private Context mcontext=UserActivity.this;
     private static final int ACTIVITY_NUM=3;
+
+    private FirebaseAuth firebaseAuth;
+    private TextView username;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-
-        Log.d(TAG, "onCreate: started");
+        //set ui
         setupBottomNavigationView();
         setupToolBar();
+
+        username=(TextView)findViewById(R.id.profile_bar_name);
+
+        //todo:set welcome +user name
+//        username.setText("Welcome"+ user.getname());
+        firebaseAuth=FirebaseAuth.getInstance();
+
+        //if not login,jup to login activity
+        if(firebaseAuth.getCurrentUser() == null){
+            finish();
+            startActivity(new Intent(this, UserLoginActivity.class));
+        }
+
+        Log.d(TAG, "onCreate: started");
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+
 
 
     }
@@ -50,8 +75,8 @@ public class UserActivity extends AppCompatActivity {
                         break;
                     case R.id.profile_signout:
                         Log.d(TAG, "onMenuItemClick: signout");
-                        Intent signoutintent=new Intent(getApplicationContext(),UserLoginActivity.class);
-                        startActivity(signoutintent);
+                        finish();
+                        startActivity(new Intent(getApplicationContext(),UserLoginActivity.class));
                         break;
                 }
 
@@ -59,6 +84,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");

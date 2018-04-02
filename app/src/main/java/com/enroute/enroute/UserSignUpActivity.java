@@ -1,5 +1,6 @@
 package com.enroute.enroute;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +34,10 @@ public class UserSignUpActivity extends AppCompatActivity {
     private Button btn_login_link;
     private EditText et_SignUp_Email;
     private EditText et_SignUp_Password;
+    private EditText et_SignUp_Phone;
+    private EditText et_SignUp_Name;
 
+    private ProgressDialog progressDialog;
 
     //firebase
     FirebaseAuth firebaseAuth ;
@@ -54,12 +58,27 @@ public class UserSignUpActivity extends AppCompatActivity {
         //ui component
         btn_sign_up=(Button)findViewById(R.id.btn_sign_up);
         btn_login_link=(Button)findViewById(R.id.btn_signup_link);
-        et_SignUp_Email=(EditText)findViewById(R.id.signUpEmail) ;
-        et_SignUp_Password=(EditText)findViewById(R.id.signUpPassword) ;
+
+        et_SignUp_Email=(EditText)findViewById(R.id.signUpEmail);
+        et_SignUp_Password=(EditText)findViewById(R.id.signUpPassword);
+        et_SignUp_Name=(EditText)findViewById(R.id.signUpName);
+        et_SignUp_Phone=(EditText)findViewById(R.id.signUpPhone);
+
+        progressDialog=new ProgressDialog(this);
+
 
         Log.d(TAG, "onCreate: started");
         setupBottomNavigationView();
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //if already login
+        //jump to activity page
+//        if(firebaseAuth.getCurrentUser() != null){
+//            finish();
+//            Intent userlogin= new Intent(getApplicationContext(),UserActivity.class);
+//            startActivity(userlogin);
+//        }
+
 
 //        btn_sign_up.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -72,12 +91,20 @@ public class UserSignUpActivity extends AppCompatActivity {
         btn_sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkinputempty()){
+                if(checkemailempty()){
                     Toast.makeText(UserSignUpActivity.this,
-                            "please vertify your input"
-                            ,Toast.LENGTH_SHORT).show();
+                            "please enter email",
+                            Toast.LENGTH_SHORT).show();
+                }
+                if(checkpasswordempty()){
+                    Toast.makeText(UserSignUpActivity.this,
+                            "please enter password",
+                            Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    progressDialog.setMessage("sign...up...");
+                    progressDialog.show();
+
                     firebaseAuth.createUserWithEmailAndPassword(et_SignUp_Email.getText().toString()
                             ,et_SignUp_Password.getText().toString())
                             .addOnCompleteListener(UserSignUpActivity.this
@@ -90,7 +117,8 @@ public class UserSignUpActivity extends AppCompatActivity {
                                                         Toast.LENGTH_SHORT).show();
                                                 //TODO: error with jump to user avtivity
                                                 // leave it temporary
-                                                      Intent loginintent= new Intent(getApplicationContext(),UserActivity.class);
+                                                      Intent loginintent= new Intent(getApplicationContext(),UserEditActivity.class);
+                                                      finish();
                                                       startActivity(loginintent);
                                                                                            }
                                             else{
@@ -109,12 +137,12 @@ public class UserSignUpActivity extends AppCompatActivity {
 
     }
 
-    private boolean checkinputempty(){
+    //return empty or not state
+    private boolean checkemailempty(){
 
         email=et_SignUp_Email.getText().toString();
-        password=et_SignUp_Password.getText().toString();
 
-        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+        if(TextUtils.isEmpty(email)){
             empty=true;
         }
 
@@ -122,6 +150,19 @@ public class UserSignUpActivity extends AppCompatActivity {
 
         return empty;
     }
+    private boolean checkpasswordempty(){
+
+        password=et_SignUp_Password.getText().toString();
+
+        if(TextUtils.isEmpty(password)){
+            empty=true;
+        }
+
+        else empty=false;
+
+        return empty;
+    }
+
 
     //setup button navigation
     private void setupBottomNavigationView(){

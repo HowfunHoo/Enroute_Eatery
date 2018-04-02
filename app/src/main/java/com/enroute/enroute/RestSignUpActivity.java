@@ -1,5 +1,6 @@
 package com.enroute.enroute;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class RestSignUpActivity extends AppCompatActivity {
     private Button btn_Rlogin_link;
     private EditText et_RSignUp_Email;
     private EditText et_RSignUp_Password;
+    private ProgressDialog progressDialog;
 
 
     //firebase
@@ -55,6 +57,7 @@ public class RestSignUpActivity extends AppCompatActivity {
         btn_Rlogin_link=(Button)findViewById(R.id.btn_Rsignup_link);
         et_RSignUp_Email=(EditText)findViewById(R.id.RsignUpEmail) ;
         et_RSignUp_Password=(EditText)findViewById(R.id.RsignUpPassword) ;
+        progressDialog=new ProgressDialog(this);
 
         Log.d(TAG, "onCreate: started");
         setupBottomNavigationView();
@@ -63,12 +66,19 @@ public class RestSignUpActivity extends AppCompatActivity {
         btn_Rsign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkinputempty()){
+                if(checkpasswordempty()){
                     Toast.makeText(RestSignUpActivity.this,
-                            "please vertify your input"
-                            ,Toast.LENGTH_SHORT).show();
+                            "please enter password",
+                            Toast.LENGTH_SHORT).show();
+                }
+                if(checkemailempty()){
+                    Toast.makeText(RestSignUpActivity.this,
+                            "please enter email",
+                            Toast.LENGTH_SHORT).show();
                 }
                 else{
+                    progressDialog.setMessage("Log...in...");
+                    progressDialog.show();
                     firebaseAuth.createUserWithEmailAndPassword(et_RSignUp_Email.getText().toString()
                             ,et_RSignUp_Password.getText().toString())
                             .addOnCompleteListener(RestSignUpActivity.this
@@ -79,6 +89,7 @@ public class RestSignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(RestSignUpActivity.this,
                                                         "Sign Up successful",
                                                         Toast.LENGTH_SHORT).show();
+                                                finish();
                                                 startActivity(new Intent(getApplicationContext(),UserActivity.class));
                                             }
                                             else{
@@ -105,12 +116,24 @@ public class RestSignUpActivity extends AppCompatActivity {
 
     }
 
-    private boolean checkinputempty(){
+    //return empty or not state
+    private boolean checkemailempty(){
 
         email=et_RSignUp_Email.getText().toString();
+
+        if(TextUtils.isEmpty(email)){
+            empty=true;
+        }
+
+        else empty=false;
+
+        return empty;
+    }
+    private boolean checkpasswordempty(){
+
         password=et_RSignUp_Password.getText().toString();
 
-        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+        if(TextUtils.isEmpty(password)){
             empty=true;
         }
 
