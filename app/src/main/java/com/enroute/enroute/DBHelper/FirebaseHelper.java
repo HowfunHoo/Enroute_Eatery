@@ -2,6 +2,7 @@ package com.enroute.enroute.DBHelper;
 
 import com.enroute.enroute.interfaces.RestaurantCallbacks;
 import com.enroute.enroute.model.Restaurant;
+import com.enroute.enroute.model.User;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 public class FirebaseHelper {
     private DatabaseReference db;
     private ArrayList<Restaurant> restaurants = new ArrayList<>();
-
+    private ArrayList<User> user=new ArrayList<>();
     public FirebaseHelper(DatabaseReference db) {
         this.db = db;
     }
@@ -108,4 +109,29 @@ public class FirebaseHelper {
         });
 
     }
+
+    public Boolean saveUser(User user)
+    {
+        Boolean saved = null;
+        if(user==null)
+        {
+            saved = false;
+        }else
+        {
+            try
+            {
+                db.child("User").push().setValue(user);
+                saved =true;
+
+            }catch (DatabaseException e)
+            {
+                e.printStackTrace();
+                saved =false;
+            }
+        }
+
+        return saved;
+    }
+
+
 }
