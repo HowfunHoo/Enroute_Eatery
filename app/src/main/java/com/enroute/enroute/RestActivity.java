@@ -36,25 +36,26 @@ public class RestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
+
+        //firebase
+        firebaseAuth=FirebaseAuth.getInstance();
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+
+        //set welcome +user name
+        username=(TextView)findViewById(R.id.profile_bar_name);
+        username.setText("Welcome "+ user.getEmail());
+
         //set ui
         setupBottomNavigationView();
         setupToolBar();
 
-        username=(TextView)findViewById(R.id.profile_bar_name);
-
-        //todo:set welcome +user name
-//        username.setText("Welcome"+ user.getname());
-        firebaseAuth=FirebaseAuth.getInstance();
-
         //if not login,jup to login activity
         if(firebaseAuth.getCurrentUser() == null){
-            Toast.makeText(RestActivity.this,"Please sign in",Toast.LENGTH_SHORT).show();
             finish();
             startActivity(new Intent(this, RestLoginActivity.class));
         }
 
         Log.d(TAG, "onCreate: started");
-        FirebaseUser user= firebaseAuth.getCurrentUser();
 
 
 
@@ -72,7 +73,7 @@ public class RestActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.profile_edit:
                         Log.d(TAG, "onMenuItemClick: edit the profile");
-                        Intent editintent=new Intent(getApplicationContext(),RestEditActivity.class);
+                        Intent editintent=new Intent(getApplicationContext(),UserEditActivity.class);
                         startActivity(editintent);
                         break;
                     case R.id.profile_signout:

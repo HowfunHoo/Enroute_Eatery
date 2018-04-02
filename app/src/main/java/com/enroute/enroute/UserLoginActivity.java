@@ -129,6 +129,7 @@ public class UserLoginActivity extends AppCompatActivity {
                                             UserLoginActivity.this,
                                             "login failed",
                                             Toast.LENGTH_SHORT).show();
+                                    progressDialog.cancel();
                                     }
                                 }
                             });

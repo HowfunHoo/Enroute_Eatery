@@ -99,6 +99,7 @@ public class RestLoginActivity extends AppCompatActivity {
                                             RestLoginActivity.this,
                                             "login failed",
                                             Toast.LENGTH_SHORT).show();
+                                    progressDialog.cancel();
                                     }
                                 }
                             });

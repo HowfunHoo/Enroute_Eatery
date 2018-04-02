@@ -34,8 +34,6 @@ public class UserSignUpActivity extends AppCompatActivity {
     private Button btn_login_link;
     private EditText et_SignUp_Email;
     private EditText et_SignUp_Password;
-    private EditText et_SignUp_Phone;
-    private EditText et_SignUp_Name;
 
     private ProgressDialog progressDialog;
 
@@ -61,8 +59,7 @@ public class UserSignUpActivity extends AppCompatActivity {
 
         et_SignUp_Email=(EditText)findViewById(R.id.signUpEmail);
         et_SignUp_Password=(EditText)findViewById(R.id.signUpPassword);
-        et_SignUp_Name=(EditText)findViewById(R.id.signUpName);
-        et_SignUp_Phone=(EditText)findViewById(R.id.signUpPhone);
+
 
         progressDialog=new ProgressDialog(this);
 
@@ -91,16 +88,17 @@ public class UserSignUpActivity extends AppCompatActivity {
         btn_sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkemailempty()){
-                    Toast.makeText(UserSignUpActivity.this,
-                            "please enter email",
-                            Toast.LENGTH_SHORT).show();
-                }
                 if(checkpasswordempty()){
                     Toast.makeText(UserSignUpActivity.this,
                             "please enter password",
                             Toast.LENGTH_SHORT).show();
                 }
+                if(checkemailempty()){
+                    Toast.makeText(UserSignUpActivity.this,
+                            "please enter email",
+                            Toast.LENGTH_SHORT).show();
+                }
+
                 else{
                     progressDialog.setMessage("sign...up...");
                     progressDialog.show();
@@ -115,9 +113,7 @@ public class UserSignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(UserSignUpActivity.this,
                                                         "Sign Up successful",
                                                         Toast.LENGTH_SHORT).show();
-                                                //TODO: error with jump to user avtivity
-                                                // leave it temporary
-                                                      Intent loginintent= new Intent(getApplicationContext(),UserEditActivity.class);
+                                                      Intent loginintent= new Intent(getApplicationContext(),UserSubmitInfoActivity.class);
                                                       finish();
                                                       startActivity(loginintent);
                                                                                            }
@@ -125,6 +121,7 @@ public class UserSignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(UserSignUpActivity.this,
                                                         "sign up failed",
                                                         Toast.LENGTH_SHORT).show();
+                                                progressDialog.cancel();
                                             }
                                         }
                                     });

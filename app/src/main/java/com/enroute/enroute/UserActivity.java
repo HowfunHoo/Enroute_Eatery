@@ -40,16 +40,13 @@ public class UserActivity extends AppCompatActivity {
         firebaseAuth=FirebaseAuth.getInstance();
         FirebaseUser user= firebaseAuth.getCurrentUser();
 
-        //todo:set welcome +user name
+        //set welcome +user name
         username=(TextView)findViewById(R.id.profile_bar_name);
         username.setText("Welcome "+ user.getEmail());
 
         //set ui
         setupBottomNavigationView();
         setupToolBar();
-
-
-
 
         //if not login,jup to login activity
         if(firebaseAuth.getCurrentUser() == null){

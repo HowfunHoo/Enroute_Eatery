@@ -27,7 +27,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Restaurant Sign Up"
+                    android:text="Business Sign Up"
                     android:textSize="25sp"
                     android:layout_marginStart="20dp"
                     android:layout_marginBottom="25dp"

@@ -96,6 +96,7 @@ public class RestSignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(RestSignUpActivity.this,
                                                         "sign up failed",
                                                         Toast.LENGTH_SHORT).show();
+                                                progressDialog.cancel();
                                             }
                                         }
                                     });
