@@ -102,21 +102,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         walk = findViewById(R.id.walk); // for walk
         cycle = findViewById(R.id.cycle); // for cycle
-//
-//        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-//        if (bottomNavigationView != null) {
-//            // Set action to perform when any menu-item is selected.
-//            bottomNavigationView.setOnNavigationItemSelectedListener(
-//                    new BottomNavigationView.OnNavigationItemSelectedListener() {
-//                        @Override
-//                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                            // Write code to perform some actions.
-//                            selectFragment(item);
-//                            return false;
-//                        }
-//                    });
-//        }
-
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -732,13 +717,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Fetching all the points in i-th route
                 for (int j = 0; j < restaurant.size(); j++) {
                     HashMap<String, String> point = restaurant.get(j);
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    String restName = point.get("name");
+                    double lat          = Double.parseDouble(point.get("lat"));
+                    double lng          = Double.parseDouble(point.get("lng"));
+                    String restName     = point.get("name");
+                    String restAddress  = point.get("vicinity");
                     LatLng position = new LatLng(lat, lng);
                     // Setting the position of the marker
                     options.position(position);
                     options.title(restName);
+                    options.snippet(restAddress);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));  //For the restaurants location, the color of marker is Yellow
                 }
                 // Drawing marker in the Google Map on route
@@ -821,13 +808,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Fetching all the points in i-th route
                 for (int j = 0; j < convenience.size(); j++) {
                     HashMap<String, String> point = convenience.get(j);
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    String storeName = point.get("name");
-                    LatLng position = new LatLng(lat, lng);
+                    double lat           = Double.parseDouble(point.get("lat"));
+                    double lng           = Double.parseDouble(point.get("lng"));
+                    String storeName     = point.get("name");
+                    String storeAddress  = point.get("vicinity");
+                    LatLng position      = new LatLng(lat, lng);
                     // Setting the position of the marker
                     options.position(position);
                     options.title(storeName);
+                    options.snippet(storeAddress);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));  //For the convenience location, the color of marker is Orange
                 }
 
