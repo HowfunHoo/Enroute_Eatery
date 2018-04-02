@@ -2,19 +2,19 @@ package com.enroute.enroute.model;
 
 public class Cuisine {
 
-    public String cuisine_id;
+    public int cuisine_id;
     public String cuisine_name;
 
     public Cuisine(){
 
     }
 
-    public Cuisine(String cuisine_id, String cuisine_name) {
+    public Cuisine(int cuisine_id, String cuisine_name) {
         this.cuisine_id = cuisine_id;
         this.cuisine_name = cuisine_name;
     }
 
-    public String getCuisine_id() {
+    public int getCuisine_id() {
         return cuisine_id;
     }
 
@@ -22,7 +22,7 @@ public class Cuisine {
         return cuisine_name;
     }
 
-    public void setCuisine_id(String cuisine_id) {
+    public void setCuisine_id(int cuisine_id) {
         this.cuisine_id = cuisine_id;
     }
 
