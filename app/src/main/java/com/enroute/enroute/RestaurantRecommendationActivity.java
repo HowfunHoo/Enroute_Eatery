@@ -16,7 +16,9 @@ import com.android.volley.toolbox.Volley;
 import com.enroute.enroute.Singleton.RequestQueueSingleton;
 import com.enroute.enroute.ZomatoHelpers.ZomatoHelper;
 import com.enroute.enroute.interfaces.CuisineCallbacks;
+import com.enroute.enroute.interfaces.RestaurantCallbacks;
 import com.enroute.enroute.model.Cuisine;
+import com.enroute.enroute.model.Restaurant;
 
 import junit.framework.Assert;
 
@@ -455,6 +457,15 @@ public class RestaurantRecommendationActivity extends AppCompatActivity  {
 //
 //        }
 
+        zomatoHelper.getRestaurants(getApplicationContext(), preferred_cuisineIds, new RestaurantCallbacks() {
+            @Override
+            public void onRestaurantCallback(ArrayList<Restaurant> restaurants) {
+                //LOG TEST
+                for (int i =0; i<restaurants.size();i++){
+                    Log.d("gottenRestaurants", restaurants.get(i).getRname());
+                }
+            }
+        });
 
     }
 

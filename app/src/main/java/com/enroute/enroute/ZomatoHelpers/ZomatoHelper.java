@@ -86,6 +86,14 @@ public class ZomatoHelper {
     }
 
 
+
+
+    /**
+     * Get restaurants based on the preference of users
+     * @param context Application Context
+     * @param preferred_cuisineIds
+     * @param restaurantCallbacks
+     */
     public void getRestaurants(Context context, int[] preferred_cuisineIds, final RestaurantCallbacks restaurantCallbacks){
 
         final ArrayList<Restaurant> restaurants = new ArrayList<>();
@@ -123,12 +131,12 @@ public class ZomatoHelper {
                         Log.d("Response" , response.toString());
 
                         try {
-                            Restaurant restaurant = new Restaurant();
 
                             JSONArray restaurantJSONArray = response.getJSONArray("restaurants");
 
                             for (int i = 0; i < restaurantJSONArray.length(); i++){
 
+                                Restaurant restaurant = new Restaurant();
 
                                 JSONObject restaurantData = restaurantJSONArray.getJSONObject(i).getJSONObject("restaurant");
 
@@ -143,11 +151,19 @@ public class ZomatoHelper {
                                 restaurant.setRrate(restaurantData.getJSONObject("user_rating").getString("aggregate_rating"));
                                 restaurant.setRcuisines(restaurantData.getString("cuisines"));
 
+                                Log.d("sendRestaurant", restaurant.getRname());
+
                                 restaurants.add(restaurant);
 
-                                restaurantCallbacks.onRestaurantCallback(restaurants);
+                            }
 
-                                }
+//                            //LOG TEST
+//                            for (int j = 0; j<restaurants.size();j++){
+//                                Log.d("sendingRestaurants", restaurants.get(j).getRname());
+//                            }
+
+                            restaurantCallbacks.onRestaurantCallback(restaurants);
+
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
@@ -170,7 +186,7 @@ public class ZomatoHelper {
             }
         };
 
-            RequestQueueSingleton.getmInstance(context).addToRequestQueue (restaurantRequest);
+        RequestQueueSingleton.getmInstance(context).addToRequestQueue (restaurantRequest);
 
 
 
