@@ -18,25 +18,36 @@
         android:layout_centerVertical="true"/>
 
     <LinearLayout
+        android:id="@+id/imagebar"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:background="@color/main">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/infoSubmit_profile_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="140dp"
+            android:src="@drawable/head"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="2dp">
+
+        </de.hdodenhof.circleimageview.CircleImageView>
+    </LinearLayout>
+    <LinearLayout
+                android:layout_below="@+id/imagebar"
                 android:id="@+id/infoSubmitForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="50dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical">
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/infoSubmit_profile_image"
-                    app:civ_border_color="#000000"
-                    app:civ_border_width="2dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="50dp">
-
-                </de.hdodenhof.circleimageview.CircleImageView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -96,7 +107,7 @@
                 </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="250dp"
             android:orientation="vertical"
             >
 
@@ -122,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Submit"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/btnlogin"
                 android:textColor="@color/colorWhite"
                 android:layout_gravity="center"/>

@@ -2,6 +2,7 @@ package com.enroute.enroute;
 
 import android.content.Context;
 import android.content.Intent;
+import android.preference.Preference;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -65,12 +66,13 @@ public class UserSubmitInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_submit_info);
         setupBottomNavigationView();
-        //test
+        //preference chosen fragment
         mTabLayout = (TabLayout) findViewById(R.id.id_tablayout);
         mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
         //firebase
         firebaseAuth=FirebaseAuth.getInstance();
         FirebaseUser userInstance= firebaseAuth.getCurrentUser();
+
         databaseReference= FirebaseDatabase.getInstance().getReference();
         firebasehelper = new FirebaseHelper(databaseReference);
 
@@ -93,17 +95,12 @@ public class UserSubmitInfoActivity extends AppCompatActivity {
         succ=(TextView)findViewById(R.id.succ);
 
 
-
-        //test
+        //set preference chosen
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                switch (position) {
-                    case 0: return new test();
-                        default:
-                            return new test();
 
-                }
+                return new UserPreferenceSetting();
             }
 
             @Override
@@ -115,11 +112,6 @@ public class UserSubmitInfoActivity extends AppCompatActivity {
         }
 
 
-
-
-
-
-
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,22 +120,25 @@ public class UserSubmitInfoActivity extends AppCompatActivity {
                 //save info
                 String name=et_info_name.getText().toString().trim();
                 String phone=et_info_phone.getText().toString().trim();
-
+//                String preference=UserPreferenceSetting.getArguments;
                 User user=new User(name,phone);
+//
+//                if(firebasehelper.saveUser(user)){
+//                    submitform.setVisibility(View.GONE);
+//                    succ.setVisibility(View.VISIBLE);
+//                }
 
-                if(firebasehelper.saveUser(user)){
+                    databaseReference.child("User").child(userInstance.getUid()).setValue(user);
                     submitform.setVisibility(View.GONE);
                     succ.setVisibility(View.VISIBLE);
-                }
+                    startActivity(new Intent(getApplicationContext(),UserActivity.class));
 
-//                    databaseReference.child(userInstance.getUid()).setValue(user);
 
                 Toast.makeText(UserSubmitInfoActivity.this,"Infomation saved",Toast.LENGTH_SHORT).show();
             }
         });
 
     }
-
 
     //setup button navigation
     private void setupBottomNavigationView(){
@@ -159,8 +154,4 @@ public class UserSubmitInfoActivity extends AppCompatActivity {
         menuItem.setChecked(true);
 
     }
-
-
-
-
 }
