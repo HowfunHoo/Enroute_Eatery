@@ -25,7 +25,7 @@ public class SpecialOffersActivity extends AppCompatActivity {
     SpecialOffersAdapter adapter;
     ListView lv_offers;
 
-    private static final String TAG = "SpecialOffersActivity";
+//    private static final String TAG = "SpecialOffersActivity";
     private Context mcontext=SpecialOffersActivity.this;
     private static final int ACTIVITY_NUM=2;
 
@@ -58,7 +58,7 @@ public class SpecialOffersActivity extends AppCompatActivity {
     }
     private void setupBottomNavigationView(){
 
-        Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
+//        Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
 
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.buttomNavViewbar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);

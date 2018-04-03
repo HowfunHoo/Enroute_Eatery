@@ -1,5 +1,6 @@
 package com.enroute.enroute;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ public class UserSignUpActivity extends AppCompatActivity {
     private EditText et_SignUp_Email;
     private EditText et_SignUp_Password;
 
+    private ProgressDialog progressDialog;
 
     //firebase
     FirebaseAuth firebaseAuth ;
@@ -54,12 +56,26 @@ public class UserSignUpActivity extends AppCompatActivity {
         //ui component
         btn_sign_up=(Button)findViewById(R.id.btn_sign_up);
         btn_login_link=(Button)findViewById(R.id.btn_signup_link);
-        et_SignUp_Email=(EditText)findViewById(R.id.signUpEmail) ;
-        et_SignUp_Password=(EditText)findViewById(R.id.signUpPassword) ;
+
+        et_SignUp_Email=(EditText)findViewById(R.id.signUpEmail);
+        et_SignUp_Password=(EditText)findViewById(R.id.signUpPassword);
+
+
+        progressDialog=new ProgressDialog(this);
+
 
         Log.d(TAG, "onCreate: started");
         setupBottomNavigationView();
         firebaseAuth = FirebaseAuth.getInstance();
+
+        //if already login
+        //jump to activity page
+//        if(firebaseAuth.getCurrentUser() != null){
+//            finish();
+//            Intent userlogin= new Intent(getApplicationContext(),UserActivity.class);
+//            startActivity(userlogin);
+//        }
+
 
 //        btn_sign_up.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -72,37 +88,21 @@ public class UserSignUpActivity extends AppCompatActivity {
         btn_sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkinputempty()){
+                if(checkpasswordempty()){
                     Toast.makeText(UserSignUpActivity.this,
-                            "please vertify your input"
-                            ,Toast.LENGTH_SHORT).show();
+                            "please enter password",
+                            Toast.LENGTH_SHORT).show();
                 }
+                if(checkemailempty()){
+                    Toast.makeText(UserSignUpActivity.this,
+                            "please enter email",
+                            Toast.LENGTH_SHORT).show();
+                }
+
                 else{
-//                    firebaseAuth.createUserWithEmailAndPassword(et_SignUp_Email.getText().toString()
-//                            ,et_SignUp_Password.getText().toString())
-//                            .addOnCompleteListener(UserSignUpActivity.this
-//                                    , new OnCompleteListener<AuthResult>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<AuthResult> task) {
-//                                            if(task.isSuccessful()){
-//                                                Toast.makeText(UserSignUpActivity.this,
-//                                                        "Sign Up successful",
-//                                                        Toast.LENGTH_SHORT).show();
-//                                                startActivity(new Intent(getApplicationContext(),UserActivity.class));
-//                                            }
-//                                            else{
-//                                                Toast.makeText(UserSignUpActivity.this,
-//                                                        "sign up failed",
-//                                                        Toast.LENGTH_SHORT).show();
-//                                            }
-//                                        }
-//                                    });
-//                    Intent loginintent= new Intent(getApplicationContext(),UserActivity.class);
-//                    startActivity(loginintent);
-//                }
-//
-//            }
-//        });
+                    progressDialog.setMessage("sign...up...");
+                    progressDialog.show();
+
                     firebaseAuth.createUserWithEmailAndPassword(et_SignUp_Email.getText().toString()
                             ,et_SignUp_Password.getText().toString())
                             .addOnCompleteListener(UserSignUpActivity.this
@@ -113,38 +113,33 @@ public class UserSignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(UserSignUpActivity.this,
                                                         "Sign Up successful",
                                                         Toast.LENGTH_SHORT).show();
-                                                startActivity(new Intent(getApplicationContext(),UserActivity.class));
-                                            }
+                                                      Intent loginintent= new Intent(getApplicationContext(),UserSubmitInfoActivity.class);
+                                                      finish();
+                                                      startActivity(loginintent);
+                                                                                           }
                                             else{
                                                 Toast.makeText(UserSignUpActivity.this,
                                                         "sign up failed",
                                                         Toast.LENGTH_SHORT).show();
+                                                progressDialog.cancel();
                                             }
                                         }
                                     });
-                    Intent loginintent= new Intent(getApplicationContext(),UserActivity.class);
-                    startActivity(loginintent);
+
                 }
 
             }
         });
 
-//        btn_login_link.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view2) {
-//                Intent tologinintent= new Intent(getApplicationContext(),UserActivity.class);
-//                startActivity(tologinintent);
-//            }
-//        });
 
     }
 
-    private boolean checkinputempty(){
+    //return empty or not state
+    private boolean checkemailempty(){
 
         email=et_SignUp_Email.getText().toString();
-        password=et_SignUp_Password.getText().toString();
 
-        if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
+        if(TextUtils.isEmpty(email)){
             empty=true;
         }
 
@@ -152,6 +147,19 @@ public class UserSignUpActivity extends AppCompatActivity {
 
         return empty;
     }
+    private boolean checkpasswordempty(){
+
+        password=et_SignUp_Password.getText().toString();
+
+        if(TextUtils.isEmpty(password)){
+            empty=true;
+        }
+
+        else empty=false;
+
+        return empty;
+    }
+
 
     //setup button navigation
     private void setupBottomNavigationView(){

@@ -34,32 +34,38 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c" />
 
+
+
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".log_in"></activity>
-        <activity android:name=".sign_up"></activity>
-        <activity android:name=".SpecialOffer"></activity>
+
+        <activity android:name=".log_in" />
+        <activity android:name=".sign_up" />
+        <activity android:name=".SpecialOffer" />
         <activity android:name=".SpecialActivity" />
         <activity android:name=".UserActivity" />
-        <activity android:name=".UserLoginActivity">
-
-        </activity>
+        <activity android:name=".UserLoginActivity" />
         <activity android:name=".UserSignUpActivity" />
         <activity android:name=".UserEditActivity" />
         <activity android:name=".SuggestActivity" />
         <activity android:name=".RestLoginActivity" />
         <activity android:name=".RestActivity" />
-        <activity android:name=".RestSignUpActivity"/>
-        <activity android:name=".CreateRestaurantActivity"/>
-        <activity android:name=".SpecialOffersActivity">
+        <activity android:name=".RestSignUpActivity" />
+        <activity android:name=".CreateRestaurantActivity" />
+        <activity android:name=".SpecialOffersActivity" />
 
-        </activity>
+        <activity android:name=".RestEditActivity"/>
+        <activity android:name=".RestaurantRecommendationActivity"/>
+        <activity android:name=".PreferenceTabsActivity"/>
+        <activity android:name=".WaitForCuisinesActivity"/>
+        <activity android:name=".UserSubmitInfoActivity"/>
 
         <!-- Services for push notification -->
         <service
@@ -77,6 +83,7 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+
 
     </application>
 

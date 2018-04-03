@@ -140,10 +140,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Log.i("test", "An error occurred: " + status);
             }
         });
+
         setupBottomNavigationView();
 
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -161,6 +161,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         else {
             buildGoogleApiClient();
             mMap.setMyLocationEnabled(true);
+        }
+
+        //get data from RestaurantRecommendationActivity
+        Intent intent = this.getIntent();
+        dst_lat = intent.getDoubleExtra("ResLat",0.0);
+        dst_lng = intent.getDoubleExtra("ResLng",0.0);
+
+        if (dst_lat!=0.0 && dst_lng!=0.0){
+            conditionFunction();
         }
 
         // on click listener for walk mode
@@ -628,8 +637,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng dest = new LatLng(dst_lat ,dst_lng);
 
         // Fixed Origin and Destination for test run
-        //LatLng origin = new LatLng(44.642750, -63.578449);
-        //LatLng dest = new LatLng(44.643875, -63.578472);
+
+//        LatLng origin = new LatLng(44.642750, -63.578449);
+
+        LatLng origin = new LatLng(44.636581, -63.591656);
+
+//        LatLng dest = new LatLng(44.643875, -63.578472);
+
+        //set the destination as the selected preferred restaurant
+        LatLng dest = new LatLng(dst_lat, dst_lng);
+
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest);
