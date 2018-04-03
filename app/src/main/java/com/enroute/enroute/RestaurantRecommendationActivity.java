@@ -2,6 +2,7 @@ package com.enroute.enroute;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -67,7 +68,6 @@ public class RestaurantRecommendationActivity extends AppCompatActivity  {
 
     ArrayList<Cuisine> cuisines = new ArrayList<Cuisine>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,17 +75,10 @@ public class RestaurantRecommendationActivity extends AppCompatActivity  {
         setupBottomNavigationView();
         lv_suggest = (ListView)findViewById(R.id.lv_suggest);
 
-        //TODO: get the preferred cuisines of the current user
-        //Hard Code
-        String preference = "Asian,BBQ,Mexican,Seafood";
-        final String[] preferred_cuisines = preference.split(",");
-//        final int[] preferred_cuisineIds = new int[preferred_cuisines.length];
-        int[] preferred_cuisineIds = new int[preferred_cuisines.length];
-
         final ZomatoHelper zomatoHelper = new ZomatoHelper();
 
         Bundle bundle = this.getIntent().getExtras();
-        preferred_cuisineIds = bundle.getIntArray("preferred_cuisineIds");
+        int[] preferred_cuisineIds = bundle.getIntArray("preferred_cuisineIds");
 
         for (int i =0; i<preferred_cuisineIds.length; i++){
             Log.d("preferred_cuisineIds2", String.valueOf(preferred_cuisineIds[i]));
@@ -487,8 +480,6 @@ public class RestaurantRecommendationActivity extends AppCompatActivity  {
 
     }
     private void setupBottomNavigationView(){
-
-        Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
 
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.buttomNavViewbar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);

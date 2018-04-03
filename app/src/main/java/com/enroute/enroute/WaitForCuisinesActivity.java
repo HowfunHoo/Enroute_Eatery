@@ -2,11 +2,13 @@ package com.enroute.enroute;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.enroute.enroute.ZomatoHelpers.ZomatoHelper;
@@ -29,14 +31,33 @@ public class WaitForCuisinesActivity extends AppCompatActivity {
 
     ArrayList<Cuisine> cuisines = new ArrayList<Cuisine>();
 
+    //SharedPreference
+    public SharedPreferences sharedPreferences;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait_for_cuisines);
         setupBottomNavigationView();
-        //TODO: get the preferred cuisines of the current user
-        //Hard Code
-        String preference = "Asian,BBQ,Mexican,Seafood";
+
+        String preference= "";
+
+        sharedPreferences = getSharedPreferences("cur_user",0);
+
+        //Determine if the user has logged in
+        if (sharedPreferences==null){
+            Toast.makeText(WaitForCuisinesActivity.this,
+                    "We need your info. to recommend restaurants for you.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(WaitForCuisinesActivity.this,
+                    UserLoginActivity.class);
+            finish();
+            startActivity(intent);
+        }else {
+            preference = sharedPreferences.getString("cur_uprefer", "default");
+        }
+
+
         final String[] preferred_cuisines = preference.split(",");
 //        final int[] preferred_cuisineIds = new int[preferred_cuisines.length];
         final int[] preferred_cuisineIds = new int[preferred_cuisines.length];

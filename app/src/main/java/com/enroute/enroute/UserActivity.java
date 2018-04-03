@@ -8,6 +8,7 @@ package com.enroute.enroute;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -59,6 +60,10 @@ public class UserActivity extends AppCompatActivity {
     private int count = 0;
     private String Uemail;
 
+    //Shaerpreferences
+    public SharedPreferences sharedPreferences;
+    public SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +77,8 @@ public class UserActivity extends AppCompatActivity {
 
         //firebase
         firebaseAuth=FirebaseAuth.getInstance();
+
+        //get current user
         FirebaseUser currentUser= firebaseAuth.getCurrentUser();
 
         Uemail = currentUser.getEmail();
@@ -107,6 +114,13 @@ public class UserActivity extends AppCompatActivity {
                 tv_email.setText(user.getUemail());
                 tv_phone.setText(user.getUphone());
                 tv_prefer.setText(user.getUpreference());
+
+                //store current user's information in sharedPreference
+                sharedPreferences = getSharedPreferences("cur_user", 0);
+                editor = sharedPreferences.edit();
+                editor.putString("cur_uemail", Uemail);
+                editor.putString("cur_uprefer", user.getUpreference());
+                editor.apply();
             }
         });
 

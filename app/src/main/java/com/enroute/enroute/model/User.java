@@ -18,10 +18,12 @@ public class User {
 
     public User(String uemail,String uname, String uphone,String upreference) {
 
-        this.uname=uname;
-        this.uphone=uphone;
-        this.upreference=upreference;
-        this.uemail=uemail;
+        this.uname = uname;
+        this.uphone = uphone;
+        this.upreference = upreference;
+        this.uemail = uemail;
+
+    }
 
     public String getUemail() {
         return uemail;
