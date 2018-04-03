@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -64,6 +65,9 @@ public class UserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
 
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
         //Initialize Firebase Database
         db= FirebaseDatabase.getInstance().getReference();
 
@@ -96,7 +100,6 @@ public class UserActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: started");
 
-
         firebasehelper.retrieveUser(Uemail, new UserCallbacks() {
             @Override
             public void onUserCallback(User user) {
@@ -104,20 +107,6 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-
-
-//        firebasehelper.retrieveUser(Uemail, new UserCallbacks() {
-//            @Override
-//            public void onUserCallback(ArrayList<User> users) {
-//                profile_name.setText("");
-//                if (count >= users.size()) {
-//                    profile_name.setText("nop");
-//                } else {
-//                    profile_name.setText(users.get(0).getUname());
-//
-//                }
-//            }
-//        });
 
         File destDir = new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon");
         if (!destDir.exists()) {
@@ -175,6 +164,7 @@ public class UserActivity extends AppCompatActivity {
         }
 
     };
+
     //determine the statemant of picture.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
