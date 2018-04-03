@@ -82,12 +82,12 @@ public class UserSubmitInfoActivity extends AppCompatActivity {
 
                 User user=new User(name,phone);
 
-                if(firebasehelper.saveUser(user)){
-                    submitform.setVisibility(View.GONE);
-                    succ.setVisibility(View.VISIBLE);
-                }
+//                if(firebasehelper.saveUser(user)){
+//                    submitform.setVisibility(View.GONE);
+//                    succ.setVisibility(View.VISIBLE);
+//                }
 
-//                    databaseReference.child(userInstance.getUid()).setValue(user);
+                    databaseReference.child("User").child(userInstance.getUid()).setValue(user);
 
                 Toast.makeText(UserSubmitInfoActivity.this,"Infomation saved",Toast.LENGTH_SHORT).show();
             }

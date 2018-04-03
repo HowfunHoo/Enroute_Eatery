@@ -37,35 +37,31 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <!-- <activity android:name=".log_in"></activity> -->
         <!-- <activity android:name=".sign_up"></activity> -->
         <!-- <activity android:name=".SpecialOffer"></activity> -->
         <!-- <activity android:name=".SpecialActivity" /> -->
-        <activity android:name=".UserActivity" />
+        <activity android:name=".UserActivity" >
+
+        </activity>
+
         <activity android:name=".UserLoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".UserSignUpActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
+
         <activity android:name=".UserEditActivity" />
         <activity android:name=".SuggestActivity" />
         <activity android:name=".RestLoginActivity" />
@@ -74,6 +70,7 @@
         <activity android:name=".CreateRestaurantActivity" />
         <activity android:name=".SpecialOffersActivity" />
         <activity android:name=".RestEditActivity"></activity>
+        <activity android:name=".UserSubmitInfoActivity"/>
     </application>
 
 </manifest>

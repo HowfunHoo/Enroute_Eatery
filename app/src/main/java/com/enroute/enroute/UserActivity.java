@@ -41,6 +41,8 @@ public class UserActivity extends AppCompatActivity {
     DatabaseReference db;
     FirebaseHelper firebasehelper;
     private int count = 0;
+    private String Uemail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +53,16 @@ public class UserActivity extends AppCompatActivity {
 
         //firebase
         firebaseAuth=FirebaseAuth.getInstance();
-        FirebaseUser user= firebaseAuth.getCurrentUser();
+        FirebaseUser currentUser= firebaseAuth.getCurrentUser();
+
+        Uemail = currentUser.getEmail();
+
+        //initialize firebasehelper
         firebasehelper=new FirebaseHelper(db);
 
         //set welcome +user name
         username=(TextView)findViewById(R.id.profile_bar_name);
-        username.setText("Welcome "+ user.getEmail());
+        username.setText("Welcome "+ currentUser.getEmail());
         profile_name = (TextView)findViewById(R.id.profile_name);
         profile_phone = (TextView)findViewById(R.id.profole_phone);
         //set ui
@@ -71,18 +77,26 @@ public class UserActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: started");
 
-        firebasehelper.retrieveUser(new UserCallbacks() {
+        firebasehelper.retrieveUser(Uemail, new UserCallbacks() {
             @Override
-            public void onUserCallback(ArrayList<User> users) {
-                profile_name.setText("");
-                if (count >= users.size()) {
-                    profile_name.setText("nop");
-                } else {
-                    profile_name.setText(users.get(0).getUname());
-
-                }
+            public void onUserCallback(User user) {
+                profile_name.setText(user.getUname());
+                //TODO
             }
         });
+
+//        firebasehelper.retrieveUser(Uemail, new UserCallbacks() {
+//            @Override
+//            public void onUserCallback(ArrayList<User> users) {
+//                profile_name.setText("");
+//                if (count >= users.size()) {
+//                    profile_name.setText("nop");
+//                } else {
+//                    profile_name.setText(users.get(0).getUname());
+//
+//                }
+//            }
+//        });
 
     }
 

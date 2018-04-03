@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class FirebaseHelper {
     private DatabaseReference db;
     private ArrayList<Restaurant> restaurants = new ArrayList<>();
-    private ArrayList<User> users = new ArrayList<>();
 
     public FirebaseHelper(DatabaseReference db) {
         this.db = db;
@@ -133,22 +132,21 @@ public class FirebaseHelper {
 
     }
 
-    public void retrieveUser(final UserCallbacks userCallbacks){
-        db.addChildEventListener(new ChildEventListener() {
+    public void retrieveUser(final String Uemail, final UserCallbacks userCallbacks){
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                     User u = ds.getValue(User.class);
 
-                    if (u != null && u.getUname() != null) {
-                        users.add(u);
-                    }
-                    System.out.println("restaurant: ");
-                    System.out.println("restaurant: "+users);
+                    userCallbacks.onUserCallback(u);
+//                    if (u != null && u.getUname() != null) {
+//                        users.add(u);
+//                    }
+
                 }
 
-               userCallbacks.onUserCallback(users);
 
             }
 
@@ -158,13 +156,17 @@ public class FirebaseHelper {
 
                     User u = ds.getValue(User.class);
 
-                    if (u != null && u.getUname() != null) {
-                        users.add(u);
-                    }
+                    userCallbacks.onUserCallback(u);
+
+
+
+//                    if (u != null && u.getUname() != null) {
+//                        users.add(u);
+//                    }
 
                 }
 
-                userCallbacks.onUserCallback(users);
+//                userCallbacks.onUserCallback(users);
 
             }
 
@@ -184,7 +186,10 @@ public class FirebaseHelper {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        //TODO
+        db.child("User").orderByChild("uemail").equalTo(Uemail).addChildEventListener(childEventListener);
     }
 }
 
