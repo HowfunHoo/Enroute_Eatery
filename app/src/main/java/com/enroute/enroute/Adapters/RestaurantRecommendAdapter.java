@@ -1,7 +1,9 @@
 package com.enroute.enroute.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.enroute.enroute.MapsActivity;
 import com.enroute.enroute.R;
 import com.enroute.enroute.model.Restaurant;
 
@@ -81,13 +84,37 @@ public class RestaurantRecommendAdapter extends BaseAdapter{
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //OPEN TIMETABLE
+                //Open Map
+                reachMap(restaurant.getRlat(), restaurant.getRlng());
+
+                Log.d("clicked_res", String.valueOf(restaurant.getRlat()));
             }
         });
 
         return convertView;
 
     }
+
+    /**
+     * When a restaurant is clicked, the app will go to Map and show the route to the selected restaurant
+     * @param restaurant
+     */
+    public void reachMap(double lat, double lng){
+
+        Intent intent = new Intent(context, MapsActivity.class);
+        intent.putExtra("ResLat", lat);
+        intent.putExtra("ResLng", lng);
+
+        Log.d("ResLat: ", "1");
+
+        Log.d("ResLat111: ", String.valueOf(lat));
+
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        //go to MapsActivity
+        context.startActivity(intent);
+    }
+
 
     /**
      * NEED CITATION HERE!!!!!!!!!!!!!!!!!!!!
