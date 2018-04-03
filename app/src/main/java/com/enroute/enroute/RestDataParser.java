@@ -35,8 +35,10 @@ public class RestDataParser {
                     HashMap<String, String> hm = new HashMap<>();
                     hm.put("lat", jResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
                     hm.put("lng", jResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
-                    // Restaurant name
+                    // Name
                     hm.put("name",jResults.getJSONObject(i).getString("name"));
+                    // Address
+                    hm.put("vicinity",jResults.getJSONObject(i).getString("vicinity"));
 
                     path.add(hm);
                     Log.d("Inside parser class", hm.toString());

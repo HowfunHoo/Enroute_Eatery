@@ -89,6 +89,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double dst_lat;
     private double dst_lng;
 
+    private String duration;
+    private String distance;
+
 //    private BottomNavigationView bottomNavigationView;
 
 
@@ -102,34 +105,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         walk = findViewById(R.id.walk); // for walk
         cycle = findViewById(R.id.cycle); // for cycle
-//
-//        bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
-//        if (bottomNavigationView != null) {
-//            // Set action to perform when any menu-item is selected.
-//            bottomNavigationView.setOnNavigationItemSelectedListener(
-//                    new BottomNavigationView.OnNavigationItemSelectedListener() {
-//                        @Override
-//                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                            // Write code to perform some actions.
-//                            selectFragment(item);
-//                            return false;
-//                        }
-//                    });
-//        }
-
-//        Intent intent = this.getIntent();
-//        dst_lat = intent.getDoubleExtra("ResLat",0.0);
-//        dst_lng = intent.getDoubleExtra("ResLng",0.0);
-//
-//        if (dst_lat!=0.0 && dst_lng!=0.0){
-//            conditionFunction();
-//        }
-//
-//        Log.d("intent-dst_lat", String.valueOf(dst_lat));
-//        Log.d("intent-dst_lng", String.valueOf(dst_lng));
-
-
-
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -409,12 +384,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Fetching i-th route
                 List<HashMap<String, String>> path = result.get(i);
 
+
+                distance = path.get(0).get("Distance"); // fetching Distance from thread
+                duration = path.get(0).get("Duration"); // fetching Duration from thread
+
+                String distance_var = "Distance = " + distance;
+                String duration_var = "Duration = " + duration;
+
+                Toast.makeText(MapsActivity.this, distance_var + ", " + duration_var , Toast.LENGTH_LONG ).show();
+
                 // Fetching all the points in i-th route
-                for (int j = 0; j < path.size(); j++) {
+                for (int j = 1; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
+
                     LatLng position = new LatLng(lat, lng);
 
                     points.add(position);
@@ -648,10 +633,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
 
-        /*LatLng origin = currentLoc;
-        LatLng dest = new LatLng(dst_lat ,dst_lng);*/
+        LatLng origin = currentLoc;
+        LatLng dest = new LatLng(dst_lat ,dst_lng);
 
         // Fixed Origin and Destination for test run
+
 //        LatLng origin = new LatLng(44.642750, -63.578449);
 
         LatLng origin = new LatLng(44.636581, -63.591656);
@@ -660,6 +646,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         //set the destination as the selected preferred restaurant
         LatLng dest = new LatLng(dst_lat, dst_lng);
+
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest);
@@ -671,16 +658,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Setting the position of the marker
         options.position(origin);
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        options.title("Origin");
+        mMap.addMarker(options);
+
         options.position(dest);
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-        // Add destination marker to the Google Map Android API V2
+        options.title("Destination");
         mMap.addMarker(options);
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15)); //search path zoom
+
     }
 
     /**
@@ -760,13 +750,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Fetching all the points in i-th route
                 for (int j = 0; j < restaurant.size(); j++) {
                     HashMap<String, String> point = restaurant.get(j);
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    String restName = point.get("name");
+                    double lat          = Double.parseDouble(point.get("lat"));
+                    double lng          = Double.parseDouble(point.get("lng"));
+                    String restName     = point.get("name");
+                    String restAddress  = point.get("vicinity");
                     LatLng position = new LatLng(lat, lng);
                     // Setting the position of the marker
                     options.position(position);
                     options.title(restName);
+                    options.snippet(restAddress);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));  //For the restaurants location, the color of marker is Yellow
                 }
                 // Drawing marker in the Google Map on route
@@ -849,13 +841,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Fetching all the points in i-th route
                 for (int j = 0; j < convenience.size(); j++) {
                     HashMap<String, String> point = convenience.get(j);
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    String storeName = point.get("name");
-                    LatLng position = new LatLng(lat, lng);
+                    double lat           = Double.parseDouble(point.get("lat"));
+                    double lng           = Double.parseDouble(point.get("lng"));
+                    String storeName     = point.get("name");
+                    String storeAddress  = point.get("vicinity");
+                    LatLng position      = new LatLng(lat, lng);
                     // Setting the position of the marker
                     options.position(position);
                     options.title(storeName);
+                    options.snippet(storeAddress);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));  //For the convenience location, the color of marker is Orange
                 }
 
