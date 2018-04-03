@@ -1,6 +1,9 @@
 package com.enroute.enroute.DBHelper;
 
+import android.util.Log;
+
 import com.enroute.enroute.interfaces.RestaurantCallbacks;
+import com.enroute.enroute.interfaces.UserCallbacks;
 import com.enroute.enroute.model.Restaurant;
 import com.enroute.enroute.model.User;
 import com.google.firebase.database.ChildEventListener;
@@ -8,6 +11,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -46,7 +50,28 @@ public class FirebaseHelper {
 
         return saved;
     }
+    public Boolean saveUser(User user)
+    {
+        Boolean saved = null;
+        if(user==null)
+        {
+            saved = false;
+        }else
+        {
+            try
+            {
+                db.child("User").push().setValue(user);
+                saved =true;
 
+            }catch (DatabaseException e)
+            {
+                e.printStackTrace();
+                saved =false;
+            }
+        }
+
+        return saved;
+    }
 
     //retrieve restaurant info. from the db
     public void retrieveRestaurant(final RestaurantCallbacks restaurantCallbacks) {
@@ -110,28 +135,33 @@ public class FirebaseHelper {
 
     }
 
-    public Boolean saveUser(User user)
-    {
-        Boolean saved = null;
-        if(user==null)
-        {
-            saved = false;
-        }else
-        {
-            try
-            {
-                db.child("User").push().setValue(user);
-                saved =true;
 
-            }catch (DatabaseException e)
-            {
-                e.printStackTrace();
-                saved =false;
+    public void retrieveUser(final String Uemail, final UserCallbacks userCallbacks){
+
+        //db.child("User").orderByChild("uemail").equalTo(Uemail).
+
+        db.child("User").orderByChild("uemail").equalTo(Uemail).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+
+                    User user = ds.getValue(User.class);
+
+                    Log.d("User-name", user.getUname());
+
+                    userCallbacks.onUserCallback(user);
+
+                }
+
             }
-        }
 
-        return saved;
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-
 }
+
