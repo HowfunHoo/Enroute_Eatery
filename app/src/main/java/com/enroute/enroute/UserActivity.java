@@ -53,8 +53,7 @@ public class UserActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     private TextView username;
-    TextView profile_name;
-    TextView profile_phone;
+    TextView tv_name, tv_email, tv_phone, tv_prefer;
     DatabaseReference db;
     FirebaseHelper firebasehelper;
     private int count = 0;
@@ -86,8 +85,11 @@ public class UserActivity extends AppCompatActivity {
         //set welcome +user name
         username=(TextView)findViewById(R.id.profile_bar_name);
         username.setText("Welcome "+ currentUser.getEmail());
-        profile_name = (TextView)findViewById(R.id.profile_name);
-        profile_phone = (TextView)findViewById(R.id.profole_phone);
+        tv_name = (TextView)findViewById(R.id.tv_name);
+        tv_email = (TextView)findViewById(R.id.tv_email);
+        tv_phone = (TextView)findViewById(R.id.tv_phone);
+        tv_prefer = (TextView)findViewById(R.id.tv_preference);
+
         //set ui
         setupBottomNavigationView();
         setupToolBar();
@@ -98,12 +100,13 @@ public class UserActivity extends AppCompatActivity {
             startActivity(new Intent(this, UserLoginActivity.class));
         }
 
-        Log.d(TAG, "onCreate: started");
-
         firebasehelper.retrieveUser(Uemail, new UserCallbacks() {
             @Override
             public void onUserCallback(User user) {
-                profile_name.setText(user.getUname());
+                tv_name.setText(user.getUname());
+                tv_email.setText(user.getUemail());
+                tv_phone.setText(user.getUphone());
+                tv_prefer.setText(user.getUpreference());
             }
         });
 
