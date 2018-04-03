@@ -1,111 +1,122 @@
 package com.enroute.enroute;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.enroute.enroute.Singleton.RequestQueueSingleton;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import com.enroute.enroute.DBHelper.FirebaseHelper;
+import com.enroute.enroute.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.zhy.view.flowlayout.FlowLayout;
+import com.zhy.view.flowlayout.TagAdapter;
+import com.zhy.view.flowlayout.TagFlowLayout;
 
 public class PreferenceTabsActivity extends AppCompatActivity {
 
-    final String cuisines_base_url = "https://developers.zomato.com/api/v2.1/cuisines?city_id=";
+    //preference lib
+    private String[] mVals = new String[]
+            {"Vegetarian", "BBQ", "Bakery", "Beverages",
+                    "Burger", "Cafe","Canadian","Chinese","Desserts",
+                    "Fast Food","French", "Ice Cream","Japanese","Thai",
+                    "Korean","Mexican","Pizza","Sandwich"};
+    public String Preference;
 
-    //API Key for Zomato API
-    final String api_key = "6cfc1a029b5b9a1d7e4b713ac61a99de";
+    //ui component
+    private TagFlowLayout mFlowLayout;
+    Button btn_submit1;
+    private TextView username;
 
-    //Set the default city as Halifax (The city_id of Halifax in Zomato API is 3099)
-    String city = "Halifax";
-    int city_id = 3099;
+    //firebase
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preference_tabs);
 
-        Runnable runnable = new Runnable() {
+        //get info from activity
+        Intent intent = this.getIntent();
+        final String Uname = intent.getStringExtra("Uname");
+        final String Uphone = intent.getStringExtra("Uphone");
+        Log.d("Uname1",Uname);
+
+        Log.d("Uphone1",Uphone);
+
+        //firebase
+        firebaseAuth=FirebaseAuth.getInstance();
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+
+        //link ui
+        mFlowLayout = (TagFlowLayout)findViewById(R.id.id_flowlayout);
+        btn_submit1 =(Button)findViewById(R.id.btn_submit1);
+
+        username=(TextView)findViewById(R.id.profile_bar_name);
+        username.setText("Welcome "+ user.getEmail());
+        final LayoutInflater mInflater = LayoutInflater.from(PreferenceTabsActivity.this);
+        final String Uemail=user.getEmail();
+
+        //mFlowLayout.setMaxSelectCount(3);
+        mFlowLayout.setAdapter(new TagAdapter<String>(mVals)
+        {
             @Override
-            public void run() {
-                getCuisines();
-
+            public View getView(FlowLayout parent, int position, String s)
+            {
+                TextView tv = (TextView) mInflater.inflate(R.layout.tv,
+                        mFlowLayout, false);
+                tv.setText(s);
+                return tv;
             }
-        };
+        });
 
-        //TODO: Shows tabs show the cuisines for users to select
-        //A friendly reminder: try to make this function finished in getCuisines(), not in onCreate().
-    }
+        mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener()
+        {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent)
+            {
 
-    public void getCuisines() {
-
-        //A list to store all cuisines Zomato supports
-        final ArrayList<String> cuisineList = new ArrayList<>();
-        String cuisines_url = cuisines_base_url.concat(String.valueOf(city_id));
-
-        //Set JsonObjectRequest
-        JsonObjectRequest cuisineRequest = new JsonObjectRequest(Request.Method.GET, cuisines_url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        //LOG
-                        Log.d("Response", response.toString());
-
-                        try{
-
-                            JSONArray cuisinesJSONArray = response.getJSONArray("cuisines");
-
-                            //LOG
-                            Log.d("cuisinesJSONArray", cuisinesJSONArray.toString());
-
-                            for (int i = 0; i < cuisinesJSONArray.length(); i++){
-
-                                cuisineList.clear();
-
-                                JSONObject cuisineData = cuisinesJSONArray.getJSONObject(i).getJSONObject("cuisine");
-                                cuisineList.add(cuisineData.getString("cuisine_name"));
-
-                                /////////
-                                Log.d("cuisine_name" , cuisineData.getString("cuisine_name"));
-
-                            }
-
-                        }catch (JSONException e){
-                            Log.d("ERROR", "Error (JSONException): " + e.toString());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError e) {
-                        Log.d("ERROR", "Error (onErrorResponse): " + e.toString());
-                    }
+//                if(position!=positionbuf){
+                if(Preference==null){
+                    Preference=mVals[position];
                 }
-        ) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("user-key", api_key);
-                params.put("Accept", "application/json");
+                else{
+                    Preference=Preference+","+mVals[position];
 
-                return params;
+                }
+                view.setVisibility(View.GONE);
+                Toast.makeText(PreferenceTabsActivity.this,Preference, Toast.LENGTH_LONG).show();
+                return true;
             }
-        };
+        });
 
-        //Create RequestQueue
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        queue.add(cuisineRequest);
+        btn_submit1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        RequestQueueSingleton.getmInstance(getApplicationContext()).addToRequestQueue (cuisineRequest);
+                FirebaseUser userInstance= firebaseAuth.getCurrentUser();
+
+                User user=new User(Uemail,Uname,Uphone,Preference);
+
+                databaseReference.child("User").push().setValue(user);
+
+                startActivity(new Intent(getApplicationContext(),UserActivity.class));
+
+
+                Toast.makeText(PreferenceTabsActivity.this,"Infomation saved",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        
     }
 }

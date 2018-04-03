@@ -16,14 +16,7 @@
         android:layout_marginTop="50dp">
 
     </de.hdodenhof.circleimageview.CircleImageView>
-    <ImageButton
-        android:id="@+id/btn_edit"
-        android:src="@drawable/ic_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/colorwhite"
-        android:layout_alignBottom="@id/profile_image"
-        android:layout_toRightOf="@id/profile_image"/>
+
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
