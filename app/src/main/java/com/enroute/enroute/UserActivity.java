@@ -8,12 +8,20 @@ package com.enroute.enroute;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class UserActivity extends AppCompatActivity {
@@ -33,6 +42,13 @@ public class UserActivity extends AppCompatActivity {
     private static final String TAG = "UserActivity";
     private Context mcontext=UserActivity.this;
     private static final int ACTIVITY_NUM=3;
+
+    protected static final int CHOOSE_PICTURE = 0;
+    protected static final int TAKE_PICTURE = 1;
+    private static final int CROP_SMALL_PICTURE = 2;
+    protected static Uri tempUri;
+    private ImageView iv_personal_icon;
+    private PicPopup menuWindow;
 
     private FirebaseAuth firebaseAuth;
     private TextView username;
@@ -103,7 +119,125 @@ public class UserActivity extends AppCompatActivity {
 //            }
 //        });
 
+        File destDir = new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon");
+        if (!destDir.exists()) {
+            destDir.mkdirs();
+        }
+
+        iv_personal_icon = (ImageView) findViewById(R.id.iv_personal_icon);
+        iv_personal_icon.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                menuWindow = new PicPopup(UserActivity.this, itemsOnClick);
+
+                menuWindow.showAtLocation(UserActivity.this.findViewById(R.id.main),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
+            }
+        });
+
+
+        if (destDir.exists() && destDir.isDirectory()) {
+            if (destDir.list().length > 0) {
+                Bitmap bitmap = BitmapFactory.decodeFile(destDir.toString() + "/image_icon.png");
+                iv_personal_icon.setImageBitmap(bitmap);
+            } else {
+                iv_personal_icon.setBackgroundResource(R.drawable.default_personal_image);
+            }
+        }
     }
+
+
+    private View.OnClickListener itemsOnClick = new View.OnClickListener() {
+
+        public void onClick(View v) {
+            menuWindow.dismiss();
+            switch (v.getId()) {
+                case R.id.Layout_take_photo:
+                    Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    tempUri = Uri.fromFile(
+                            new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon", "image.jpg"));
+                    Log.d("11111111", tempUri.toString());
+
+                    openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
+                    startActivityForResult(openCameraIntent, TAKE_PICTURE);
+                    break;
+                case R.id.Layout_pick_photo:
+                    Intent openAlbumIntent = new Intent(Intent.ACTION_PICK);
+                    openAlbumIntent.setType("image/*");
+                    startActivityForResult(openAlbumIntent, CHOOSE_PICTURE);
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+    };
+    //determine the statemant of picture.
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case TAKE_PICTURE:
+                    startPhotoZoom(tempUri);
+                    break;
+                case CHOOSE_PICTURE:
+                    startPhotoZoom(data.getData());
+                    break;
+                case CROP_SMALL_PICTURE:
+                    if (data != null) {
+                        setImageToView(data);
+                    }
+                    break;
+            }
+        }
+    }
+
+
+    //cut put picture
+    protected void startPhotoZoom(Uri uri) {
+        if (uri == null) {
+            Log.i("tag", "The uri is not exist.");
+        }
+        tempUri = uri;
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+
+        intent.putExtra("crop", "true");
+
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+
+        intent.putExtra("outputX", 150);
+        intent.putExtra("outputY", 150);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, CROP_SMALL_PICTURE);
+    }
+
+    //save the changed picture
+    protected void setImageToView(Intent data) {
+        Bundle extras = data.getExtras();
+        if (extras != null) {
+            Bitmap photo = extras.getParcelable("data");
+            photo = Utils.toRoundBitmap(photo, tempUri);
+            iv_personal_icon.setImageBitmap(photo);
+            uploadPic(photo);
+        }
+    }
+
+    private void uploadPic(Bitmap bitmap) {
+
+        String imagePath = Utils.savePhoto(bitmap,
+                Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidPersonal_icon", "image_icon");
+        Log.d("imagePath", imagePath + "");
+        if (imagePath != null) {
+
+        }
+    }
+
 
 
     private void setupToolBar(){
