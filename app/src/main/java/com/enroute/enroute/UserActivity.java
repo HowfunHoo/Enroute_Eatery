@@ -94,7 +94,7 @@ public class UserActivity extends AppCompatActivity {
         setupBottomNavigationView();
         setupToolBar();
 
-        //if not login,jup to login activity
+//        if not login,jup to login activity
         if(firebaseAuth.getCurrentUser() == null){
             finish();
             startActivity(new Intent(this, UserLoginActivity.class));

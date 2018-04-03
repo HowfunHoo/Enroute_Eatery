@@ -22,7 +22,7 @@ import java.util.ArrayList;
 public class FirebaseHelper {
     private DatabaseReference db;
     private ArrayList<Restaurant> restaurants = new ArrayList<>();
-
+    private ArrayList<User> user=new ArrayList<>();
     public FirebaseHelper(DatabaseReference db) {
         this.db = db;
     }
@@ -135,6 +135,7 @@ public class FirebaseHelper {
 
     }
 
+
     public void retrieveUser(final String Uemail, final UserCallbacks userCallbacks){
 
         //db.child("User").orderByChild("uemail").equalTo(Uemail).
@@ -161,5 +162,6 @@ public class FirebaseHelper {
             }
         });
     }
+
 }
 

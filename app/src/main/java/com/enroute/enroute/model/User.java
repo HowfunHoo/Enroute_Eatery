@@ -12,27 +12,19 @@ public class User {
     public String uemail;
     public String upreference;
 
-//    public String upassword;
-//    public String uid;
-
-    //user String to present preference
-//    public String upreference;
-
 
     public User() {
     }
 
+    public User(String uemail,String uname, String uphone,String upreference) {
 
-    public User(String uname, String uphone, String uemail, String upreference) {
-        this.uname = uname;
-        this.uphone = uphone;
-        this.uemail = uemail;
-        this.upreference = upreference;
-    }
+        this.uname=uname;
+        this.uphone=uphone;
+        this.upreference=upreference;
+        this.uemail=uemail;
 
-    public User(String uname, String uphone) {
-        this.uname = uname;
-        this.uphone = uphone;
+    public String getUemail() {
+        return uemail;
     }
 
     public String getUname() {
@@ -41,10 +33,6 @@ public class User {
 
     public String getUphone() {
         return uphone;
-    }
-
-    public String getUemail() {
-        return uemail;
     }
 
     public String getUpreference() {

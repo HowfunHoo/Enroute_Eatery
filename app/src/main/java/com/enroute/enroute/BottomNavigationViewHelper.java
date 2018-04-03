@@ -37,7 +37,7 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent2);
                         break;
                     case R.id.ic_suggestion:
-                        Intent intent4=new Intent(context,SuggestActivity.class);
+                        Intent intent4=new Intent(context,WaitForCuisinesActivity.class);
                         context.startActivity(intent4);
                         break;
                     case R.id.ic_discount:
@@ -45,7 +45,6 @@ public class BottomNavigationViewHelper {
                         context.startActivity(intent3);
                         break;
                     case R.id.ic_user:
-                        //todo: change this link back
                         Intent intent1=new Intent(context, UserLoginActivity.class);
                         context.startActivity(intent1);
                         break;
