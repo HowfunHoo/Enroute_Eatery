@@ -18,10 +18,10 @@ public class UserEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_edit);
 
-        edit_Text1=(EditText)findViewById(R.id.edit_Text1);
-        edit_Text2=(EditText)findViewById(R.id.edit_Text2);
-        bt_edit=(Button)findViewById(R.id.bt_edit);
-        bt_edit2=(Button)findViewById(R.id.bt_edit2);
+//        edit_Text1=(EditText)findViewById(R.id.edit_Text1);
+//        edit_Text2=(EditText)findViewById(R.id.edit_Text2);
+//        bt_edit=(Button)findViewById(R.id.bt_edit);
+//        bt_edit2=(Button)findViewById(R.id.bt_edit2);
 
         bt_edit.setOnClickListener(new View.OnClickListener() {
             @Override

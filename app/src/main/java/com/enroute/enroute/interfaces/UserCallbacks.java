@@ -10,6 +10,6 @@ import java.util.ArrayList;
 
 public interface UserCallbacks {
 
-    void onUserCallback(ArrayList<User> users);
+    void onUserCallback(User user);
 
 }

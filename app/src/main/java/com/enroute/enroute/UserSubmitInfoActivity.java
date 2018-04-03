@@ -70,7 +70,7 @@ public class UserSubmitInfoActivity extends AppCompatActivity {
         et_info_phone=(EditText)findViewById(R.id.infoSubmit_Phone);
         btn_submit=(Button)findViewById(R.id.btn_submit);
         submitform=(LinearLayout)findViewById(R.id.infoSubmitForm);
-        succ=(TextView)findViewById(R.id.succ);
+//        succ=(TextView)findViewById(R.id.succ);
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override

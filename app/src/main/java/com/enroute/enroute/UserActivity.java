@@ -57,6 +57,9 @@ public class UserActivity extends AppCompatActivity {
 
         Uemail = currentUser.getEmail();
 
+        //LOG
+        Log.d("Uemail", Uemail);
+
         //initialize firebasehelper
         firebasehelper=new FirebaseHelper(db);
 
@@ -77,13 +80,15 @@ public class UserActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: started");
 
+
         firebasehelper.retrieveUser(Uemail, new UserCallbacks() {
             @Override
             public void onUserCallback(User user) {
                 profile_name.setText(user.getUname());
-                //TODO
             }
         });
+
+
 
 //        firebasehelper.retrieveUser(Uemail, new UserCallbacks() {
 //            @Override

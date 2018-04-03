@@ -1,5 +1,7 @@
 package com.enroute.enroute.DBHelper;
 
+import android.util.Log;
+
 import com.enroute.enroute.interfaces.RestaurantCallbacks;
 import com.enroute.enroute.interfaces.UserCallbacks;
 import com.enroute.enroute.model.Restaurant;
@@ -9,6 +11,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseException;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -133,52 +136,22 @@ public class FirebaseHelper {
     }
 
     public void retrieveUser(final String Uemail, final UserCallbacks userCallbacks){
-        ChildEventListener childEventListener = new ChildEventListener() {
+
+        //db.child("User").orderByChild("uemail").equalTo(Uemail).
+
+        db.child("User").orderByChild("uemail").equalTo(Uemail).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                    User u = ds.getValue(User.class);
+                    User user = ds.getValue(User.class);
 
-                    userCallbacks.onUserCallback(u);
-//                    if (u != null && u.getUname() != null) {
-//                        users.add(u);
-//                    }
+                    Log.d("User-name", user.getUname());
 
-                }
-
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-
-                    User u = ds.getValue(User.class);
-
-                    userCallbacks.onUserCallback(u);
-
-
-
-//                    if (u != null && u.getUname() != null) {
-//                        users.add(u);
-//                    }
+                    userCallbacks.onUserCallback(user);
 
                 }
-
-//                userCallbacks.onUserCallback(users);
-
-            }
-
-
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 
@@ -186,10 +159,7 @@ public class FirebaseHelper {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        };
-
-        //TODO
-        db.child("User").orderByChild("uemail").equalTo(Uemail).addChildEventListener(childEventListener);
+        });
     }
 }
 
