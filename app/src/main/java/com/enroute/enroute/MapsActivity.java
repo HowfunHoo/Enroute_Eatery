@@ -89,6 +89,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double dst_lat;
     private double dst_lng;
 
+    private String duration;
+    private String distance;
+
 //    private BottomNavigationView bottomNavigationView;
 
 
@@ -372,12 +375,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Fetching i-th route
                 List<HashMap<String, String>> path = result.get(i);
 
+
+                distance = path.get(0).get("Distance"); // fetching Distance from thread
+                duration = path.get(0).get("Duration"); // fetching Duration from thread
+
+                String distance_var = "Distance = " + distance;
+                String duration_var = "Duration = " + duration;
+
+                Toast.makeText(MapsActivity.this, distance_var + ", " + duration_var , Toast.LENGTH_LONG ).show();
+
                 // Fetching all the points in i-th route
-                for (int j = 0; j < path.size(); j++) {
+                for (int j = 1; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
+
                     LatLng position = new LatLng(lat, lng);
 
                     points.add(position);
@@ -611,12 +624,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
 
-        /*LatLng origin = currentLoc;
-        LatLng dest = new LatLng(dst_lat ,dst_lng);*/
+        LatLng origin = currentLoc;
+        LatLng dest = new LatLng(dst_lat ,dst_lng);
 
         // Fixed Origin and Destination for test run
-        LatLng origin = new LatLng(44.642750, -63.578449);
-        LatLng dest = new LatLng(44.643875, -63.578472);
+        //LatLng origin = new LatLng(44.642750, -63.578449);
+        //LatLng dest = new LatLng(44.643875, -63.578472);
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest);
@@ -628,16 +641,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Setting the position of the marker
         options.position(origin);
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        options.title("Origin");
+        mMap.addMarker(options);
+
         options.position(dest);
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-        // Add destination marker to the Google Map Android API V2
+        options.title("Destination");
         mMap.addMarker(options);
 
         //move map camera
         mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15)); //search path zoom
+
     }
 
     /**
