@@ -53,9 +53,7 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     //flow layout for label choosing
     implementation 'com.hyman:flowlayout-lib:1.1.2'
-
     implementation 'com.android.volley:volley:1.1.0'
-
 }
 
 
