@@ -99,6 +99,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String duration;
     private String distance;
 
+    private boolean count_walk; // for showing multiple route - walk mode
+    private boolean count_cycle; // for showing multiple route - cycle mode
+
 //    private BottomNavigationView bottomNavigationView;
 
 
@@ -138,8 +141,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onPlaceSelected(Place place) {
                 dst_lat = place.getLatLng().latitude;
                 dst_lng = place.getLatLng().longitude;
-                Log.i("test", "Place: " + place.getName());
-                Log.i("test", "Address: " + place.getAddress());
+                //Log.i("test", "Place: " + place.getName());
+                //Log.i("test", "Address: " + place.getAddress());
             }
 
             @Override
@@ -176,16 +179,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dst_lng = intent.getDoubleExtra("ResLng",0.0);
 
         if (dst_lat!=0.0 && dst_lng!=0.0){
-            conditionFunction("driving");
+            mMap.clear();
+            conditionFunction("driving", "false");
+            conditionFunction("driving", "true");
+
         }
 
         // on click listener for walk mode
         walk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mMap.clear();
                 conditionCheckWalk = true;
-                conditionFunction("walking");
-
+                count_walk = false;
+                conditionFunction("walking", "false"); // shows shortest route - walk mode
+                conditionFunction("walking", "true"); // shows alternate route - walk mode
             }
         });
 
@@ -196,8 +204,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mMap.clear();
                 conditionCheckWalk = false;
-                conditionFunction("bicycling");
+                count_cycle = false;
+                conditionFunction("bicycling", "false"); // shows shortest route - cycle mode
+                conditionFunction("bicycling", "true"); // shows alternate route - cycle mode
                 }
         });
 
@@ -209,13 +220,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * @param dest: take user's converted latlang from the entered string
      * @return: which gives the whole url
      */
-    private String getUrl(LatLng origin, LatLng dest, String travel_mode) {
+    private String getUrl(LatLng origin, LatLng dest, String travel_mode, String alternate_route) {
         String mode = "mode=" + travel_mode + "&";
+        String alternatives = "&alternatives=" + alternate_route ;
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;           // Origin of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;            // Destination of route
         String sensor = "sensor=false";                                                     // Sensor enabled
-        String parameters = mode + str_origin + "&" + str_dest + "&" + sensor;                     // Building the parameters to the web service
+        String parameters = mode + str_origin + "&" + str_dest + "&" + sensor + alternatives;                     // Building the parameters to the web service
         String output = "json";                                                             // Output format
+
         // Building the url to the web service
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
         return url;
@@ -229,9 +242,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String getRestaurantUrl(LatLng poi) {
         String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
         String radius = "radius=20";                                                // Radius in meters
+
         // Building the parameters to the web service
         String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c";
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
+
         String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
         return url;
@@ -245,8 +260,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String getConvenienceUrl(LatLng poi) {
         String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
         String radius = "radius=100";                                                // Radius in meters
+
         // Building the parameters to the web service
         String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
+
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
         String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
@@ -303,7 +320,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
+                //Log.d("Background Task data", data.toString());
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
             }
@@ -329,7 +346,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
+                //Log.d("Background Task data", data.toString());
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
             }
@@ -364,14 +381,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                Log.d("ParserTask",jsonData[0].toString());
+                //Log.d("ParserTask",jsonData[0].toString());
                 DataParser parser = new DataParser();
-                Log.d("ParserTask", parser.toString());
+                //Log.d("ParserTask", parser.toString());
 
                 // Starts parsing data
                 routes = parser.parse(jObject);
-                Log.d("ParserTask","Executing routes");
-                Log.d("ParserTask",routes.toString());
+                //Log.d("ParserTask","Executing routes");
+                //Log.d("ParserTask",routes.toString());
 
             } catch (Exception e) {
                 Log.d("ParserTask",e.toString());
@@ -434,12 +451,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
-                lineOptions.color(Color.BLUE);
 
                 // condition check for walk or cycle mode
                 if(conditionCheckWalk){
                     // for walking mode
-                    lineOptions.width(12);
+                    if (!count_walk){
+                        lineOptions.color(Color.BLUE); // display shortest path in blue color - walk mode
+                        count_walk = true;}
+                    else {
+                        lineOptions.color(Color.GRAY); // display alternate path - walk mode
+                        count_walk = true;
+                    }
+                    lineOptions.width(13);
                     lineOptions.pattern(Arrays.<PatternItem>asList(
                         new Dot(), new Gap(10)));
 
@@ -448,9 +471,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 else if (!conditionCheckWalk){
                     // for cycle mode
-                    lineOptions.width(12);
+                    if (!count_cycle){
+                        lineOptions.color(Color.BLUE);  // display shortest path in blue color - cycle mode
+                        count_cycle = true;}
+                    else {
+                        lineOptions.color(Color.GRAY); // display alternate path - cycle mode
+                        count_cycle = false;
+                    }
+                    lineOptions.width(13);
                     lineOptions.pattern(Arrays.<PatternItem>asList(
-                            new Dash(15), new Gap(0)));
+                            new Dash(17), new Gap(0)));
 
                     Log.d("onPostExecute","onPostExecute lineoptions decoded");
                 }
@@ -643,17 +673,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
      */
 
-    public void conditionFunction(String travel_mode){
-        mMap.clear(); // clearing the map first
+    public void conditionFunction(String travel_mode, String alternate_mode){
+        //mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
 
         LatLng origin = currentLoc;
         LatLng dest = new LatLng(dst_lat ,dst_lng);
 
-
-
         // Getting URL to the Google Directions API
-        String url = getUrl(origin, dest, travel_mode);
+        String url = getUrl(origin, dest, travel_mode, alternate_mode);
         Log.d("onMapClick", url.toString());
         FetchUrl FetchUrl = new FetchUrl();
 
@@ -725,15 +753,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                Log.d("Restaurants data => ",jsonData[0].toString());
+                //Log.d("Restaurants data => ",jsonData[0].toString());
                 RestDataParser restParser = new RestDataParser();
-                Log.d("ParserRestaurantTask", restParser.toString());
+                //Log.d("ParserRestaurantTask", restParser.toString());
 
                 // Starts parsing data
                 restaurants = restParser.parse(jObject);
 
-                Log.d("ParserRestaurantTask","Executing restaurants");
-                Log.d("ParserRestaurantTask",restaurants.toString());
+                //Log.d("ParserRestaurantTask","Executing restaurants");
+                //Log.d("ParserRestaurantTask",restaurants.toString());
 
             } catch (Exception e) {
                 Log.d("ParserRestaurantTask",e.toString());
@@ -787,9 +815,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
+                //Log.d("Background Task data", data.toString());
             } catch (Exception e) {
-                Log.d("Background Task", e.toString());
+                //Log.d("Background Task", e.toString());
             }
             return data;
         }
@@ -816,18 +844,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                Log.d("Convenience data => ",jsonData[0].toString());
+                //Log.d("Convenience data => ",jsonData[0].toString());
                 RestDataParser restParser = new RestDataParser();
-                Log.d("ParserConvenienceTask", restParser.toString());
+                //Log.d("ParserConvenienceTask", restParser.toString());
 
                 // Starts parsing data
                 convenience = restParser.parse(jObject);
 
-                Log.d("ParserConvenienceTask","Executing restaurants");
-                Log.d("ParserConvenienceTask",convenience.toString());
+                //Log.d("ParserConvenienceTask","Executing restaurants");
+                //Log.d("ParserConvenienceTask",convenience.toString());
 
             } catch (Exception e) {
-                Log.d("ParserConvenienceTask",e.toString());
+                //Log.d("ParserConvenienceTask",e.toString());
                 e.printStackTrace();
             }
             return convenience;
