@@ -12,9 +12,9 @@ Provide a list of **ALL** the libraries you used for your project. Example:
 
 **Zomato API**
 
-**com.github.ittianyu:BottomNavigationViewEx:**The bottom navigation view that Android Studio provide has defult animation. T cancel the defult animation. Source [here](https://www.youtube.com/watch?v=QXy_kkQM2Kc&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=3)
+**com.github.ittianyu:BottomNavigationViewEx:** The bottom navigation view that Android Studio provide has defult animation. T cancel the defult animation. Source [here](https://www.youtube.com/watch?v=QXy_kkQM2Kc&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=3)
 
-**de.hdodenhof:circleimageview:**This package used to cut an image into circle to present the head portrait. Source [here](https://github.com/hdodenhof/CircleImageView)
+**de.hdodenhof:circleimageview:** This package used to cut an image into circle to present the head portrait. Source [here](https://github.com/hdodenhof/CircleImageView)
 
 **com.hyman:flowlayout-lib:** A layout package to provide flow layout to configurate preference labels. Source [here](https://github.com/hongyangAndroid/FlowLayout)
 
