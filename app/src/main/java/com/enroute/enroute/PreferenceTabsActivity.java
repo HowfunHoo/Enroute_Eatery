@@ -56,6 +56,9 @@ public class PreferenceTabsActivity extends AppCompatActivity {
         //firebase
         firebaseAuth=FirebaseAuth.getInstance();
         FirebaseUser user= firebaseAuth.getCurrentUser();
+
+        final String Uid = user.getUid();
+
         databaseReference= FirebaseDatabase.getInstance().getReference();
 
         //link ui
@@ -106,12 +109,17 @@ public class PreferenceTabsActivity extends AppCompatActivity {
 
                 FirebaseUser userInstance= firebaseAuth.getCurrentUser();
 
+                Log.d("Preference1", Preference);
+
+                if (Preference.isEmpty()){
+                    Preference = "";
+                }
+
                 User user=new User(Uemail,Uname,Uphone,Preference);
 
-                databaseReference.child("User").push().setValue(user);
+                databaseReference.child("User").child(Uid).setValue(user);
 
                 startActivity(new Intent(getApplicationContext(),UserActivity.class));
-
 
                 Toast.makeText(PreferenceTabsActivity.this,"Infomation saved",Toast.LENGTH_SHORT).show();
             }

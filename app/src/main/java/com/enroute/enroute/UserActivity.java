@@ -81,17 +81,25 @@ public class UserActivity extends AppCompatActivity {
         //get current user
         FirebaseUser currentUser= firebaseAuth.getCurrentUser();
 
-        Uemail = currentUser.getEmail();
+        sharedPreferences = getSharedPreferences("cur_user",0);
 
-        //LOG
-        Log.d("Uemail", Uemail);
+        //if not login,jup to login activity
+        if(currentUser == null){
+            Intent intent = new Intent(UserActivity.this, UserLoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }else {
+            Uemail = currentUser.getEmail();
+            //set welcome +user name
+            username=(TextView)findViewById(R.id.profile_bar_name);
+            username.setText("Welcome "+ currentUser.getEmail());
+        }
 
         //initialize firebasehelper
         firebasehelper=new FirebaseHelper(db);
 
-        //set welcome +user name
-        username=(TextView)findViewById(R.id.profile_bar_name);
-        username.setText("Welcome "+ currentUser.getEmail());
+
         tv_name = (TextView)findViewById(R.id.tv_name);
         tv_email = (TextView)findViewById(R.id.tv_email);
         tv_phone = (TextView)findViewById(R.id.tv_phone);
@@ -100,12 +108,6 @@ public class UserActivity extends AppCompatActivity {
         //set ui
         setupBottomNavigationView();
         setupToolBar();
-
-//        if not login,jup to login activity
-        if(firebaseAuth.getCurrentUser() == null){
-            finish();
-            startActivity(new Intent(this, UserLoginActivity.class));
-        }
 
         firebasehelper.retrieveUser(Uemail, new UserCallbacks() {
             @Override
@@ -116,7 +118,6 @@ public class UserActivity extends AppCompatActivity {
                 tv_prefer.setText(user.getUpreference());
 
                 //store current user's information in sharedPreference
-                sharedPreferences = getSharedPreferences("cur_user", 0);
                 editor = sharedPreferences.edit();
                 editor.putString("cur_uemail", Uemail);
                 editor.putString("cur_uprefer", user.getUpreference());
@@ -266,6 +267,7 @@ public class UserActivity extends AppCompatActivity {
                     case R.id.profile_signout:
                         Log.d(TAG, "onMenuItemClick: signout");
                         firebaseAuth.signOut();
+                        sharedPreferences.edit().clear().apply();
                         finish();
                         startActivity(new Intent(getApplicationContext(),UserLoginActivity.class));
                         break;

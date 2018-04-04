@@ -80,10 +80,8 @@ public class UserLoginActivity extends AppCompatActivity {
 
         progressDialog=new ProgressDialog(this);
 
-
         //firebase authentication
         mAuth = FirebaseAuth.getInstance();
-
 
         //if already login
         //jump to activity page

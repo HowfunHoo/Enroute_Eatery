@@ -31,10 +31,11 @@ public static int fibonacci(int fibIndex) {
 ```
 
 ## Feature Section
-List all the main features of your application with a brief description of each feature.
-Network
-Geo-location 
-Storage
+The application mainly used three features:
+- Network
+- Geo-location 
+- Storage
+
 
 ## Final Project Status
 Write a description of the final status of the project. Did you achieve all your goals? What would be the next step for this project (if it were to continue)?
@@ -45,16 +46,16 @@ Write a description of the final status of the project. Did you achieve all your
 
 #### Expected Functionality
 - Pin up the details of many restaurants on the map (Completed)
-- Gives also nearby convenience store’s location	(Completed)
-- Creating a user’s profile and saving their preferences (Not Implemented)
-- Gives suggestion to users based on their preferences. (Not Implemented)
+- Gives also nearby convenience storeâ€™s location	(Completed)
+- Creating a userâ€™s profile and saving their preferences (Completed)
+- Gives suggestion to users based on their preferences. (Completed)
 
 #### Bonus Functionality
-- Expected time and possible routes to reaching the desired restaurant (Not Implemented)
-- Expected time and possible routes to reaching the desired convenience store (Not Implemented)
-- Providing the notifications which state about offers even a user is not using the application (Not Implemented)
+- Expected time and possible routes to reaching the desired restaurant Completed)
+- Expected time and possible routes to reaching the desired convenience store (Completed)
+- Providing the notifications which state about offers even a user is not using the application (Completed)
 - Provides route suggestion in case of no nearby restaurants found (Not Implemented)
-- It provides recent offers of numerous restaurants which also reveals various payment accepting offers including DAL card (Not Implemented)
+- It provides recent offers of numerous restaurants which also reveals various payment accepting offers including DAL card (Completed)
 
 
 ## Sources

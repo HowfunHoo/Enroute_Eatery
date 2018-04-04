@@ -87,6 +87,9 @@ public class RestaurantRecommendAdapter extends BaseAdapter{
                 //Open Map
                 reachMap(restaurant.getRlat(), restaurant.getRlng());
 
+                ///////////
+                System.out.println("getRlat(): "+restaurant.getRlng());
+
                 Log.d("clicked_res", String.valueOf(restaurant.getRlat()));
             }
         });
@@ -97,7 +100,7 @@ public class RestaurantRecommendAdapter extends BaseAdapter{
 
     /**
      * When a restaurant is clicked, the app will go to Map and show the route to the selected restaurant
-     * @param restaurant
+     * @param
      */
     public void reachMap(double lat, double lng){
 
@@ -105,9 +108,9 @@ public class RestaurantRecommendAdapter extends BaseAdapter{
         intent.putExtra("ResLat", lat);
         intent.putExtra("ResLng", lng);
 
-        Log.d("ResLat: ", "1");
+        Log.d("ResLat ", "1");
 
-        Log.d("ResLat111: ", String.valueOf(lat));
+        Log.d("ResLat111 ", String.valueOf(lat));
 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
