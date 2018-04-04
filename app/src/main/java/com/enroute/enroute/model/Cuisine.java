@@ -1,5 +1,8 @@
 package com.enroute.enroute.model;
 
+/**
+ * This class is the model of cuisine info.
+ */
 public class Cuisine {
 
     public int cuisine_id;

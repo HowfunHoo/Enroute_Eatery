@@ -19,9 +19,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
- * Created by Haofan.
+ * This Adapter is to be bound with the listview showing special offers
  */
-
 public class SpecialOffersAdapter extends BaseAdapter{
 
     private Context context;
@@ -79,7 +78,7 @@ public class SpecialOffersAdapter extends BaseAdapter{
 
         //If the restaurant cannot be paid with Dalcard, make iv_dalcard and tv_rdalcard invisible
         if (!restaurant.getRdalcard()){
-            iv_dalcard.setVisibility(View.GONE);
+            iv_dalcard.setVisibility(View.INVISIBLE);
             tv_rdalcard.setVisibility(View.INVISIBLE);
         }
 
@@ -97,11 +96,20 @@ public class SpecialOffersAdapter extends BaseAdapter{
 
     }
 
+
+    /***************************************************************************************
+     *    Title: CSDN Blog
+     *    Author: sinat_21376777
+     *    Date: 2017
+     *    Code version: 1.0
+     *    Availability: https://blog.csdn.net/sinat_21376777/article/details/75157912
+     *
+     ***************************************************************************************/
     /**
-     * NEED CITATION HERE!!!!!!!!!!!!!!!!!!!!
-     * Reference: https://blog.csdn.net/sinat_21376777/article/details/75157912
-     * @param urlpath
-     * @return
+     * A method to get the picture based on its url path
+     *
+     * @param urlpath the url path of the picture
+     * @return drawable
      */
     public static Drawable getDrawable(String urlpath){
         Drawable drawable = null;
@@ -118,20 +126,5 @@ public class SpecialOffersAdapter extends BaseAdapter{
         return drawable;
     }
 
-//    public static Bitmap getBitmap(String pic_url) {
-//
-//        Bitmap map = null;
-//
-//        try {
-//            URL url = new URL(pic_url);
-//            URLConnection conn = url.openConnection();
-//            conn.connect();
-//            InputStream in;
-//            in = conn.getInputStream();
-//            map = BitmapFactory.decodeStream(in);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return map;
-//    }
+
 }

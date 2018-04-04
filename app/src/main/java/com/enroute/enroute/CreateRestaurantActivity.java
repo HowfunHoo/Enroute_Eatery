@@ -16,6 +16,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Random;
 
+/**
+ * This Activity is to create a new restaurant which can be showed in special offer list
+ */
 public class CreateRestaurantActivity extends AppCompatActivity {
 
     DatabaseReference db;
@@ -82,7 +85,7 @@ public class CreateRestaurantActivity extends AppCompatActivity {
                     Restaurant restaurant=new Restaurant(rid, rname, raddress, rcity, raveragecost,
                             rdalcard, rcuisines, rphone);
 
-                    //THEN SAVE
+                    //Save restaurant
                     if(firebasehelper.saveRestaurant(restaurant))
                     {
                         //Clear the page

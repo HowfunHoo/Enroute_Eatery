@@ -1,10 +1,8 @@
 package com.enroute.enroute.model;
 
 /**
- * Created by youranzhang on 2018-03-31.
+ * This class is the model of user info.
  */
-//datamode of user
-
 public class User {
 
     public String uname;
