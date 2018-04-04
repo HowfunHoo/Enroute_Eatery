@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="20dp"
@@ -19,15 +20,17 @@
             android:orientation="vertical"
             android:background="@color/main">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_personal_icon"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_alignParentStart="true"
+
                 android:contentDescription="@null"
-                android:layout_centerHorizontal="true"
+           
                 android:layout_gravity="center"
-                android:src="@drawable/default_personal_image" />
+                android:src="@drawable/default_personal_image">
+
+            </de.hdodenhof.circleimageview.CircleImageView>
 
             <TextView
                 android:id="@+id/tv_name"

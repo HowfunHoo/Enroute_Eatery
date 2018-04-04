@@ -47,6 +47,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -71,7 +72,7 @@ public class UserActivity extends AppCompatActivity {
     FirebaseHelper firebasehelper;
     private int count = 0;
     private String Uemail;
-    private File destDir;
+
 
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -101,8 +102,8 @@ public class UserActivity extends AppCompatActivity {
 
         //storage of firebase
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
-        StorageReference pathReference = storageReference.child("images");
+        storageReference = storage.getReferenceFromUrl("gs://enroute-eatery.appspot.com/images");
+
 
         //if not login,jup to login activity
         if(currentUser == null){
@@ -147,7 +148,7 @@ public class UserActivity extends AppCompatActivity {
         });
 
 
-         destDir = new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon");
+          File   destDir = new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon");
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
@@ -165,26 +166,25 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         if (destDir.exists() && destDir.isDirectory()) {
             if (destDir.list().length > 0) {
-                pathReference.child(currentUser.getUid()).getFile(destDir).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(destDir.toString()+ "/image_icon.png");
-                        iv_personal_icon.setImageBitmap(bitmap);
+        try {
+            final File localFile = File.createTempFile("images", "jpg");
+            storageReference.child(currentUser.getUid()).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    iv_personal_icon.setImageBitmap(bitmap);
 
-                    }
-            }) .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                    }
-                });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {}
 
-            }else {
+            } else {
                 iv_personal_icon.setBackgroundResource(R.drawable.default_personal_image);
             }
         }
@@ -200,8 +200,6 @@ public class UserActivity extends AppCompatActivity {
                     Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     tempUri = Uri.fromFile(
                             new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon", "image.jpg"));
-                    Log.d("11111111", tempUri.toString());
-
                     openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
                     startActivityForResult(openCameraIntent, TAKE_PICTURE);
                     break;
@@ -268,6 +266,8 @@ public class UserActivity extends AppCompatActivity {
             photo = Utils.toRoundBitmap(photo, tempUri);
             iv_personal_icon.setImageBitmap(photo);
             uploadPic(photo);
+            tempUri = Uri.fromFile(
+                    new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon", "image_icon"));
             uploadImage();
         }
     }
@@ -276,13 +276,15 @@ public class UserActivity extends AppCompatActivity {
 
         String imagePath = Utils.savePhoto(bitmap,
                 Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidPersonal_icon", "image_icon");
+
         Log.d("imagePath", imagePath + "");
         if (imagePath != null) {
 
         }
     }
 
-    private void uploadImage() {
+    private void uploadImage( ) {
+
 
         if(tempUri != null)
         {
@@ -290,7 +292,7 @@ public class UserActivity extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/"+ currentUser.getUid().toString() );
+            StorageReference ref = storageReference.child(currentUser.getUid().toString() );
             ref.putFile(tempUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -317,27 +319,27 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
-    static void deleteAllFiles(File root) {
-        File files[] = root.listFiles();
-        if (files != null)
-            for (File f : files) {
-                if (f.isDirectory()) {
-                    deleteAllFiles(f);
-                    try {
-                        f.delete();
-                    } catch (Exception e) {
-                    }
-                } else {
-                    if (f.exists()) {
-                        deleteAllFiles(f);
-                        try {
-                            f.delete();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-            }
-    }
+//    static void deleteAllFiles(File root) {
+//        File files[] = root.listFiles();
+//        if (files != null)
+//            for (File f : files) {
+//                if (f.isDirectory()) {
+//                    deleteAllFiles(f);
+//                    try {
+//                        f.delete();
+//                    } catch (Exception e) {
+//                    }
+//                } else {
+//                    if (f.exists()) {
+//                        deleteAllFiles(f);
+//                        try {
+//                            f.delete();
+//                        } catch (Exception e) {
+//                        }
+//                    }
+//                }
+//            }
+//    }
     private void setupToolBar(){
         Toolbar toolbar=(Toolbar)findViewById(R.id.profile_Toolbar);
         setSupportActionBar(toolbar);
