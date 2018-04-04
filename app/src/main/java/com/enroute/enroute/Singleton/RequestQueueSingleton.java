@@ -6,11 +6,19 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+
+/***************************************************************************************
+ *    Title: Lab 6
+ *    Author: CSCI5708, FCS, Dalhousie Univeristy
+ *    Date: 2018
+ *    Code version: 1.0
+ *    Availability: https://dal.brightspace.com/d2l/le/content/68186/viewContent/939768/View
+ *
+ ***************************************************************************************/
 /**
- * Citation: Lab 6 Mobile Computing
+ * This class is to set up a RequestQueue using Volley
  *
  */
-
 public class RequestQueueSingleton {
 
     private static RequestQueueSingleton mInstance;

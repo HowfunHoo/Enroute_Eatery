@@ -186,8 +186,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (dst_lat!=0.0 && dst_lng!=0.0){
 
             mMap.clear();
+            /*
+            TO DO: uncomment these lines for getting possible routes,
+            main reason they are in comment as it was delaying response
+            and for safekeeping limit of google restaurants and store
+
             conditionFunction("driving", "false");
             conditionFunction("driving", "true");
+            */
 
             sharedPreferences = getSharedPreferences("currentLoc",0);
             Double cur_lat = Double.valueOf(sharedPreferences.getString("cur_lat","default"));
@@ -204,7 +210,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 conditionCheckWalk = true;
                 count_walk = false;
                 conditionFunction("walking", "false"); // shows shortest route - walk mode
+
+                /*
+                TO DO: uncomment these lines for getting possible routes,
+                main reason they are in comment as it was delaying response
+                and for safekeeping limit of google restaurants and store
+
                 conditionFunction("walking", "true"); // shows alternate route - walk mode
+                */
             }
         });
 
@@ -219,7 +232,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 conditionCheckWalk = false;
                 count_cycle = false;
                 conditionFunction("bicycling", "false"); // shows shortest route - cycle mode
+                /*
+                TO DO: uncomment these lines for getting possible routes,
+                main reason they are in comment as it was delaying response
+                and for safekeeping limit of google restaurants and store
+
                 conditionFunction("bicycling", "true"); // shows alternate route - cycle mode
+                 */
                 }
         });
 

@@ -3,6 +3,7 @@ package com.enroute.enroute.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 
+/**
+ * This Adapter is to be bound with the listview showing recommended restaurants
+ */
 public class RestaurantRecommendAdapter extends BaseAdapter{
 
     private Context context;
@@ -87,9 +91,7 @@ public class RestaurantRecommendAdapter extends BaseAdapter{
                 //Open Map
                 reachMap(restaurant.getRlat(), restaurant.getRlng());
 
-                ///////////
-                System.out.println("getRlat(): "+restaurant.getRlng());
-
+                //Log Test
                 Log.d("clicked_res", String.valueOf(restaurant.getRlat()));
             }
         });
@@ -99,8 +101,10 @@ public class RestaurantRecommendAdapter extends BaseAdapter{
     }
 
     /**
-     * When a restaurant is clicked, the app will go to Map and show the route to the selected restaurant
-     * @param
+     * A method to direct to the map and show the route to the clicked restaurant.
+     *
+     * @param lat latitude of the selected restaurant
+     * @param lng longitude of the selected restaurant
      */
     public void reachMap(double lat, double lng){
 
@@ -119,11 +123,19 @@ public class RestaurantRecommendAdapter extends BaseAdapter{
     }
 
 
+    /***************************************************************************************
+     *    Title: CSDN Blog
+     *    Author: sinat_21376777
+     *    Date: 2017
+     *    Code version: 1.0
+     *    Availability: https://blog.csdn.net/sinat_21376777/article/details/75157912
+     *
+     ***************************************************************************************/
     /**
-     * NEED CITATION HERE!!!!!!!!!!!!!!!!!!!!
-     * Reference: https://blog.csdn.net/sinat_21376777/article/details/75157912
-     * @param urlpath
-     * @return
+     * A method to get the picture based on its url path
+     *
+     * @param urlpath the url path of the picture
+     * @return drawable
      */
     public static Drawable getDrawable(String urlpath){
         Drawable drawable = null;

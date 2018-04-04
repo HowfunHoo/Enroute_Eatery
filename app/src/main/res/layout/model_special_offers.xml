@@ -15,7 +15,8 @@
             android:id="@+id/iv_rpic"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:contentDescription="TODO" />
+            android:contentDescription="TODO"
+            android:src="@drawable/no_image_available"/>
 
 
 
