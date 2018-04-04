@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.enroute.enroute.interfaces.RestaurantCallbacks;
 import com.enroute.enroute.interfaces.UserCallbacks;
+import com.enroute.enroute.model.Business;
 import com.enroute.enroute.model.Restaurant;
 import com.enroute.enroute.model.User;
 import com.google.firebase.database.ChildEventListener;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 /**
  * This helper is to handle the operations with the Firebase Database
+ * @author Haofan Hou
  */
 public class FirebaseHelper {
     private DatabaseReference db;
@@ -56,22 +58,22 @@ public class FirebaseHelper {
     }
 
     /**
-     * A method to save a user's info. into Firebase db
+     * A method to save a business's info. into Firebase db
      *
-     * @param user A instance of User model
+     * @param business A instance of Business model
      * @return The status if saved successfully
      */
-    public Boolean saveUser(User user)
+    public Boolean saveBusiness(Business business)
     {
         Boolean saved = null;
-        if(user==null)
+        if(business==null)
         {
             saved = false;
         }else
         {
             try
             {
-                db.child("User").push().setValue(user);
+                db.child("Business").push().setValue(business);
                 saved =true;
 
             }catch (DatabaseException e)

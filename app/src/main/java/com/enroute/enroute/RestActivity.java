@@ -1,7 +1,8 @@
 package com.enroute.enroute;
 
 /**
- * Created by youranzhang on 2018-03-30.
+ * This activity provide a button to apply for a resraurant for business user
+ * @author:YouranZhang
  */
 
 
@@ -14,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,19 +26,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class RestActivity extends AppCompatActivity {
-
+    //set navigation bar
     private static final String TAG = "RestActivity";
     private Context mcontext=RestActivity.this;
     private static final int ACTIVITY_NUM=3;
 
+    //firebase
     private FirebaseAuth firebaseAuth;
+    //ui
     private TextView username;
-
+    private Button btn_busi_add_rest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_rest);
 
         //firebase
         firebaseAuth=FirebaseAuth.getInstance();
@@ -46,6 +51,8 @@ public class RestActivity extends AppCompatActivity {
         username.setText("Welcome "+ user.getEmail());
 
         //set ui
+        btn_busi_add_rest=(Button)findViewById(R.id.btn_busi_add_rest) ;
+
         setupBottomNavigationView();
         setupToolBar();
 
@@ -54,12 +61,20 @@ public class RestActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, RestLoginActivity.class));
         }
-
-        Log.d(TAG, "onCreate: started");
-
-
+        btn_busi_add_rest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),CreateRestaurantActivity.class));
+            }
+        });
 
     }
+
+    /**
+     * A method to set the tool bar
+     * There is only one option for business-signout
+     *
+     */
     private void setupToolBar(){
         Toolbar toolbar=(Toolbar)findViewById(R.id.profile_Toolbar);
         setSupportActionBar(toolbar);
@@ -71,11 +86,6 @@ public class RestActivity extends AppCompatActivity {
                 Log.d(TAG, "onMenuItemClick: clicked menu item"+item);
 
                 switch (item.getItemId()){
-                    case R.id.profile_edit:
-                        Log.d(TAG, "onMenuItemClick: edit the profile");
-                        Intent editintent=new Intent(getApplicationContext(),UserEditActivity.class);
-                        startActivity(editintent);
-                        break;
                     case R.id.profile_signout:
                         Log.d(TAG, "onMenuItemClick: signout");
                         firebaseAuth.signOut();
@@ -89,6 +99,9 @@ public class RestActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * A method to set up navigation view bar for each activity
+     */
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
@@ -103,9 +116,14 @@ public class RestActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * A method to set up menu for the tool bar
+     * @param menu
+     * @return the tool bar menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.profile_menu,menu);
+        getMenuInflater().inflate(R.menu.busi_menu,menu);
         return true;
     }
 }

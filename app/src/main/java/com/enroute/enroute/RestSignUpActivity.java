@@ -21,6 +21,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+/**
+ * This activity is used for to register a business
+ * @author:YouranZhang
+ *
+ */
+
 public class RestSignUpActivity extends AppCompatActivity {
     //navigation helper
     private static final String TAG = "RestSignUpActivity";
@@ -41,6 +47,7 @@ public class RestSignUpActivity extends AppCompatActivity {
 
     //check input state
     private boolean empty;
+    private Boolean legal;
 
 
     //variable used for check input
@@ -54,7 +61,7 @@ public class RestSignUpActivity extends AppCompatActivity {
 
         //ui component
         btn_Rsign_up=(Button)findViewById(R.id.btn_Rsign_up);
-        btn_Rlogin_link=(Button)findViewById(R.id.btn_Rsignup_link);
+        btn_Rlogin_link=(Button)findViewById(R.id.btn_Rlogin_link);
         et_RSignUp_Email=(EditText)findViewById(R.id.RsignUpEmail) ;
         et_RSignUp_Password=(EditText)findViewById(R.id.RsignUpPassword) ;
         progressDialog=new ProgressDialog(this);
@@ -66,18 +73,23 @@ public class RestSignUpActivity extends AppCompatActivity {
         btn_Rsign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkpasswordempty()){
-                    Toast.makeText(RestSignUpActivity.this,
-                            "please enter password",
-                            Toast.LENGTH_SHORT).show();
-                }
                 if(checkemailempty()){
                     Toast.makeText(RestSignUpActivity.this,
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
+                else if (checkemaillegal() ){
+                    Toast.makeText(RestSignUpActivity.this,
+                            "Your email is illegal",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else if(et_RSignUp_Password.length()<6){
+                    Toast.makeText(RestSignUpActivity.this,
+                            "Your password will need at least 6 number",
+                            Toast.LENGTH_SHORT).show();
+                }
                 else{
-                    progressDialog.setMessage("Log...in...");
+                    progressDialog.setMessage("Sign...up...");
                     progressDialog.show();
                     firebaseAuth.createUserWithEmailAndPassword(et_RSignUp_Email.getText().toString()
                             ,et_RSignUp_Password.getText().toString())
@@ -89,8 +101,9 @@ public class RestSignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(RestSignUpActivity.this,
                                                         "Sign Up successful",
                                                         Toast.LENGTH_SHORT).show();
+                                                Intent loginintent= new Intent(getApplicationContext(),RestSubmitInfoActivity.class);
                                                 finish();
-                                                startActivity(new Intent(getApplicationContext(),UserActivity.class));
+                                                startActivity(loginintent);
                                             }
                                             else{
                                                 Toast.makeText(RestSignUpActivity.this,
@@ -100,24 +113,26 @@ public class RestSignUpActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
-//                    Intent loginintent= new Intent(getApplicationContext(),RestActivity.class);
-//                    startActivity(loginintent);
                 }
 
             }
         });
 
-//        btn_login_link.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view2) {
-//                Intent tologinintent= new Intent(getApplicationContext(),UserActivity.class);
-//                startActivity(tologinintent);
-//            }
-//        });
+        btn_Rlogin_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                finish();
+                Intent tologinintent= new Intent(getApplicationContext(),RestLoginActivity.class);
+                startActivity(tologinintent);
+            }
+        });
 
     }
 
-    //return empty or not state
+    /**
+     * A method to check if the input is empty
+     * @return boolean value
+     */
     private boolean checkemailempty(){
 
         email=et_RSignUp_Email.getText().toString();
@@ -130,20 +145,23 @@ public class RestSignUpActivity extends AppCompatActivity {
 
         return empty;
     }
-    private boolean checkpasswordempty(){
 
-        password=et_RSignUp_Password.getText().toString();
+    /**
+     * A method to check if the email is legal
+     * @return: boolean value
+     */
 
-        if(TextUtils.isEmpty(password)){
-            empty=true;
+    private boolean checkemaillegal(){
+        email=et_RSignUp_Email.getText().toString();
+        if(email.contains("@")){
+            legal=false;
         }
-
-        else empty=false;
-
-        return empty;
+        else legal=true;
+        return legal;
     }
-
-    //setup button navigation
+    /**
+     * A method to set up navigation view bar for each activity
+     */
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");

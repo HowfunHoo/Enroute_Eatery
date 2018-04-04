@@ -11,7 +11,9 @@ import com.enroute.enroute.DBHelper.FirebaseHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
+/*
+ * @author Haofan Hou
+ */
 public class CreateOffersActivity extends AppCompatActivity {
 
     TextView tv_rname, tv_ifoffer, tv_tip;
