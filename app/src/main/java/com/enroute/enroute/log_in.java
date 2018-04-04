@@ -16,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +28,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+/**
+ * Programmer: Nirav Jadeja
+ *
+ * The main activity for login, which takes user name, display google sign in
+ * and button for registration
+ *
+ * References:
+ * 1. https://androidjson.com/add-firebase-google-login-integration/
+ * 2. https://firebase.google.com/docs/android/setup
+ * 3. https://firebase.google.com/docs/auth/android/custom-auth
+ */
 public class log_in extends AppCompatActivity {
 
     //private static final String TAG = "CustomAuthActivity";
@@ -61,16 +74,13 @@ public class log_in extends AppCompatActivity {
         // Buttons
         Button loginBtn = findViewById(R.id.loginBtn);                 //Log in button
         Button signUpScreenBtn = findViewById(R.id.signUpScreenBtn);   // SignUp screen button
-        googleLoginBtn = (SignInButton)findViewById(R.id.googleLoginBtn);
-        ProfileLayout = (LinearLayout) findViewById(R.id.llProfile);
+        googleLoginBtn = (SignInButton)findViewById(R.id.googleLoginBtn); // google login button
+        ProfileLayout = (LinearLayout) findViewById(R.id.llProfile); // layout for selecting google account
 
         textName = (TextView) findViewById(R.id.txtName); // for displaying google name of user
         textEmail = (TextView) findViewById(R.id.txtEmail); // for displaying google id
 
-
-
         mAuth = FirebaseAuth.getInstance();
-
 
         // sign-up button click listener, fire up the registration page
         signUpScreenBtn.setOnClickListener(new View.OnClickListener() {
@@ -107,24 +117,24 @@ public class log_in extends AppCompatActivity {
      * @param resultCode
      * @param data
      */
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-//        if (requestCode == RC_SIGN_IN) {
-//            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-//            try {
-//                // Google Sign In was successful, authenticate with Firebase
-//                GoogleSignInAccount account = task.getResult(ApiException.class);
-//                firebaseAuthWithGoogle(account);
-//            } catch (ApiException e) {
-//                // Google Sign In failed, update UI appropriately
-//                Log.w(TAG, "Google sign in failed", e);
-//                // ...
-//            }
-//        }
-//    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
+                // ...
+            }
+        }
+    }
 
     /**
      * this is for authentication with firebase, if the task is successful
@@ -133,30 +143,30 @@ public class log_in extends AppCompatActivity {
      * and pop up the message and wont update the UI
      * @param acct
      */
-//    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-//        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-//
-//        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-//        mAuth.signInWithCredential(credential)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "signInWithCredential:success");
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-//                            startActivity(new Intent(log_in.this,
-//                                    MapsActivity.class));
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-//                            Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-//                            updateUI(null);
-//                        }
-//                    }
-//                });
-//    }
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                            startActivity(new Intent(log_in.this,
+                                    MapsActivity.class));
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
+    }
 
     /**
      * Check if user is signed in (non-null) and update UI accordingly.

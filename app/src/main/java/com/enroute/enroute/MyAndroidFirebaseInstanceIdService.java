@@ -5,6 +5,17 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+/**
+ * Programmer: Nirav Jadeja
+ *
+ * This class is intended for push notification
+ * it gives push notification from the firebase about the offer when users are not using it
+ *
+ * Reference:
+ * 1. https://www.codeproject.com/Articles/1121218/Android-Firebase-Cloud-Messaging-Tutorial
+ * 2. https://firebase.google.com/docs/cloud-messaging/android/client
+ */
+
 public class MyAndroidFirebaseInstanceIdService extends FirebaseInstanceIdService {
 
     private static final String TAG = "MyFirebaseIIDService";

@@ -67,7 +67,14 @@ import java.util.HashMap;
 import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
+/**
+ * References:
+ * 1. https://www.androidtutorialpoint.com/intermediate/google-maps-draw-path-two-points-using-google-directions-google-map-android-api-v2/
+ * 2. https://stackoverflow.com/questions/14710744/how-to-draw-road-directions-between-two-geocodes-in-android-google-map-v2?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+ * 3. https://stackoverflow.com/questions/28295199/android-how-to-show-route-between-markers-on-googlemaps?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+ * 4. https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
@@ -173,10 +180,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dst_lat = intent.getDoubleExtra("ResLat",0.0);
         dst_lng = intent.getDoubleExtra("ResLng",0.0);
 
-        //////////////
-        System.out.println("dst-lat: "+dst_lat);
-        System.out.println("dst-lng: "+dst_lng);
-
         if (dst_lat!=0.0 && dst_lng!=0.0){
             sharedPreferences = getSharedPreferences("currentLoc",0);
             Double cur_lat = Double.valueOf(sharedPreferences.getString("cur_lat","default"));
@@ -184,6 +187,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             currentLoc = new LatLng(cur_lat, cur_lng);
             conditionCheckWalk = false;
             conditionFunction();
+            conditionFunction("driving");
         }
 
         // on click listener for walk mode
@@ -191,7 +195,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 conditionCheckWalk = true;
-                conditionFunction();
+                conditionFunction("walking");
 
             }
         });
@@ -204,7 +208,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 conditionCheckWalk = false;
-                conditionFunction();
+                conditionFunction("bicycling");
                 }
         });
 
@@ -216,14 +220,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * @param dest: take user's converted latlang from the entered string
      * @return: which gives the whole url
      */
-    private String getUrl(LatLng origin, LatLng dest) {
+    private String getUrl(LatLng origin, LatLng dest, String travel_mode) {
+        String mode = "mode=" + travel_mode + "&";
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;           // Origin of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;            // Destination of route
         String sensor = "sensor=false";                                                     // Sensor enabled
-        String parameters = str_origin + "&" + str_dest + "&" + sensor;                     // Building the parameters to the web service
+        String parameters = mode + str_origin + "&" + str_dest + "&" + sensor;                     // Building the parameters to the web service
         String output = "json";                                                             // Output format
         // Building the url to the web service
-//        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
         return url;
     }
@@ -356,6 +360,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /**
      * A class to parse the Google Places in JSON format
+     *
+     * Reference:
+     https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
      */
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
@@ -384,7 +391,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return routes;
         }
 
-        // Executes in UI thread, after the parsing process
+        /**
+         * Reference:
+         * https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+         *
+         * Executes in UI thread, after the parsing process
+         */
+
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             ArrayList<LatLng> points;
@@ -397,7 +410,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Fetching i-th route
                 List<HashMap<String, String>> path = result.get(i);
-
 
                 distance = path.get(0).get("Distance"); // fetching Distance from thread
                 duration = path.get(0).get("Duration"); // fetching Duration from thread
@@ -555,7 +567,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
 
-
             } else {
                 // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
@@ -613,7 +624,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected String[] doInBackground(String... params) {
             String response;
             try {
-                response = getLatLongByURL("http://maps.google.com/maps/api/geocode/json?address=mumbai&sensor=false");
+                response = getLatLongByURL("http://maps.google.com/maps/api/geocode/json?address=halifax&sensor=false");
                 Log.d("response",""+response);
                 return new String[]{response};
             } catch (Exception e) {
@@ -650,27 +661,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
      */
 
-    public void conditionFunction(){
+    public void conditionFunction(String travel_mode){
         mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
 
         LatLng origin = currentLoc;
         LatLng dest = new LatLng(dst_lat ,dst_lng);
 
-        // Fixed Origin and Destination for test run
-
-//        LatLng origin = new LatLng(44.642750, -63.578449);
-
-//        LatLng origin = new LatLng(44.636581, -63.591656);
-
-//        LatLng dest = new LatLng(44.643875, -63.578472);
-
-        //set the destination as the selected preferred restaurant
-//        LatLng dest = new LatLng(dst_lat, dst_lng);
 
 
         // Getting URL to the Google Directions API
-        String url = getUrl(origin, dest);
+        String url = getUrl(origin, dest, travel_mode);
         Log.d("onMapClick", url.toString());
         FetchUrl FetchUrl = new FetchUrl();
 
@@ -886,6 +887,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    // bottom navigation
     private void setupBottomNavigationView(){
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.buttomNavViewbar);

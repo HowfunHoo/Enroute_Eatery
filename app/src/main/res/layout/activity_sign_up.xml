@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.enroute.enroute.sign_up">
+    tools:context="com.enroute.enroute.sign_up"
+    android:background="@drawable/cuisine">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -31,6 +32,24 @@
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
+
+            <EditText
+                android:id="@+id/signUpName"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_alignLeft="@+id/signUpPassword"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/signUpPassword"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Enter your Name"
+                android:inputType="textEmailAddress"
+                android:visibility="visible"
+                android:background="@null"
+                android:textColorHint="@color/black"/>
 
             <EditText
                 android:id="@+id/signUpEmail"
@@ -68,6 +87,21 @@
                 android:visibility="visible"
                 android:textColorHint="@color/black"/>
 
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:spinnerMode="dropdown"
+                android:layout_below="@+id/signUpPassword"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:background="@null"
+                android:ems="10"
+                android:textAlignment="center"
+                />
+
             <Button
                 android:id="@+id/signUpBtn"
                 style="@style/login_btn_style"
@@ -87,4 +121,28 @@
         </LinearLayout>
     </ScrollView>
 
+    <!-- Bottom links for user profile, home page and Special offers -->
+    <FrameLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/navigation"
+        android:orientation="vertical">
+
+    </FrameLayout>
+    <android.support.design.widget.BottomNavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="30sp"
+        app:itemIconTint="@color/icon_color"
+        app:itemTextColor="@color/colorPrimary"
+        app:menu="@menu/bottom_navigation_items" />
+
+
+
 </RelativeLayout>
+
