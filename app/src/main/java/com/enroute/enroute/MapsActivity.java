@@ -185,8 +185,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Double cur_lat = Double.valueOf(sharedPreferences.getString("cur_lat","default"));
             Double cur_lng = Double.valueOf(sharedPreferences.getString("cur_lng","default"));
             currentLoc = new LatLng(cur_lat, cur_lng);
-            conditionCheckWalk = false;
-            conditionFunction();
             conditionFunction("driving");
         }
 
