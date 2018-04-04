@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -92,6 +93,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String duration;
     private String distance;
 
+    //Shaerpreferences
+    public SharedPreferences sharedPreferences;
+    public SharedPreferences.Editor editor;
+
 //    private BottomNavigationView bottomNavigationView;
 
 
@@ -168,7 +173,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dst_lat = intent.getDoubleExtra("ResLat",0.0);
         dst_lng = intent.getDoubleExtra("ResLng",0.0);
 
+        //////////////
+        System.out.println("dst-lat: "+dst_lat);
+        System.out.println("dst-lng: "+dst_lng);
+
         if (dst_lat!=0.0 && dst_lng!=0.0){
+            sharedPreferences = getSharedPreferences("currentLoc",0);
+            Double cur_lat = Double.valueOf(sharedPreferences.getString("cur_lat","default"));
+            Double cur_lng = Double.valueOf(sharedPreferences.getString("cur_lng","default"));
+            currentLoc = new LatLng(cur_lat, cur_lng);
+            conditionCheckWalk = false;
             conditionFunction();
         }
 
@@ -490,6 +504,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         currentLoc = latLng;
+
+        sharedPreferences = this.getSharedPreferences("currentLoc", 0);
+        editor = sharedPreferences.edit();
+        editor.putString("cur_lat", String.valueOf(currentLoc.latitude));
+        editor.putString("cur_lng", String.valueOf(currentLoc.longitude));
+        editor.apply();
+
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
@@ -668,7 +689,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(options);
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(dest));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15)); //search path zoom
 
     }

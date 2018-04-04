@@ -83,7 +83,6 @@ public class UserLoginActivity extends AppCompatActivity {
         //firebase authentication
         mAuth = FirebaseAuth.getInstance();
 
-
         //if already login
         //jump to activity page
 //        if(mAuth.getCurrentUser() != null){

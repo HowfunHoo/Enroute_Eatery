@@ -72,79 +72,84 @@ public class WaitForCuisinesActivity extends AppCompatActivity {
 
             if (preference.equals("")){
                 textView.setText("Seems like you haven't selected your preference");
-            }
-        }
-
-
-        final String[] preferred_cuisines = preference.split(",");
+            }else {
+                final String[] preferred_cuisines = preference.split(",");
 //        final int[] preferred_cuisineIds = new int[preferred_cuisines.length];
-        final int[] preferred_cuisineIds = new int[preferred_cuisines.length];
+                final int[] preferred_cuisineIds = new int[preferred_cuisines.length];
 
-        final ZomatoHelper zomatoHelper = new ZomatoHelper();
+                final ZomatoHelper zomatoHelper = new ZomatoHelper();
 
-        zomatoHelper.getCuisines(getApplicationContext(), new CuisineCallbacks() {
-            @Override
-            public void onCuisineCallbacks(JSONObject JSONObjectResult) {
+                zomatoHelper.getCuisines(getApplicationContext(), new CuisineCallbacks() {
+                    @Override
+                    public void onCuisineCallbacks(JSONObject JSONObjectResult) {
 
-                try{
+                        try{
 
-                    JSONArray cuisinesJSONArray = JSONObjectResult.getJSONArray("cuisines");
+                            JSONArray cuisinesJSONArray = JSONObjectResult.getJSONArray("cuisines");
 
-                    //LOG TEST
-                    Log.d("cuisinesJSONArray", cuisinesJSONArray.toString());
+                            //LOG TEST
+                            Log.d("cuisinesJSONArray", cuisinesJSONArray.toString());
 
-                    for (int i = 0; i < cuisinesJSONArray.length(); i++){
+                            for (int i = 0; i < cuisinesJSONArray.length(); i++){
 
-                        Cuisine cuisine = new Cuisine();
+                                Cuisine cuisine = new Cuisine();
 
-                        JSONObject cuisineData = cuisinesJSONArray.getJSONObject(i).getJSONObject("cuisine");
+                                JSONObject cuisineData = cuisinesJSONArray.getJSONObject(i).getJSONObject("cuisine");
 
-                        cuisine.setCuisine_id(cuisineData.getInt("cuisine_id"));
-                        cuisine.setCuisine_name(cuisineData.getString("cuisine_name"));
+                                cuisine.setCuisine_id(cuisineData.getInt("cuisine_id"));
+                                cuisine.setCuisine_name(cuisineData.getString("cuisine_name"));
 
-                        cuisines.add(cuisine);
+                                cuisines.add(cuisine);
 
 //                        latch.countDown();
 
-                        //LOG TEST
-                        Log.d("cuisines.size()", String.valueOf(cuisines.size()));
-                        for (int j=0; j<cuisines.size(); j++){
-                            Log.d("ArrayList-cuisines", cuisines.get(j).getCuisine_name());
-                        }
+                                //LOG TEST
+                                Log.d("cuisines.size()", String.valueOf(cuisines.size()));
+                                for (int j=0; j<cuisines.size(); j++){
+                                    Log.d("ArrayList-cuisines", cuisines.get(j).getCuisine_name());
+                                }
 
 //                        //Match preferred cuisine names with the IDs
-                        for (int j=0; j<cuisines.size(); j++){
-                            for (int x=0; x<preferred_cuisines.length; x++){
-                                if (cuisines.get(j).getCuisine_name().equals(preferred_cuisines[x])){
-                                    preferred_cuisineIds[x] = cuisines.get(j).getCuisine_id();
+                                for (int j=0; j<cuisines.size(); j++){
+                                    for (int x=0; x<preferred_cuisines.length; x++){
+                                        if (cuisines.get(j).getCuisine_name().equals(preferred_cuisines[x])){
+                                            preferred_cuisineIds[x] = cuisines.get(j).getCuisine_id();
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        Intent intent =new Intent(WaitForCuisinesActivity.this, RestaurantRecommendationActivity.class);
-                        intent.putExtra("preferred_cuisineIds", preferred_cuisineIds);
-                        startActivity(intent);
+                                Intent intent =new Intent(WaitForCuisinesActivity.this, RestaurantRecommendationActivity.class);
+                                intent.putExtra("preferred_cuisineIds", preferred_cuisineIds);
+                                startActivity(intent);
 
 //                        //LOG TEST
-                        for (int y = 0; y<preferred_cuisineIds.length; y++){
-                            Log.d("preferred_cuisineIds", String.valueOf(preferred_cuisineIds[y]));
-                        }
+                                for (int y = 0; y<preferred_cuisineIds.length; y++){
+                                    Log.d("preferred_cuisineIds", String.valueOf(preferred_cuisineIds[y]));
+                                }
 
-                        //TODO
+                                //TODO
 //                        getRestaurants(preferred_cuisineIds);
 
 
 
+                            }
+
+                        }catch (JSONException e){
+                            Log.d("ERROR", "Error (JSONException): " + e.toString());
+                        }
+
+
                     }
 
-                }catch (JSONException e){
-                    Log.d("ERROR", "Error (JSONException): " + e.toString());
-                }
+                });
+            }
+
 
 
         }
 
-        });
+
+
     }
     private void setupBottomNavigationView(){
 
