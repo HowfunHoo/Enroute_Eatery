@@ -29,6 +29,8 @@ import java.util.ArrayList;
  * This Activity is to find the cuisine IDs matched with the cuisine names that the current user preferred.
  * The cuisine IDs will be send to RestaurantRecommendationActivity
  * and be used to search for the restaurants of these cuisines.
+ *
+ * @author Haofan Hou
  */
 public class WaitForCuisinesActivity extends AppCompatActivity {
 

@@ -2,6 +2,7 @@ package com.enroute.enroute.model;
 
 /**
  * This class is the model of restaurant info.
+ * @author Haofan Hou
  */
 public class Restaurant {
 
