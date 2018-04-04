@@ -247,7 +247,27 @@ public class UserActivity extends AppCompatActivity {
     }
 
 
-
+    static void deleteAllFiles(File root) {
+        File files[] = root.listFiles();
+        if (files != null)
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    deleteAllFiles(f);
+                    try {
+                        f.delete();
+                    } catch (Exception e) {
+                    }
+                } else {
+                    if (f.exists()) {
+                        deleteAllFiles(f);
+                        try {
+                            f.delete();
+                        } catch (Exception e) {
+                        }
+                    }
+                }
+            }
+    }
     private void setupToolBar(){
         Toolbar toolbar=(Toolbar)findViewById(R.id.profile_Toolbar);
         setSupportActionBar(toolbar);
@@ -266,6 +286,7 @@ public class UserActivity extends AppCompatActivity {
                         break;
                     case R.id.profile_signout:
                         Log.d(TAG, "onMenuItemClick: signout");
+                        deleteAllFiles(new File(Environment.getExternalStorageDirectory()+"/AndroidPersonal_icon"));
                         firebaseAuth.signOut();
                         sharedPreferences.edit().clear().apply();
                         finish();
