@@ -186,14 +186,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (dst_lat!=0.0 && dst_lng!=0.0){
 
             mMap.clear();
-            conditionFunction("driving", "false");
-            conditionFunction("driving", "true");
 
             sharedPreferences = getSharedPreferences("currentLoc",0);
             Double cur_lat = Double.valueOf(sharedPreferences.getString("cur_lat","default"));
             Double cur_lng = Double.valueOf(sharedPreferences.getString("cur_lng","default"));
             currentLoc = new LatLng(cur_lat, cur_lng);
             conditionFunction("driving", "false");
+            conditionFunction("driving", "true");
         }
 
         // on click listener for walk mode
