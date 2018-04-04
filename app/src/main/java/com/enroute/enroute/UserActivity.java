@@ -50,6 +50,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * Activity
+ * @author:YouranZhang,HaoyuSun
+ */
 public class UserActivity extends AppCompatActivity {
 
     private static final String TAG = "UserActivity";
@@ -260,7 +264,10 @@ public class UserActivity extends AppCompatActivity {
         startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
 
-    //save the changed picture
+    /**
+     * Save the changed picture
+      * @param data
+     */
     protected void setImageToView(Intent data) {
         Bundle extras = data.getExtras();
         if (extras != null) {
@@ -338,6 +345,11 @@ public class UserActivity extends AppCompatActivity {
                 }
             }
     }
+
+    /**
+     * A method to set the tool bar
+     * There are teo options:edit profile and signout
+     */
     private void setupToolBar(){
         Toolbar toolbar=(Toolbar)findViewById(R.id.profile_Toolbar);
         setSupportActionBar(toolbar);
@@ -369,6 +381,9 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * A method to set up navigation view bar for each activity
+     */
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
@@ -383,6 +398,11 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param menu
+     * @return the toolbar menu for the users
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.profile_menu,menu);

@@ -92,25 +92,5 @@ public class UserEditActivity extends AppCompatActivity {
 
     }
 
-
-//    @Exclude
-//    public Map<String, Object> toMap() {
-//        HashMap<String, Object> result = new HashMap<>();
-//        result.put("Uname", uname);
-//        result.put("author", author);
-//        result.put("title", title);
-//        result.put("body", body);
-//        result.put("starCount", starCount);
-//        result.put("stars", stars);
-//
-//        return result;
-//    }
-//    private void writeNewPost (String Uname, String Uemail, String Uphone, String prefrence){
-//               User users1 = new User(Uname, Uemail, Uphone, prefrence);
-//                String key = db.child("User").child(a).push().getKey();
-//                Map<String, Object> postValues = users1.toMap();
-//
-//
-//            }
 }
 

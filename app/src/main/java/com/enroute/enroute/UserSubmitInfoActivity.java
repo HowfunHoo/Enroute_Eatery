@@ -37,6 +37,7 @@ import java.util.Set;
 
 /**
  * This activity used for new user to initialize user information
+ * @author:YouranZhang.HaofanHou
  */
 public class UserSubmitInfoActivity extends AppCompatActivity {
 

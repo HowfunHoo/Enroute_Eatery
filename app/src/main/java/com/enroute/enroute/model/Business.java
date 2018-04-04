@@ -1,17 +1,13 @@
 package com.enroute.enroute.model;
 
 /**
- * Created by youranzhang on 2018-03-31.
+ * This class is the model of restaurant info.
  */
-//datamode of user
-
 public class Business {
 
     public String bname;
     public String bphone;
     public String bemail;
-
-
 
     public Business() {
     }

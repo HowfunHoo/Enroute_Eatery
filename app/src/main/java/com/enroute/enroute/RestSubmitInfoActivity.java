@@ -22,6 +22,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+/**
+ * Activity for business to fill their information
+ * @author:YouranZhang
+ */
 public class RestSubmitInfoActivity extends AppCompatActivity {
 
     //navigation helper
@@ -109,7 +113,9 @@ public class RestSubmitInfoActivity extends AppCompatActivity {
 
     }
 
-    //setup button navigation
+    /**
+     * A method to set up navigation view bar for each activity
+     */
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
