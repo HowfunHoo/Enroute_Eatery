@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * Created by SINGH on 04/03/2018.
  *
+ * This class is intended for parsing the data and gives back the result
  */
 
 public class RestDataParser {

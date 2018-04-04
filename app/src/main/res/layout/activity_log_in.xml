@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main_layout"
-    tools:context="com.enroute.enroute.log_in" >
+    tools:context="com.enroute.enroute.log_in"
+    android:background="@drawable/cuisine">
 
     <ScrollView
         android:layout_width="match_parent"

@@ -10,7 +10,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-// https://www.mytrendin.com/draw-route-two-locations-google-&maps-android/
+/**
+ *
+ * This class is intended for parsing the data and gives back the result
+ *
+ *Programmers: Nirav Jadeja, Abhishek Singh
+ * Reference:
+ * 1. https://www.mytrendin.com/draw-route-two-locations-google-&maps-android/
+ */
 
 public class DataParser {
 
