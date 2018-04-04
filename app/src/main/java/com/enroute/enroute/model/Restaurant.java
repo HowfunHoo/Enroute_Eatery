@@ -1,9 +1,8 @@
 package com.enroute.enroute.model;
 
 /**
- * Created by Haofan.
+ * This class is the model of restaurant info.
  */
-
 public class Restaurant {
 
     public String rid;

@@ -5,9 +5,8 @@ import com.enroute.enroute.model.Restaurant;
 import java.util.ArrayList;
 
 /**
- * Created by Haofan.
+ * This interface callbacks the a Restaurant instance from searching restaurant in Firebase
  */
-
 public interface RestaurantCallbacks {
 
     void onRestaurantCallback(ArrayList<Restaurant> restaurants);

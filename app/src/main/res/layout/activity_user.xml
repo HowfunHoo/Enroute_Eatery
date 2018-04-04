@@ -34,6 +34,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="NAME"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
                 android:paddingTop="10dp"
                 android:layout_gravity="center"
                 android:textSize="20sp"
@@ -72,10 +74,10 @@
                     android:id="@+id/tv_email"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="User Email"
+                    android:text="no email"
                     android:textStyle="bold"
                     android:textSize="20sp"
-                    android:gravity="center"/>
+                    android:paddingLeft="10dp"/>
 
             </LinearLayout>
 
@@ -99,10 +101,10 @@
                     android:id="@+id/tv_phone"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="User Phone Number"
+                    android:text="no phone number"
                     android:textStyle="bold"
                     android:textSize="20sp"
-                    android:gravity="center"/>
+                    android:paddingLeft="10dp"/>
 
             </LinearLayout>
 
@@ -125,7 +127,7 @@
                     android:id="@+id/tv_preference"
                     android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:text="Preferences"
+                    android:text="no preference"
                     android:textStyle="bold"
                     android:textSize="20sp"
                     android:paddingLeft="10dp"/>

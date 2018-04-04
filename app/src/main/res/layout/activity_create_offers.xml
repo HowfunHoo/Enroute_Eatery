@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/tv_rname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="14dp"
+            android:layout_below="@+id/tv_title1"
+            android:gravity="center"
+            android:text="Restaurant Name"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:paddingTop="50dp"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="35dp"
+            android:paddingBottom="20dp"
+            android:layout_gravity="center">
+
+            <CheckBox
+                android:id="@+id/cb_ifoffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_rname" />
+
+            <TextView
+                android:id="@+id/tv_ifoffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Have offers recently"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
+
+
+        <EditText
+            android:id="@+id/et_roffer"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/cb_ifoffer"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="10dp"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:visibility="invisible"/>
+
+
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_roffer"
+            android:layout_marginTop="25dp"
+            android:text="Submit"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/tv_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="14dp"
+            android:layout_below="@+id/btn_submit"
+            android:visibility="gone"
+            android:padding="10dp"
+            android:text="Submitted successfully! Please notice: it may take 10 working days to process with your submission."
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+
+    </LinearLayout>
+
+</ScrollView>

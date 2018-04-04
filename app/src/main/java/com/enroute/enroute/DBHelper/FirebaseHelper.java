@@ -17,9 +17,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 /**
- * Created by Haofan.
+ * This helper is to handle the operations with the Firebase Database
  */
-
 public class FirebaseHelper {
     private DatabaseReference db;
     private ArrayList<Restaurant> restaurants = new ArrayList<>();
@@ -28,7 +27,12 @@ public class FirebaseHelper {
         this.db = db;
     }
 
-    //Save the restaurant into db
+    /**
+     *  A method to save a restaurant's info. into Firebase db
+     *
+     * @param restaurant A instance of Restaurant model
+     * @return The status if saved successfully
+     */
     public Boolean saveRestaurant(Restaurant restaurant)
     {
         Boolean saved = null;
@@ -51,6 +55,13 @@ public class FirebaseHelper {
 
         return saved;
     }
+
+    /**
+     * A method to save a business's info. into Firebase db
+     *
+     * @param business A instance of Business model
+     * @return The status if saved successfully
+     */
     public Boolean saveBusiness(Business business)
     {
         Boolean saved = null;
@@ -74,7 +85,11 @@ public class FirebaseHelper {
         return saved;
     }
 
-    //retrieve restaurant info. from the db
+    /**
+     * A method to retrieve restaurant info. from Firebase db
+     *
+     * @param restaurantCallbacks A instance of Restaurant model
+     */
     public void retrieveRestaurant(final RestaurantCallbacks restaurantCallbacks) {
 
         db.addChildEventListener(new ChildEventListener() {
@@ -88,12 +103,6 @@ public class FirebaseHelper {
                     if (restaurant != null && restaurant.getRid() != null) {
                         restaurants.add(restaurant);
                     }
-
-                    ///////////
-                    System.out.println("restaurant: ");
-                    System.out.println("restaurant: "+restaurant);
-
-
 
                 }
 
@@ -137,6 +146,11 @@ public class FirebaseHelper {
     }
 
 
+    /**
+     * A mehod to retrieve user info. from Firebase db
+     * @param Uemail the email of the user
+     * @param userCallbacks A instance of User model
+     */
     public void retrieveUser(final String Uemail, final UserCallbacks userCallbacks){
 
         //db.child("User").orderByChild("uemail").equalTo(Uemail).
@@ -149,6 +163,7 @@ public class FirebaseHelper {
 
                     User user = ds.getValue(User.class);
 
+                    //LOG TEST
                     Log.d("User-name", user.getUname());
 
                     userCallbacks.onUserCallback(user);
