@@ -176,7 +176,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dst_lng = intent.getDoubleExtra("ResLng",0.0);
 
         if (dst_lat!=0.0 && dst_lng!=0.0){
-            conditionFunction();
+            conditionFunction("driving");
         }
 
         // on click listener for walk mode
@@ -184,7 +184,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 conditionCheckWalk = true;
-                conditionFunction();
+                conditionFunction("walking");
 
             }
         });
@@ -197,7 +197,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                 conditionCheckWalk = false;
-                conditionFunction();
+                conditionFunction("bicycling");
                 }
         });
 
@@ -209,14 +209,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * @param dest: take user's converted latlang from the entered string
      * @return: which gives the whole url
      */
-    private String getUrl(LatLng origin, LatLng dest) {
+    private String getUrl(LatLng origin, LatLng dest, String travel_mode) {
+        String mode = "mode=" + travel_mode + "&";
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;           // Origin of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;            // Destination of route
         String sensor = "sensor=false";                                                     // Sensor enabled
-        String parameters = str_origin + "&" + str_dest + "&" + sensor;                     // Building the parameters to the web service
+        String parameters = mode + str_origin + "&" + str_dest + "&" + sensor;                     // Building the parameters to the web service
         String output = "json";                                                             // Output format
         // Building the url to the web service
-//        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
         String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
         return url;
     }
@@ -643,7 +643,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
      */
 
-    public void conditionFunction(){
+    public void conditionFunction(String travel_mode){
         mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
 
@@ -653,7 +653,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         // Getting URL to the Google Directions API
-        String url = getUrl(origin, dest);
+        String url = getUrl(origin, dest, travel_mode);
         Log.d("onMapClick", url.toString());
         FetchUrl FetchUrl = new FetchUrl();
 
