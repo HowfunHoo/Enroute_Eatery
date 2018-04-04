@@ -98,7 +98,7 @@ public class PreferenceTabsActivity extends AppCompatActivity {
 
                 }
                 view.setVisibility(View.GONE);
-                Toast.makeText(PreferenceTabsActivity.this,Preference, Toast.LENGTH_LONG).show();
+//                Toast.makeText(PreferenceTabsActivity.this,Preference, Toast.LENGTH_LONG).show();
                 return true;
             }
         });
@@ -106,9 +106,6 @@ public class PreferenceTabsActivity extends AppCompatActivity {
         btn_submit1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                FirebaseUser userInstance= firebaseAuth.getCurrentUser();
-
                 Log.d("Preference1", Preference);
 
                 if (Preference.isEmpty()){

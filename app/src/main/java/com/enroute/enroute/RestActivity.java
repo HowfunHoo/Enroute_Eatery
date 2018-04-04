@@ -87,11 +87,6 @@ public class RestActivity extends AppCompatActivity {
                 Log.d(TAG, "onMenuItemClick: clicked menu item"+item);
 
                 switch (item.getItemId()){
-                    case R.id.profile_edit:
-                        Log.d(TAG, "onMenuItemClick: edit the profile");
-                        Intent editintent=new Intent(getApplicationContext(),UserEditActivity.class);
-                        startActivity(editintent);
-                        break;
                     case R.id.profile_signout:
                         Log.d(TAG, "onMenuItemClick: signout");
                         firebaseAuth.signOut();

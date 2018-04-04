@@ -94,6 +94,11 @@ public class UserSignUpActivity extends AppCompatActivity {
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
+                else if (et_SignUp_Email.toString().contains("@")){
+                    Toast.makeText(UserSignUpActivity.this,
+                            "Your email is illegal",
+                            Toast.LENGTH_SHORT).show();
+                }
                 else if(et_SignUp_Password.length()<6){
                     Toast.makeText(UserSignUpActivity.this,
                             "Your password will need at least 6 number",

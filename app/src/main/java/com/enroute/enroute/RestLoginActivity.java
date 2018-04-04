@@ -74,6 +74,11 @@ public class RestLoginActivity extends AppCompatActivity {
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
+                else if (et_RLogin_Email.toString().contains("@")){
+                    Toast.makeText(RestLoginActivity.this,
+                            "Your email is illegal",
+                            Toast.LENGTH_SHORT).show();
+                }
                 else if(et_RLogin_Password.length()<6){
                     Toast.makeText(RestLoginActivity.this,
                             "Your password will need at least 6 number",

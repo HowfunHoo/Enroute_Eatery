@@ -35,6 +35,9 @@ import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.Set;
 
+/**
+ * This activity used for new user to initialize user information
+ */
 public class UserSubmitInfoActivity extends AppCompatActivity {
 
     //navigation helper
@@ -52,12 +55,6 @@ public class UserSubmitInfoActivity extends AppCompatActivity {
     private EditText et_info_phone;
     private Button btn_submit;
     private TextView username;
-
-
-//    //test
-//
-//    private TabLayout mTabLayout;
-//    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +106,7 @@ public class UserSubmitInfoActivity extends AppCompatActivity {
         });
 
     }
+
 
     //setup button navigation
     private void setupBottomNavigationView(){

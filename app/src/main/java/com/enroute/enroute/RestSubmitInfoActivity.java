@@ -25,7 +25,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 public class RestSubmitInfoActivity extends AppCompatActivity {
 
     //navigation helper
-    private static final String TAG = "UserSubmitInfoActivity";
+    private static final String TAG = "RestSubmitInfoActivity";
     private Context mcontext=RestSubmitInfoActivity.this;
     private static final int ACTIVITY_NUM=3;
 
@@ -56,36 +56,50 @@ public class RestSubmitInfoActivity extends AppCompatActivity {
 
         //firebase
         firebaseAuth=FirebaseAuth.getInstance();
-        FirebaseUser userInstance= firebaseAuth.getCurrentUser();
+        FirebaseUser user= firebaseAuth.getCurrentUser();
+        Log.d("CURUSR", String.valueOf(user));
         databaseReference= FirebaseDatabase.getInstance().getReference();
         firebasehelper = new FirebaseHelper(databaseReference);
-        final String Bemail=userInstance.getEmail();
-        final String Uid = userInstance.getUid();
 
-        Bname=et_Rinfo_name.getText().toString();
-        Bphone=et_Rinfo_phone.getText().toString();
+//        final String Uid = user.getUid();
+        final String Bemail=user.getEmail();
+
+
+        databaseReference= FirebaseDatabase.getInstance().getReference();
+
         //if not login
         //jump to login
         if(firebaseAuth.getCurrentUser()==null){
             finish();
             startActivity(new Intent(this,RestLoginActivity.class));
         }
-
         //set welcome message
         username=(TextView)findViewById(R.id.profile_bar_name);
-        username.setText("Welcome "+ userInstance.getEmail());
+        username.setText("Welcome "+ user.getEmail());
 
+
+        Intent intent = new Intent(RestSubmitInfoActivity.this, PreferenceTabsActivity.class);
+        intent.putExtra("Bname", et_Rinfo_name.getText().toString());
+        intent.putExtra("Bphone", et_Rinfo_phone.getText().toString());
+
+        Bname=et_Rinfo_name.getText().toString();
+        Bphone=et_Rinfo_phone.getText().toString();
+
+//        Intent intent = this.getIntent();
+        final String Bname = intent.getStringExtra("Bname");
+        final String Bphone = intent.getStringExtra("Bphone");
         btn_Rsubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (et_Rinfo_name.getText().length()>0 && et_Rinfo_phone.getText().length()>0){
-//
+
                     Business business=new Business(Bemail,Bname,Bphone);
-                    if(firebasehelper.saveBusiness(business));
+                    firebasehelper.saveBusiness(business);
 //                    databaseReference.child("Business").push().setValue(business);
-//                    databaseReference.child("Business").child(Uid).setValue(business);
-                    { finish();
-                    startActivity(new Intent(new Intent(getApplicationContext(),RestActivity.class)));}
+                    Toast.makeText(RestSubmitInfoActivity.this,"Infomation saved",Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(new Intent(new Intent(getApplicationContext(),RestActivity.class)));
+
                 }
                 else {
                     Toast.makeText(RestSubmitInfoActivity.this, "All blanks should be filled!", Toast.LENGTH_SHORT).show();

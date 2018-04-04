@@ -71,6 +71,11 @@ public class RestSignUpActivity extends AppCompatActivity {
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
+                else if (et_RSignUp_Email.toString().contains("@") ){
+                    Toast.makeText(RestSignUpActivity.this,
+                            "Your email is illegal",
+                            Toast.LENGTH_SHORT).show();
+                }
                 else if(et_RSignUp_Password.length()<6){
                     Toast.makeText(RestSignUpActivity.this,
                             "Your password will need at least 6 number",
@@ -89,8 +94,9 @@ public class RestSignUpActivity extends AppCompatActivity {
                                                 Toast.makeText(RestSignUpActivity.this,
                                                         "Sign Up successful",
                                                         Toast.LENGTH_SHORT).show();
+                                                Intent loginintent= new Intent(getApplicationContext(),RestSubmitInfoActivity.class);
                                                 finish();
-                                                startActivity(new Intent(getApplicationContext(),RestSubmitInfoActivity.class));
+                                                startActivity(loginintent);
                                             }
                                             else{
                                                 Toast.makeText(RestSignUpActivity.this,
@@ -100,9 +106,6 @@ public class RestSignUpActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
-                    finish();
-                    Intent loginintent= new Intent(getApplicationContext(),RestSubmitInfoActivity.class);
-                    startActivity(loginintent);
                 }
 
             }
