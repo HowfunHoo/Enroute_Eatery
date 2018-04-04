@@ -55,7 +55,7 @@ public class UserSignUpActivity extends AppCompatActivity {
 
         //ui component
         btn_sign_up=(Button)findViewById(R.id.btn_sign_up);
-        btn_login_link=(Button)findViewById(R.id.btn_signup_link);
+        btn_login_link=(Button)findViewById(R.id.btn_login_link);
 
         et_SignUp_Email=(EditText)findViewById(R.id.signUpEmail);
         et_SignUp_Password=(EditText)findViewById(R.id.signUpPassword);
@@ -68,37 +68,37 @@ public class UserSignUpActivity extends AppCompatActivity {
         setupBottomNavigationView();
         firebaseAuth = FirebaseAuth.getInstance();
 
-        //if already login
-        //jump to activity page
-//        if(firebaseAuth.getCurrentUser() != null){
-//            finish();
-//            Intent userlogin= new Intent(getApplicationContext(),UserActivity.class);
-//            startActivity(userlogin);
-//        }
+//        if already login
+//        jump to activity page
+        if(firebaseAuth.getCurrentUser() != null){
+            finish();
+            Intent userlogin= new Intent(getApplicationContext(),UserActivity.class);
+            startActivity(userlogin);
+        }
 
 
-//        btn_sign_up.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent loginintent= new Intent(getApplicationContext(),UserActivity.class);
-//                startActivity(loginintent);
-//            }
-//        });
+        btn_login_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                Intent loginintent= new Intent(getApplicationContext(),UserLoginActivity.class);
+                startActivity(loginintent);
+            }
+        });
 
         btn_sign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkpasswordempty()){
-                    Toast.makeText(UserSignUpActivity.this,
-                            "please enter password",
-                            Toast.LENGTH_SHORT).show();
-                }
                 if(checkemailempty()){
                     Toast.makeText(UserSignUpActivity.this,
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
-
+                else if(et_SignUp_Password.length()<6){
+                    Toast.makeText(UserSignUpActivity.this,
+                            "Your password will need at least 6 number",
+                            Toast.LENGTH_SHORT).show();
+                }
                 else{
                     progressDialog.setMessage("sign...up...");
                     progressDialog.show();

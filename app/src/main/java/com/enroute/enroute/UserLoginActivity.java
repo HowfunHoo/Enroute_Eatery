@@ -95,17 +95,22 @@ public class UserLoginActivity extends AppCompatActivity {
         btn_Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkpasswordempty()){
-                    Toast.makeText(UserLoginActivity.this,
-                            "please enter password",
-                            Toast.LENGTH_SHORT).show();
-                }
                 if(checkemailempty()){
                     Toast.makeText(UserLoginActivity.this,
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
-
+                else if(et_LoginPassword.length()<6){
+                    Toast.makeText(UserLoginActivity.this,
+                            "Your password will need at least 6 number",
+                            Toast.LENGTH_SHORT).show();
+                }
+                //TODO Vertify email
+//                if(!isEmail(et_LoginEmail.toString())){
+//                    Toast.makeText(UserLoginActivity.this,
+//                            "Please input a legal email",
+//                            Toast.LENGTH_SHORT).show();
+//                }
                 else{
                     progressDialog.setMessage("Log...in...");
                     progressDialog.show();
@@ -183,6 +188,15 @@ public class UserLoginActivity extends AppCompatActivity {
         else empty=false;
 
         return empty;
+    }
+
+    public static boolean isEmail(String strEmail) {
+        String strPattern = "^[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$";
+        if (TextUtils.isEmpty(strPattern)) {
+            return false;
+        } else {
+            return strEmail.matches(strPattern);
+        }
     }
 
     private void setupBottomNavigationView(){

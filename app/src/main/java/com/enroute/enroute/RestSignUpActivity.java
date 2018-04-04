@@ -54,7 +54,7 @@ public class RestSignUpActivity extends AppCompatActivity {
 
         //ui component
         btn_Rsign_up=(Button)findViewById(R.id.btn_Rsign_up);
-        btn_Rlogin_link=(Button)findViewById(R.id.btn_Rsignup_link);
+        btn_Rlogin_link=(Button)findViewById(R.id.btn_Rlogin_link);
         et_RSignUp_Email=(EditText)findViewById(R.id.RsignUpEmail) ;
         et_RSignUp_Password=(EditText)findViewById(R.id.RsignUpPassword) ;
         progressDialog=new ProgressDialog(this);
@@ -66,14 +66,14 @@ public class RestSignUpActivity extends AppCompatActivity {
         btn_Rsign_up.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkpasswordempty()){
-                    Toast.makeText(RestSignUpActivity.this,
-                            "please enter password",
-                            Toast.LENGTH_SHORT).show();
-                }
                 if(checkemailempty()){
                     Toast.makeText(RestSignUpActivity.this,
                             "please enter email",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else if(et_RSignUp_Password.length()<6){
+                    Toast.makeText(RestSignUpActivity.this,
+                            "Your password will need at least 6 number",
                             Toast.LENGTH_SHORT).show();
                 }
                 else{
@@ -107,13 +107,14 @@ public class RestSignUpActivity extends AppCompatActivity {
             }
         });
 
-//        btn_login_link.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view2) {
-//                Intent tologinintent= new Intent(getApplicationContext(),UserActivity.class);
-//                startActivity(tologinintent);
-//            }
-//        });
+        btn_Rlogin_link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view2) {
+                finish();
+                Intent tologinintent= new Intent(getApplicationContext(),RestLoginActivity.class);
+                startActivity(tologinintent);
+            }
+        });
 
     }
 

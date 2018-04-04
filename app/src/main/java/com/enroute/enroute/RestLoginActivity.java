@@ -69,17 +69,16 @@ public class RestLoginActivity extends AppCompatActivity {
         btn_RLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkpasswordempty()){
-                    Toast.makeText(RestLoginActivity.this,
-                            "please enter password",
-                            Toast.LENGTH_SHORT).show();
-                }
                 if(checkemailempty()){
                     Toast.makeText(RestLoginActivity.this,
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
-
+                else if(et_RLogin_Password.length()<6){
+                    Toast.makeText(RestLoginActivity.this,
+                            "Your password will need at least 6 number",
+                            Toast.LENGTH_SHORT).show();
+                }
                 else{
                     progressDialog.setMessage("Log...in...");
                     progressDialog.show();
