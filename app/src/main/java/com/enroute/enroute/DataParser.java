@@ -14,7 +14,7 @@ import java.util.List;
  *
  * This class is intended for parsing the data and gives back the result
  *
- *Programmers: Nirav Jadeja, Abhishek Singh
+ * Programmers: Nirav Jadeja, Abhishek Singh
  * Reference:
  * 1. https://www.mytrendin.com/draw-route-two-locations-google-&maps-android/
  */

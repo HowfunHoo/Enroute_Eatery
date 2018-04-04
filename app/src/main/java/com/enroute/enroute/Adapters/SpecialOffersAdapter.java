@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 /**
  * This Adapter is to be bound with the listview showing special offers
+ * @author Haofan Hou
  */
 public class SpecialOffersAdapter extends BaseAdapter{
 

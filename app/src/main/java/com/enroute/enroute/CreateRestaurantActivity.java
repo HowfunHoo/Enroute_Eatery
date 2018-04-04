@@ -19,6 +19,7 @@ import java.util.Random;
 
 /**
  * This Activity is to create a new restaurant which can be showed in special offer list
+ * @author Haofan Hou
  */
 public class CreateRestaurantActivity extends AppCompatActivity {
 
