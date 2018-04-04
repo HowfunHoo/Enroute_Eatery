@@ -80,7 +80,6 @@ public class UserLoginActivity extends AppCompatActivity {
 
         progressDialog=new ProgressDialog(this);
 
-
         //firebase authentication
         mAuth = FirebaseAuth.getInstance();
 

@@ -640,12 +640,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 //        LatLng origin = new LatLng(44.642750, -63.578449);
 
-        LatLng origin = new LatLng(44.636581, -63.591656);
+//        LatLng origin = new LatLng(44.636581, -63.591656);
 
 //        LatLng dest = new LatLng(44.643875, -63.578472);
 
         //set the destination as the selected preferred restaurant
-        LatLng dest = new LatLng(dst_lat, dst_lng);
+//        LatLng dest = new LatLng(dst_lat, dst_lng);
 
 
         // Getting URL to the Google Directions API

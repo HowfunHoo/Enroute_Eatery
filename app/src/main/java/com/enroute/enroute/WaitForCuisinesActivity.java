@@ -8,12 +8,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.enroute.enroute.ZomatoHelpers.ZomatoHelper;
 import com.enroute.enroute.interfaces.CuisineCallbacks;
 import com.enroute.enroute.model.Cuisine;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.json.JSONArray;
@@ -34,6 +37,9 @@ public class WaitForCuisinesActivity extends AppCompatActivity {
     //SharedPreference
     public SharedPreferences sharedPreferences;
 
+    FirebaseAuth firebaseAuth;
+
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +49,30 @@ public class WaitForCuisinesActivity extends AppCompatActivity {
 
         String preference= "";
 
-        sharedPreferences = getSharedPreferences("cur_user",0);
+        //firebase
+        firebaseAuth= FirebaseAuth.getInstance();
+
+        //get current user
+        FirebaseUser currentUser= firebaseAuth.getCurrentUser();
 
         //Determine if the user has logged in
-        if (sharedPreferences==null){
+        if (currentUser == null){
             Toast.makeText(WaitForCuisinesActivity.this,
                     "We need your info. to recommend restaurants for you.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(WaitForCuisinesActivity.this,
                     UserLoginActivity.class);
-            finish();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
+
         }else {
+            sharedPreferences = getSharedPreferences("cur_user",0);
+
             preference = sharedPreferences.getString("cur_uprefer", "default");
+
+            if (preference.equals("")){
+                textView.setText("Seems like you haven't selected your preference");
+            }
         }
 
 

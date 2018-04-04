@@ -56,6 +56,9 @@ public class PreferenceTabsActivity extends AppCompatActivity {
         //firebase
         firebaseAuth=FirebaseAuth.getInstance();
         FirebaseUser user= firebaseAuth.getCurrentUser();
+
+        final String Uid = user.getUid();
+
         databaseReference= FirebaseDatabase.getInstance().getReference();
 
         //link ui
@@ -108,7 +111,9 @@ public class PreferenceTabsActivity extends AppCompatActivity {
 
                 User user=new User(Uemail,Uname,Uphone,Preference);
 
-                databaseReference.child("User").push().setValue(user);
+
+
+                databaseReference.child("User").child(Uid).push().setValue(user);
 
                 startActivity(new Intent(getApplicationContext(),UserActivity.class));
 
