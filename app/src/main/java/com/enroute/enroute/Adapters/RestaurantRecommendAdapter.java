@@ -3,6 +3,7 @@ package com.enroute.enroute.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.support.v4.widget.CircularProgressDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ public class RestaurantRecommendAdapter extends BaseAdapter{
 
     private Context context;
     private ArrayList<Restaurant> restaurants;
-
+    
     public RestaurantRecommendAdapter(Context context, ArrayList<Restaurant> restaurants) {
         this.context = context;
         this.restaurants = restaurants;

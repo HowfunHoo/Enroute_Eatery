@@ -79,7 +79,7 @@ public class SpecialOffersAdapter extends BaseAdapter{
 
         //If the restaurant cannot be paid with Dalcard, make iv_dalcard and tv_rdalcard invisible
         if (!restaurant.getRdalcard()){
-            iv_dalcard.setVisibility(View.INVISIBLE);
+            iv_dalcard.setVisibility(View.GONE);
             tv_rdalcard.setVisibility(View.INVISIBLE);
         }
 
