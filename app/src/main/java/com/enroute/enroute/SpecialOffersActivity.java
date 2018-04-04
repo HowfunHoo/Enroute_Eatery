@@ -18,6 +18,9 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.ArrayList;
 
+/**
+ * This activity is to list the special offers
+ */
 public class SpecialOffersActivity extends AppCompatActivity {
 
     DatabaseReference db;
@@ -42,8 +45,7 @@ public class SpecialOffersActivity extends AppCompatActivity {
 
         firebasehelper=new FirebaseHelper(db);
 
-        //TEST
-
+        //retrieve restaurant
         firebasehelper.retrieveRestaurant(new RestaurantCallbacks() {
             @Override
             public void onRestaurantCallback(ArrayList<Restaurant> restaurants) {
@@ -54,11 +56,12 @@ public class SpecialOffersActivity extends AppCompatActivity {
             }
         });
 
-
     }
-    private void setupBottomNavigationView(){
 
-//        Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
+    /**
+     * A method to display the bottom navigation bar
+     */
+    private void setupBottomNavigationView(){
 
         BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.buttomNavViewbar);
         BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);

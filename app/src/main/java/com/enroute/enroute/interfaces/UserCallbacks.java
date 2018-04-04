@@ -5,9 +5,8 @@ import com.enroute.enroute.model.User;
 import java.util.ArrayList;
 
 /**
- * Created by haoyu on 2018/4/2.
+ * This interface callbacks the a User instance from searching user in Firebase
  */
-
 public interface UserCallbacks {
 
     void onUserCallback(User user);
