@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,18 +27,28 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.enroute.enroute.DBHelper.FirebaseHelper;
 import com.enroute.enroute.interfaces.UserCallbacks;
 import com.enroute.enroute.model.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class UserActivity extends AppCompatActivity {
 
@@ -51,6 +62,7 @@ public class UserActivity extends AppCompatActivity {
     protected static Uri tempUri;
     private ImageView iv_personal_icon;
     private PicPopup menuWindow;
+    FirebaseUser currentUser;
 
     private FirebaseAuth firebaseAuth;
     private TextView username;
@@ -59,6 +71,10 @@ public class UserActivity extends AppCompatActivity {
     FirebaseHelper firebasehelper;
     private int count = 0;
     private String Uemail;
+    private File destDir;
+
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
     //Shaerpreferences
     public SharedPreferences sharedPreferences;
@@ -79,9 +95,14 @@ public class UserActivity extends AppCompatActivity {
         firebaseAuth=FirebaseAuth.getInstance();
 
         //get current user
-        FirebaseUser currentUser= firebaseAuth.getCurrentUser();
+         currentUser= firebaseAuth.getCurrentUser();
 
         sharedPreferences = getSharedPreferences("cur_user",0);
+
+        //storage of firebase
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+        StorageReference pathReference = storageReference.child("images");
 
         //if not login,jup to login activity
         if(currentUser == null){
@@ -126,7 +147,7 @@ public class UserActivity extends AppCompatActivity {
         });
 
 
-        File destDir = new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon");
+         destDir = new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon");
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
@@ -145,11 +166,25 @@ public class UserActivity extends AppCompatActivity {
         });
 
 
+
+
         if (destDir.exists() && destDir.isDirectory()) {
             if (destDir.list().length > 0) {
-                Bitmap bitmap = BitmapFactory.decodeFile(destDir.toString() + "/image_icon.png");
-                iv_personal_icon.setImageBitmap(bitmap);
-            } else {
+                pathReference.child(currentUser.getUid()).getFile(destDir).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(destDir.toString()+ "/image_icon.png");
+                        iv_personal_icon.setImageBitmap(bitmap);
+
+                    }
+            }) .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
+
+            }else {
                 iv_personal_icon.setBackgroundResource(R.drawable.default_personal_image);
             }
         }
@@ -233,6 +268,7 @@ public class UserActivity extends AppCompatActivity {
             photo = Utils.toRoundBitmap(photo, tempUri);
             iv_personal_icon.setImageBitmap(photo);
             uploadPic(photo);
+            uploadImage();
         }
     }
 
@@ -246,6 +282,40 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
+    private void uploadImage() {
+
+        if(tempUri != null)
+        {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            StorageReference ref = storageReference.child("images/"+ currentUser.getUid().toString() );
+            ref.putFile(tempUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Toast.makeText(UserActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(UserActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                    .getTotalByteCount());
+                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                        }
+                    });
+        }
+    }
 
     static void deleteAllFiles(File root) {
         File files[] = root.listFiles();
@@ -286,7 +356,7 @@ public class UserActivity extends AppCompatActivity {
                         break;
                     case R.id.profile_signout:
                         Log.d(TAG, "onMenuItemClick: signout");
-                        deleteAllFiles(new File(Environment.getExternalStorageDirectory()+"/AndroidPersonal_icon"));
+//                        deleteAllFiles(new File(Environment.getExternalStorageDirectory()+"/AndroidPersonal_icon"));
                         firebaseAuth.signOut();
                         sharedPreferences.edit().clear().apply();
                         finish();
