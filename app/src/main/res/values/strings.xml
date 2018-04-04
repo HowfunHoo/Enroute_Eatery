@@ -8,7 +8,7 @@
     <string name="btn_link_to_login"><u>Already have an Account? Sign in</u></string>
     <string name="btn_rest"><u>Login as a restaurant</u></string>
     <string name="submit_succ">Submit Successful!</string>
-
+    <string name="busi_add_rest">Apply for a restaurant</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 

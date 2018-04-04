@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.enroute.enroute.interfaces.RestaurantCallbacks;
 import com.enroute.enroute.interfaces.UserCallbacks;
+import com.enroute.enroute.model.Business;
 import com.enroute.enroute.model.Restaurant;
 import com.enroute.enroute.model.User;
 import com.google.firebase.database.ChildEventListener;
@@ -50,17 +51,17 @@ public class FirebaseHelper {
 
         return saved;
     }
-    public Boolean saveUser(User user)
+    public Boolean saveBusiness(Business business)
     {
         Boolean saved = null;
-        if(user==null)
+        if(business==null)
         {
             saved = false;
         }else
         {
             try
             {
-                db.child("User").push().setValue(user);
+                db.child("Business").push().setValue(business);
                 saved =true;
 
             }catch (DatabaseException e)

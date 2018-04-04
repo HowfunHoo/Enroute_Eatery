@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,19 +25,25 @@ import com.google.firebase.auth.FirebaseUser;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class RestActivity extends AppCompatActivity {
-
+    //set navigation bar
     private static final String TAG = "RestActivity";
     private Context mcontext=RestActivity.this;
     private static final int ACTIVITY_NUM=3;
 
+    //firebase
     private FirebaseAuth firebaseAuth;
+    //ui
     private TextView username;
+    private Button btn_busi_add_rest;
+    private TextView rest_info_email;
+    private TextView rest_info_phone;
+    private TextView rest_info_name;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+        setContentView(R.layout.activity_rest);
 
         //firebase
         firebaseAuth=FirebaseAuth.getInstance();
@@ -46,6 +54,11 @@ public class RestActivity extends AppCompatActivity {
         username.setText("Welcome "+ user.getEmail());
 
         //set ui
+        btn_busi_add_rest=(Button)findViewById(R.id.btn_busi_add_rest) ;
+        rest_info_email=(TextView)findViewById(R.id.rest_email);
+        rest_info_phone=(TextView)findViewById(R.id.rest_phone);
+        rest_info_name=(TextView)findViewById(R.id.rest_name);
+
         setupBottomNavigationView();
         setupToolBar();
 
@@ -54,10 +67,13 @@ public class RestActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, RestLoginActivity.class));
         }
-
-        Log.d(TAG, "onCreate: started");
-
-
+        btn_busi_add_rest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                startActivity(new Intent(getApplicationContext(),CreateRestaurantActivity.class));
+            }
+        });
 
     }
     private void setupToolBar(){

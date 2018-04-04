@@ -77,7 +77,7 @@ public class RestSignUpActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    progressDialog.setMessage("Log...in...");
+                    progressDialog.setMessage("Sign...up...");
                     progressDialog.show();
                     firebaseAuth.createUserWithEmailAndPassword(et_RSignUp_Email.getText().toString()
                             ,et_RSignUp_Password.getText().toString())
@@ -90,7 +90,7 @@ public class RestSignUpActivity extends AppCompatActivity {
                                                         "Sign Up successful",
                                                         Toast.LENGTH_SHORT).show();
                                                 finish();
-                                                startActivity(new Intent(getApplicationContext(),UserActivity.class));
+                                                startActivity(new Intent(getApplicationContext(),RestSubmitInfoActivity.class));
                                             }
                                             else{
                                                 Toast.makeText(RestSignUpActivity.this,
@@ -100,8 +100,9 @@ public class RestSignUpActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
-//                    Intent loginintent= new Intent(getApplicationContext(),RestActivity.class);
-//                    startActivity(loginintent);
+                    finish();
+                    Intent loginintent= new Intent(getApplicationContext(),RestSubmitInfoActivity.class);
+                    startActivity(loginintent);
                 }
 
             }

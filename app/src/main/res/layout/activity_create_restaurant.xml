@@ -103,6 +103,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:textColor="@color/white"
+            android:background="@color/main"
             android:layout_below="@+id/cb_rdalcard"
             android:layout_marginEnd="153dp"
             android:layout_marginTop="25dp"

@@ -1,5 +1,6 @@
 package com.enroute.enroute;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -98,7 +99,8 @@ public class CreateRestaurantActivity extends AppCompatActivity {
                         tv_title1.setVisibility(View.GONE);
 
                         tv_tip.setVisibility(View.VISIBLE);
-
+                        finish();
+                        startActivity(new Intent(getApplicationContext(),RestActivity.class));
                     }
                 }else
                 {
