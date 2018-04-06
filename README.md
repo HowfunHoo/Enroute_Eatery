@@ -2,7 +2,6 @@
 One paragraph to describe your project. Your description should include the project concept and key features implemented.
 
 ## Libraries
-Provide a list of **ALL** the libraries you used for your project. Example:
 
 **google-gson:** Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. Source [here](https://github.com/google/gson)
 
@@ -113,19 +112,21 @@ Write a description of the final status of the project. Did you achieve all your
 - Providing the notifications which state about offers even a user is not using the application (Completed)
 - Provides route suggestion in case of no nearby restaurants found (Not Implemented)
 - It provides recent offers of numerous restaurants which also reveals various payment accepting offers including DAL card (Completed)
-
+#### Next step for this project (if it were to continue)
+- Add pictures for the suggested restaurants
 
 ## Sources
-Use IEEE citation style.
-What to include in your project sources:
-- Stock images
-- Design guides
-	 https://developer.android.com/reference/android/support/design/widget/BottomNavigationView.html
-- Programming tutorials
-- Research material
-- Android libraries
-- Everything listed on the Dalhousie [*Plagiarism and Cheating*](https://www.dal.ca/dept/university_secretariat/academic-integrity/plagiarism-cheating.html)
-- Remember AC/DC *Always Cite / Don't Cheat* (see Lecture 0 for more info)
-
 [1]"Getting Bitmap or Drawable based on the url of pictures", Blog.csdn.net, 2017. [Online]. Available: https://blog.csdn.net/sinat_21376777/article/details/75157912. [Accessed: 01- Apr- 2018].  
-[2]"Lab 6", Dal.brightspace.com, 2018. [Online]. Available: https://dal.brightspace.com/d2l/le/content/68186/viewContent/939768/View. [Accessed: 01- Apr- 2018].  
+[2]"Lab 6", Dal.brightspace.com, 2018. [Online]. Available: https://dal.brightspace.com/d2l/le/content/68186/viewContent/939768/View. [Accessed: 01- Apr- 2018].   
+[3]"Build an Instagram Clone", Youtube.com, 2017. [Online]. Available:  
+https://www.youtube.com/watch?v=qpJRgr6HzAw&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=1. [Accessed: 30- Mar- 2018].  
+[4]"What to eat", Osun.com, 2017. [Online]. Avialable:  
+https://www.osun.life/2017/07/22/where-to-eat/. [Accessed: 02- Apr- 2018].  
+[5]"Eatery", Urbaneatery.com, 2017. [Online]. Available:  
+http://www.urbaneatery.co.ke/. [Accessed: 02- Apr- 2018].
+
+[6]"How to Upload Images to Firebase from an Android App", code.tutsplus.com, 2017. [Online]. Available: 
+https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934. [Accessed: 02- Apr- 2018].
+
+[7]"the functionality of head image chosen by Android development" blog.csdn.net, 2017. [Online]. Available: 
+https://blog.csdn.net/qq_31546677/article/details/75667163. [Accessed: 26- Mar- 2018].
