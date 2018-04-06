@@ -6,15 +6,11 @@ Provide a list of **ALL** the libraries you used for your project. Example:
 
 **google-gson:** Gson is a Java library that can be used to convert Java Objects into their JSON representation. It can also be used to convert a JSON string to an equivalent Java object. Source [here](https://github.com/google/gson)
 
-**com.google.android.gms**
-
-**firebase:**
-
-**Zomato API**
+**Zomato API:** Zomato APIs provides detailed information of over 1.5 million restaurants across 10,000 cities globally. Source [here](https://developers.zomato.com/api)  
 
 **com.github.ittianyu:BottomNavigationViewEx:** The bottom navigation view that Android Studio provide has defult animation. T cancel the defult animation. Source [here](https://www.youtube.com/watch?v=QXy_kkQM2Kc&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=3)
 
-**de.hdodenhof:circleimageview:** This package used to cut an image into circle to present the head portrait. Source [here](https://github.com/hdodenhof/CircleImageView)
+**de.hdodenhof:circleimageview:** This package used to cut an image into circle to present the head portrait. Source [here](https://github.com/hdodenhof/CircleImageView)  
 
 **com.hyman:flowlayout-lib:** A layout package to provide flow layout to configurate preference labels. Source [here](https://github.com/hongyangAndroid/FlowLayout)
 
@@ -22,6 +18,9 @@ Provide a list of **ALL** the libraries you used for your project. Example:
 
 **org.apache.httpcomponents**
 
+**com.google.android.gms**
+
+**firebase:**
 
 
 ## Installation Notes
@@ -35,7 +34,7 @@ You will encounter roadblocks and problems while developing your project. Share 
 In order to show the special offer information of the restaurants, we need to store and retrieve data from Firebase Database. The challenge for this problem is that the retrieving operations with Firebase Database are synchronous. Thus, the list view always shows nothing because the data has not been retrieved when the adapter works. In this case, we studied many solutions and finally used Callbacks to address this problem.  
 ```
 // The method to retrieve restaurant information from Firebase DB and use Callback interface to send it to the adapter
- public void retrieveRestaurant(final RestaurantCallbacks restaurantCallbacks) {
+public void retrieveRestaurant(final RestaurantCallbacks restaurantCallbacks) {
 
 	db.addChildEventListener(new ChildEventListener() {
 	    @Override
@@ -92,7 +91,7 @@ The application mainly used four features:
 - Network
 - Geo-location 
 - Storage (Local & Cloud)
-- Camera
+- Camera (Only works for Android 6.0)
 
 
 ## Final Project Status
