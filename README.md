@@ -124,7 +124,9 @@ https://www.youtube.com/watch?v=qpJRgr6HzAw&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUA
 https://www.osun.life/2017/07/22/where-to-eat/. [Accessed: 02- Apr- 2018].  
 [5]"Eatery", Urbaneatery.com, 2017. [Online]. Available:  
 http://www.urbaneatery.co.ke/. [Accessed: 02- Apr- 2018].
+
 [6]"How to Upload Images to Firebase from an Android App", code.tutsplus.com, 2017. [Online]. Available: 
 https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934. [Accessed: 02- Apr- 2018].
+
 [7]"the functionality of head image chosen by Android development" blog.csdn.net, 2017. [Online]. Available: 
 https://blog.csdn.net/qq_31546677/article/details/75667163. [Accessed: 26- Mar- 2018].
