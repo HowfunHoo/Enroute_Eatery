@@ -52,8 +52,12 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * Activity
+ * Activity for show profile of uers
+ * this activity also include user head image editing function, and image upload, download from firebase
  * @author:YouranZhang,HaoyuSun
+ * Reference:
+ * 6.https://blog.csdn.net/qq_31546677/article/details/75667163
+ * 7.https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934
  */
 public class UserActivity extends AppCompatActivity {
 
@@ -61,6 +65,7 @@ public class UserActivity extends AppCompatActivity {
     private Context mcontext=UserActivity.this;
     private static final int ACTIVITY_NUM=3;
 
+    //create those variables for camera and storage functions.
     protected static final int CHOOSE_PICTURE = 0;
     protected static final int TAKE_PICTURE = 1;
     private static final int CROP_SMALL_PICTURE = 2;
@@ -77,7 +82,7 @@ public class UserActivity extends AppCompatActivity {
     private int count = 0;
     private String Uemail;
 
-
+    //firebase storage
     FirebaseStorage storage;
     StorageReference storageReference;
 
@@ -151,7 +156,7 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-
+        //create a empty file for save local image.
           File   destDir = new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon");
         if (!destDir.exists()) {
             destDir.mkdirs();
@@ -172,7 +177,7 @@ public class UserActivity extends AppCompatActivity {
 
 
 
-
+        //download head image from firebase
         if (destDir.exists() && destDir.isDirectory()) {
             if (destDir.list().length > 0) {
         try {
@@ -197,7 +202,7 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
-
+         //used for picpop window. and choose picture from either camera or storage.
     private View.OnClickListener itemsOnClick = new View.OnClickListener() {
 
         public void onClick(View v) {
@@ -245,7 +250,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
 
-    //cut put picture
+    //cut out picture
     protected void startPhotoZoom(Uri uri) {
         if (uri == null) {
             Log.i("tag", "The uri is not exist.");
@@ -265,10 +270,9 @@ public class UserActivity extends AppCompatActivity {
         startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
 
-    /**
-     * Save the changed picture
-      * @param data
-     */
+
+     //Save the changed picture and show it in device. upload picture to firebase at the sametime
+
     protected void setImageToView(Intent data) {
         Bundle extras = data.getExtras();
         if (extras != null) {
@@ -280,6 +284,7 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
+   //upload picture to local area
     private void uploadPic(Bitmap bitmap) {
 
         String imagePath = Utils.savePhoto(bitmap,
@@ -291,6 +296,7 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
+    //upload image to firebase
     private void uploadImage( ) {
 
         if(tempUri != null)
@@ -347,6 +353,8 @@ public class UserActivity extends AppCompatActivity {
 //                }
 //            }
 //    }
+
+    // the top bar for signout or intent to edit page
     private void setupToolBar(){
         Toolbar toolbar=(Toolbar)findViewById(R.id.profile_Toolbar);
         setSupportActionBar(toolbar);

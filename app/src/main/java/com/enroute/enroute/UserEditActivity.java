@@ -26,6 +26,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * An activity for edit profile page
+ * @author: HaoyuSun
+ */
+
 public class UserEditActivity extends AppCompatActivity {
     private EditText edit_Text1;
     private EditText edit_Text2;
@@ -54,6 +59,7 @@ public class UserEditActivity extends AppCompatActivity {
         a = currentUser.getUid();
         firebasehelper=new FirebaseHelper(db);
 
+        //show the original user information in the editText
         firebasehelper.retrieveUser(Uemail, new UserCallbacks() {
             @Override
             public void onUserCallback(User user){
@@ -62,7 +68,7 @@ public class UserEditActivity extends AppCompatActivity {
             }
         });
 
-
+        //if no change ,back to progile page
         bt_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,6 +77,7 @@ public class UserEditActivity extends AppCompatActivity {
             }
         });
 
+        //intent to profile page and saved the change. upload those changes to firebase.
         bt_edit2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
