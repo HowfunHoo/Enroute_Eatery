@@ -23,7 +23,9 @@ One paragraph to describe your project. Your description should include the proj
 
 
 ## Installation Notes
-Installation instructions for markers.
+The app is based on Android 8.0. Beforing running it, the SDK version need to be set as following:
+Android Studio --> File --> Project structure --> app --> Compile Sdk Version --> API 26: Android 8.0(Oreo) --> OK
+If it does not work for the first time, please try more times following the same operations.
 
 ## Code Examples
 You will encounter roadblocks and problems while developing your project. Share 2-3 'problems' that your team solved while developing your project. Write a few sentences that describe your solution and provide a code snippet/block that shows your solution. Example:
@@ -89,9 +91,7 @@ firebasehelper.retrieveRestaurant(new RestaurantCallbacks() {
 The application mainly used four features:
 - Network
 - Geo-location 
-- Storage (Local & Cloud)
-- Camera (Only works for Android 6.0)
-
+- Storage (Local & Cloud)  
 
 ## Final Project Status
 Write a description of the final status of the project. Did you achieve all your goals? What would be the next step for this project (if it were to continue)?
@@ -114,17 +114,18 @@ Write a description of the final status of the project. Did you achieve all your
 - It provides recent offers of numerous restaurants which also reveals various payment accepting offers including DAL card (Completed)
 #### Next step for this project (if it were to continue)
 - Add pictures for the suggested restaurants
+- Polishing UI
 
 ## Sources
-[1]"Getting Bitmap or Drawable based on the url of pictures", Blog.csdn.net, 2017. [Online]. Available: https://blog.csdn.net/sinat_21376777/article/details/75157912. [Accessed: 01- Apr- 2018].  
-[2]"Lab 6", Dal.brightspace.com, 2018. [Online]. Available: https://dal.brightspace.com/d2l/le/content/68186/viewContent/939768/View. [Accessed: 01- Apr- 2018].   
+[1]"Getting Bitmap or Drawable based on the url of pictures", Blog.csdn.net, 2017. [Online]. Available: https://blog.csdn.net/sinat_21376777/article/details/75157912. [Accessed: 01- Apr- 2018]  
+[2]"Lab 6", Dal.brightspace.com, 2018. [Online]. Available: https://dal.brightspace.com/d2l/le/content/68186/viewContent/939768/View. [Accessed: 01- Apr- 2018]    
 [3]"Build an Instagram Clone", Youtube.com, 2017. [Online]. Available:  
-https://www.youtube.com/watch?v=qpJRgr6HzAw&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=1. [Accessed: 30- Mar- 2018].  
+https://www.youtube.com/watch?v=qpJRgr6HzAw&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=1. [Accessed: 30- Mar- 2018]  
 [4]"What to eat", Osun.com, 2017. [Online]. Avialable:  
-https://www.osun.life/2017/07/22/where-to-eat/. [Accessed: 02- Apr- 2018].  
+https://www.osun.life/2017/07/22/where-to-eat/. [Accessed: 02- Apr- 2018]  
 [5]"Eatery", Urbaneatery.com, 2017. [Online]. Available:  
-http://www.urbaneatery.co.ke/. [Accessed: 02- Apr- 2018].
+http://www.urbaneatery.co.ke/. [Accessed: 02- Apr- 2018]  
 [6]"How to Upload Images to Firebase from an Android App", code.tutsplus.com, 2017. [Online]. Available: 
-https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934. [Accessed: 02- Apr- 2018].
+https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934. [Accessed: 02- Apr- 2018]  
 [7]"the functionality of head image chosen by Android development" blog.csdn.net, 2017. [Online]. Available: 
-https://blog.csdn.net/qq_31546677/article/details/75667163. [Accessed: 26- Mar- 2018].
+https://blog.csdn.net/qq_31546677/article/details/75667163. [Accessed: 26- Mar- 2018]. 
