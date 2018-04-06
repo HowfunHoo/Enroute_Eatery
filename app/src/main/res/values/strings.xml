@@ -1,4 +1,14 @@
 <resources>
-    <string name="app_name">enroute</string>
+    <string name="app_name">Enroute</string>
     <string name="title_activity_maps">Map</string>
+    <string name="user_profile">User Profile</string>
+    <string name="home">Home</string>
+    <string name="offers">Special Offers</string>
+    <string name="btn_link_to_signup"><u>No Account yet? Sign up</u></string>
+    <string name="btn_link_to_login"><u>Already have an Account? Sign in</u></string>
+    <string name="btn_rest"><u>Login as a business</u></string>
+    <string name="submit_succ">Submit Successful!</string>
+    <string name="busi_add_rest">Apply for a restaurant</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+
 </resources>

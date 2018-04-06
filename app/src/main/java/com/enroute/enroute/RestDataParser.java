@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * Created by SINGH on 04/03/2018.
  *
+ * This class is intended for parsing the data and gives back the result
  */
 
 public class RestDataParser {
@@ -35,8 +36,16 @@ public class RestDataParser {
                     HashMap<String, String> hm = new HashMap<>();
                     hm.put("lat", jResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lat"));
                     hm.put("lng", jResults.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getString("lng"));
-                    // Restaurant name
+                    // Name
                     hm.put("name",jResults.getJSONObject(i).getString("name"));
+                    // Address
+                    hm.put("vicinity",jResults.getJSONObject(i).getString("vicinity"));
+                    // Not all restaurants and store has Rating available
+                    if (  jResults.getJSONObject(i).has("rating"))
+                    hm.put("rating",jResults.getJSONObject(i).getString("rating"));
+                    // Not all restaurants and store has Open as of now available
+                    if ( jResults.getJSONObject(i).has("opening_hours") )
+                    hm.put("open_now",jResults.getJSONObject(i).getJSONObject("opening_hours").getString("open_now"));
 
                     path.add(hm);
                     Log.d("Inside parser class", hm.toString());

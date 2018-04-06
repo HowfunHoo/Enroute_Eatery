@@ -2,37 +2,39 @@ package com.enroute.enroute;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
-import com.enroute.enroute.DataParser;
-import com.enroute.enroute.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceLikelihood;
-import com.google.android.gms.location.places.PlaceLikelihoodBuffer;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,11 +51,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -64,19 +66,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.net.ssl.HttpsURLConnection;
 
-////
+/**
+ * References:
+ * 1. https://www.androidtutorialpoint.com/intermediate/google-maps-draw-path-two-points-using-google-directions-google-map-android-api-v2/
+ * 2. https://stackoverflow.com/questions/14710744/how-to-draw-road-directions-between-two-geocodes-in-android-google-map-v2?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+ * 3. https://stackoverflow.com/questions/28295199/android-how-to-show-route-between-markers-on-googlemaps?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+ * 4. https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
-
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
     private GoogleMap mMap;
-    PlaceAutocompleteFragment placeAutoComplete;
     ArrayList<LatLng> MarkerPoints;
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
@@ -85,32 +90,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private Button walk; // for walk mode button
     private Button cycle; // for cycle mode button
-    private EditText editText; // Edittext for user's input
 
     private LatLng currentLoc; // for getting current location
-    private LatLng newCorrdinates;
-
-    // TO be used for storing all Lat/Lang for a route
-    protected List<List<List<HashMap<String, String>>>> routesLatLangs = null;
-
-    private Double latitude;    // for user's entered location's lat
-    private Double longtitude;  // for user's entered location's long
-
     private boolean conditionCheckWalk; //for checking cycle or walk mode
 
     //lat&lng for destination
     private double dst_lat;
     private double dst_lng;
 
+    private String duration;
+    private String distance;
 
+    private boolean count_walk; // for showing multiple route - walk mode
+    private boolean count_cycle; // for showing multiple route - cycle mode
+
+    //Shaerpreferences
+    public SharedPreferences sharedPreferences;
+    public SharedPreferences.Editor editor;
+
+//    private BottomNavigationView bottomNavigationView;
+
+
+    private static final String TAG = "MapsActivity";
+    private Context mcontext=MapsActivity.this;
+    private static final int ACTIVITY_NUM=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        walk = findViewById(R.id.walk);
-        cycle = findViewById(R.id.cycle);
-        //editText = findViewById(R.id.editText1);
+        walk = findViewById(R.id.walk); // for walk
+        cycle = findViewById(R.id.cycle); // for cycle
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
@@ -135,21 +145,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
                 dst_lat = place.getLatLng().latitude;
                 dst_lng = place.getLatLng().longitude;
-                Log.i("test", "Place: " + place.getName());
-                Log.i("test", "Address: " + place.getAddress());
+                //Log.i("test", "Place: " + place.getName());
+                //Log.i("test", "Address: " + place.getAddress());
             }
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.i("test", "An error occurred: " + status);
             }
         });
-    }
 
+        setupBottomNavigationView();
+
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -169,13 +179,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
         }
 
+        //get data from RestaurantRecommendationActivity
+        Intent intent = this.getIntent();
+        dst_lat = intent.getDoubleExtra("ResLat",0.0);
+        dst_lng = intent.getDoubleExtra("ResLng",0.0);
+
+        if (dst_lat!=0.0 && dst_lng!=0.0){
+
+
+            mMap.clear();
+            /*
+            ToDo: uncomment these lines for getting possible routes,
+            main reason they are in comment as it was delaying response
+            and for safekeeping limit of google restaurants and store
+
+            conditionFunction("driving", "false");
+            conditionFunction("driving", "true");
+            */
+
+            sharedPreferences = getSharedPreferences("currentLoc",0);
+            Double cur_lat = Double.valueOf(sharedPreferences.getString("cur_lat","default"));
+            Double cur_lng = Double.valueOf(sharedPreferences.getString("cur_lng","default"));
+            currentLoc = new LatLng(cur_lat, cur_lng);
+            conditionFunction("driving", "false");
+        }
+
         // on click listener for walk mode
         walk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mMap.clear();
                 conditionCheckWalk = true;
-                conditionFunction();
+                count_walk = false;
+                conditionFunction("walking", "false"); // shows shortest route - walk mode
 
+                /*
+                ToDo: uncomment these lines for getting possible routes,
+                main reason they are in comment as it was delaying response
+                and for safekeeping limit of google restaurants and store
+
+                conditionFunction("walking", "true"); // shows alternate route - walk mode
+                */
             }
         });
 
@@ -186,49 +230,75 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         cycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mMap.clear();
                 conditionCheckWalk = false;
-                conditionFunction();
+                count_cycle = false;
+                conditionFunction("bicycling", "false"); // shows shortest route - cycle mode
+                /*
+                ToDo: uncomment these lines for getting possible routes,
+                main reason they are in comment as it was delaying response
+                and for safekeeping limit of google restaurants and store
+
+                conditionFunction("bicycling", "true"); // shows alternate route - cycle mode
+                 */
                 }
         });
 
     }
 
-
-    private String getUrl(LatLng origin, LatLng dest) {
+    /**
+     *
+     * @param origin: take latlang of origin which will be user's live or current location
+     * @param dest: take user's converted latlang from the entered string
+     * @return: which gives the whole url
+     */
+    private String getUrl(LatLng origin, LatLng dest, String travel_mode, String alternate_route) {
+        String mode = "mode=" + travel_mode + "&";
+        String alternatives = "&alternatives=" + alternate_route ;
         String str_origin = "origin=" + origin.latitude + "," + origin.longitude;           // Origin of route
         String str_dest = "destination=" + dest.latitude + "," + dest.longitude;            // Destination of route
         String sensor = "sensor=false";                                                     // Sensor enabled
-        String parameters = str_origin + "&" + str_dest + "&" + sensor;                     // Building the parameters to the web service
+        String parameters = mode + str_origin + "&" + str_dest + "&" + sensor + alternatives;                     // Building the parameters to the web service
         String output = "json";                                                             // Output format
-        // Building the url to the web service
-//        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
 
+        // Building the url to the web service
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
         return url;
     }
 
+    /**
+     *
+     * @param poi: takes latlang of restaurants
+     * @return gives the url for displaying restaurants
+     */
     private String getRestaurantUrl(LatLng poi) {
         String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
         String radius = "radius=20";                                                // Radius in meters
+
         // Building the parameters to the web service
-        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c";
+        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
+
         String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
-
         return url;
     }
 
-
+    /**
+     *
+     * @param poi: takes latlang for Convenience store
+     * @return a url which will be used to marked down Convenience store
+     */
     private String getConvenienceUrl(LatLng poi) {
         String str_poi = "location=" + poi.latitude + "," + poi.longitude;          // One of the place of route
         String radius = "radius=100";                                                // Radius in meters
+
         // Building the parameters to the web service
         String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
+
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
         String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
-
         return url;
     }
 
@@ -282,7 +352,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
+                //Log.d("Background Task data", data.toString());
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
             }
@@ -308,9 +378,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
+                //Log.d("Background Task data", data.toString());
+                // Check for APT's OVER_QUERY_LIMIT
+                if ( data.toString().contains("error_message") )
+                    Toast.makeText(MapsActivity.this,  "You have exceeded your daily request quota for this API !!"  , Toast.LENGTH_LONG ).show();
+
             } catch (Exception e) {
-                Log.d("Background Task", e.toString());
+                Log.d("Restaurant BG Task", e.toString());
             }
             return data;
         }
@@ -328,6 +402,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /**
      * A class to parse the Google Places in JSON format
+     *
+     * Reference:
+     https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
      */
     private class ParserTask extends AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
 
@@ -340,15 +417,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                Log.d("ParserTask",jsonData[0].toString());
                 DataParser parser = new DataParser();
-                Log.d("ParserTask", parser.toString());
-
                 // Starts parsing data
                 routes = parser.parse(jObject);
-                Log.d("ParserTask","Executing routes");
-                Log.d("ParserTask",routes.toString());
-
             } catch (Exception e) {
                 Log.d("ParserTask",e.toString());
                 e.printStackTrace();
@@ -356,7 +427,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return routes;
         }
 
-        // Executes in UI thread, after the parsing process
+        /**
+         * Reference:
+         * https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+         *
+         * Executes in UI thread, after the parsing process
+         */
+
         @Override
         protected void onPostExecute(List<List<HashMap<String, String>>> result) {
             ArrayList<LatLng> points;
@@ -370,16 +447,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Fetching i-th route
                 List<HashMap<String, String>> path = result.get(i);
 
+                distance = path.get(0).get("Distance"); // fetching Distance from thread
+                duration = path.get(0).get("Duration"); // fetching Duration from thread
+
+                String distance_var = "Distance = " + distance;
+                String duration_var = "Duration = " + duration;
+
+                Toast.makeText(MapsActivity.this, distance_var + ", " + duration_var , Toast.LENGTH_LONG ).show();
+
                 // Fetching all the points in i-th route
-                for (int j = 0; j < path.size(); j++) {
+                for (int j = 1; j < path.size(); j++) {
                     HashMap<String, String> point = path.get(j);
 
                     double lat = Double.parseDouble(point.get("lat"));
                     double lng = Double.parseDouble(point.get("lng"));
+
                     LatLng position = new LatLng(lat, lng);
 
                     points.add(position);
-
 
                     //Start showing restaurants
                     String restUrl = getRestaurantUrl(position);
@@ -392,17 +477,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     FetchConvenienceUrl FetchConvenienceUrl = new FetchConvenienceUrl();
                     // Start downloading json data from Google search nearby API
                     FetchConvenienceUrl.execute(convenienceUrl);
-
                 }
 
                 // Adding all the points in the route to LineOptions
                 lineOptions.addAll(points);
-                lineOptions.color(Color.BLUE);
 
                 // condition check for walk or cycle mode
                 if(conditionCheckWalk){
                     // for walking mode
-                    lineOptions.width(12);
+                    if (!count_walk){
+                        lineOptions.color(Color.BLUE); // display shortest path in blue color - walk mode
+                        count_walk = true;}
+                    else {
+                        lineOptions.color(Color.GRAY); // display alternate path - walk mode
+                        count_walk = true;
+                    }
+                    lineOptions.width(13);
                     lineOptions.pattern(Arrays.<PatternItem>asList(
                         new Dot(), new Gap(10)));
 
@@ -411,9 +501,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 else if (!conditionCheckWalk){
                     // for cycle mode
-                    lineOptions.width(12);
+                    if (!count_cycle){
+                        lineOptions.color(Color.BLUE);  // display shortest path in blue color - cycle mode
+                        count_cycle = true;}
+                    else {
+                        lineOptions.color(Color.GRAY); // display alternate path - cycle mode
+                        count_cycle = false;
+                    }
+                    lineOptions.width(13);
                     lineOptions.pattern(Arrays.<PatternItem>asList(
-                            new Dash(15), new Gap(0)));
+                            new Dash(17), new Gap(0)));
 
                     Log.d("onPostExecute","onPostExecute lineoptions decoded");
                 }
@@ -450,7 +547,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-
     }
 
     @Override
@@ -469,6 +565,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //Place current location marker
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
         currentLoc = latLng;
+
+        sharedPreferences = this.getSharedPreferences("currentLoc", 0);
+        editor = sharedPreferences.edit();
+        editor.putString("cur_lat", String.valueOf(currentLoc.latitude));
+        editor.putString("cur_lng", String.valueOf(currentLoc.longitude));
+        editor.apply();
+
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.title("Current Position");
@@ -512,7 +615,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
-
 
             } else {
                 // No explanation needed, we can request the permission.
@@ -571,7 +673,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         protected String[] doInBackground(String... params) {
             String response;
             try {
-                response = getLatLongByURL("http://maps.google.com/maps/api/geocode/json?address=mumbai&sensor=false");
+                response = getLatLongByURL("http://maps.google.com/maps/api/geocode/json?address=halifax&sensor=false");
                 Log.d("response",""+response);
                 return new String[]{response};
             } catch (Exception e) {
@@ -592,7 +694,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .getJSONObject("geometry").getJSONObject("location")
                         .getDouble("lat");
 
-                newCorrdinates = new LatLng(lat, lng);
+                LatLng newCorrdinates = new LatLng(lat, lng);
                 Log.d("latitude", "" + lat);
                 Log.d("longitude", "" + lng);
             } catch (JSONException e) {
@@ -604,20 +706,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    // mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
-    public void conditionFunction(){
-        mMap.clear(); // clearing the map first
+    /**
+     * mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
+     */
+
+    public void conditionFunction(String travel_mode, String alternate_mode){
+        //mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
 
         LatLng origin = currentLoc;
         LatLng dest = new LatLng(dst_lat ,dst_lng);
 
-        // Fixed Origin and Destination for test run
-        /*LatLng origin = new LatLng(44.642750, -63.578449);
-        LatLng dest = new LatLng(44.643875, -63.578472);*/
+        /* Fixed Origin and Destination for test run [DO NOT REMOVE]
+        LatLng origin = new LatLng(44.642750, -63.578449);
+        LatLng dest = new LatLng(44.643875, -63.578472); */
 
         // Getting URL to the Google Directions API
-        String url = getUrl(origin, dest);
+        String url = getUrl(origin, dest, travel_mode, alternate_mode);
         Log.d("onMapClick", url.toString());
         FetchUrl FetchUrl = new FetchUrl();
 
@@ -626,19 +731,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Setting the position of the marker
         options.position(origin);
-        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        // ToDo: Get the name of location to show
+        options.title("Origin");
+        mMap.addMarker(options);
+
         options.position(dest);
         options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-
-        // Add destination marker to the Google Map Android API V2
+        // ToDo: Get the name of location to show
+        options.title("Destination");
         mMap.addMarker(options);
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(dest));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15)); //search path zoom
+
     }
 
-
+    /**
+     *
+     * @param requestURL we will provide a prepared url which will be used to find latlang of a place
+     * @return
+     */
     public String getLatLongByURL(String requestURL) {
         URL url;
         String response = "";
@@ -682,15 +797,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                Log.d("Restaurants data => ",jsonData[0].toString());
+                //Log.d("Restaurants data => ",jsonData[0].toString());
                 RestDataParser restParser = new RestDataParser();
-                Log.d("ParserRestaurantTask", restParser.toString());
+                //Log.d("ParserRestaurantTask", restParser.toString());
 
                 // Starts parsing data
                 restaurants = restParser.parse(jObject);
 
-                Log.d("ParserRestaurantTask","Executing restaurants");
-                Log.d("ParserRestaurantTask",restaurants.toString());
+                //Log.d("ParserRestaurantTask","Executing restaurants");
+                //Log.d("ParserRestaurantTask",restaurants.toString());
 
             } catch (Exception e) {
                 Log.d("ParserRestaurantTask",e.toString());
@@ -711,18 +826,51 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Fetching all the points in i-th route
                 for (int j = 0; j < restaurant.size(); j++) {
                     HashMap<String, String> point = restaurant.get(j);
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    String restName = point.get("name");
+                    double lat          = Double.parseDouble(point.get("lat"));
+                    double lng          = Double.parseDouble(point.get("lng"));
+                    String restName     = point.get("name");
+                    String snippet       = point.get("vicinity");
+                    if (point.get("rating") != null)
+                        snippet = snippet + "\n Rating : "+point.get("rating");
+                    if ( point.get("open_now") != null  && point.get("open_now").equals("true"))
+                        snippet = snippet + "\n Open";
+                    else if ( point.get("open_now") != null && point.get("open_now").equals("false"))
+                        snippet = snippet + "\n Closed";
                     LatLng position = new LatLng(lat, lng);
                     // Setting the position of the marker
                     options.position(position);
                     options.title(restName);
+                    options.snippet(snippet);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));  //For the restaurants location, the color of marker is Yellow
                 }
                 // Drawing marker in the Google Map on route
                 if(options != null) {
-                    mMap.addMarker(options);                  // Setting the position of the marker
+                    Marker marker = mMap.addMarker(options);                  // Setting the position of the marker
+                    marker.showInfoWindow();
+
+                    // Setting a custom info window adapter for the google map
+                    mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                        // Use default InfoWindow frame
+                        @Override
+                        public View getInfoWindow(Marker arg0) {
+                            return null;
+                        }
+                        // Defines the contents of the InfoWindow
+                        @Override
+                        public View getInfoContents(Marker marker) {
+                            // Getting view from the layout file info_window_layout
+                            View v = getLayoutInflater().inflate(R.layout.info_window_layout, null);
+                            TextView tvTitle = (TextView) v.findViewById(R.id.title);
+                            TextView tvSnippet = (TextView) v.findViewById(R.id.snippet);
+                            // Setting the Title
+                            tvTitle.setText(marker.getTitle());
+                            // Setting the rest of details
+                            tvSnippet.setText(marker.getSnippet());
+                            // Returning the view containing InfoWindow contents
+                            return v;
+                        }
+                    });
+
                 }
                 else {
                     Log.d("onPostExecute","without any restaurants drawn");
@@ -742,9 +890,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 // Fetching the data from web service
                 data = downloadUrl(url[0]);
-                Log.d("Background Task data", data.toString());
+                //Log.d("Background Task data", data.toString());
             } catch (Exception e) {
-                Log.d("Background Task", e.toString());
+                //Log.d("Background Task", e.toString());
             }
             return data;
         }
@@ -771,18 +919,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                Log.d("Convenience data => ",jsonData[0].toString());
                 RestDataParser restParser = new RestDataParser();
-                Log.d("ParserConvenienceTask", restParser.toString());
-
                 // Starts parsing data
                 convenience = restParser.parse(jObject);
-
-                Log.d("ParserConvenienceTask","Executing restaurants");
-                Log.d("ParserConvenienceTask",convenience.toString());
-
             } catch (Exception e) {
-                Log.d("ParserConvenienceTask",e.toString());
+                //Log.d("ParserConvenienceTask",e.toString());
                 e.printStackTrace();
             }
             return convenience;
@@ -800,19 +941,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Fetching all the points in i-th route
                 for (int j = 0; j < convenience.size(); j++) {
                     HashMap<String, String> point = convenience.get(j);
-                    double lat = Double.parseDouble(point.get("lat"));
-                    double lng = Double.parseDouble(point.get("lng"));
-                    String storeName = point.get("name");
-                    LatLng position = new LatLng(lat, lng);
+                    double lat           = Double.parseDouble(point.get("lat"));
+                    double lng           = Double.parseDouble(point.get("lng"));
+                    String storeName     = point.get("name");
+                    String snippet       = point.get("vicinity");
+                    if (point.get("rating") != null)
+                        snippet = snippet + "\n Rating : "+point.get("rating");
+                    if ( point.get("open_now") != null  && point.get("open_now").equals("true"))
+                        snippet = snippet + "\n Open";
+                    else if ( point.get("open_now") != null && point.get("open_now").equals("false"))
+                        snippet = snippet + "\n Closed";
+                    LatLng position      = new LatLng(lat, lng);
                     // Setting the position of the marker
                     options.position(position);
                     options.title(storeName);
+                    options.snippet(snippet);
                     options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));  //For the convenience location, the color of marker is Orange
                 }
 
                 // Drawing marker in the Google Map on route
                 if(options != null) {
-                    mMap.addMarker(options);                  // Setting the position of the marker
+                    Marker marker = mMap.addMarker(options);                  // Setting the position of the marker
+                    marker.showInfoWindow();
+
+                    // http://wptrafficanalyzer.in/blog/customizing-infowindow-contents-in-google-map-android-api-v2-using-infowindowadapter/
+                    // Setting a custom info window adapter for the google map
+                    mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                        // Use default InfoWindow frame
+                        @Override
+                        public View getInfoWindow(Marker arg0) {
+                            return null;
+                        }
+                        // Defines the contents of the InfoWindow
+                        @Override
+                        public View getInfoContents(Marker marker) {
+
+                            // Getting view from the layout file info_window_layout
+                            View v = getLayoutInflater().inflate(R.layout.info_window_layout, null);
+                            TextView tvTitle = (TextView) v.findViewById(R.id.title);
+                            TextView tvSnippet = (TextView) v.findViewById(R.id.snippet);
+                            // Setting the Title
+                            tvTitle.setText(marker.getTitle());
+                            // Setting the rest of details
+                            tvSnippet.setText(marker.getSnippet());
+                            // Returning the view containing InfoWindow contents
+                            return v;
+                        }
+                    });
                 }
                 else {
                     Log.d("onPostExecute","without any convenience store drawn");
@@ -820,4 +995,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+
+    // bottom navigation
+    private void setupBottomNavigationView(){
+        Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
+        BottomNavigationViewEx bottomNavigationViewEx=(BottomNavigationViewEx) findViewById(R.id.buttomNavViewbar);
+        BottomNavigationViewHelper.setupBottomNavigationView(bottomNavigationViewEx);
+        BottomNavigationViewHelper.enableNavigation(mcontext, bottomNavigationViewEx);
+        Menu menu=bottomNavigationViewEx.getMenu();
+        MenuItem menuItem=menu.getItem(ACTIVITY_NUM);
+
+        menuItem.setChecked(true);
+    }
+
+
+//    protected void selectFragment(MenuItem item) {
+//
+//        item.setChecked(true);
+//        switch (item.getItemId()) {
+//            case R.id.home:
+//                // Action to perform when Home Menu item is selected.
+//                startActivity(new Intent(this, MapsActivity.class));
+//                break;
+//            case R.id.userprofile:
+//                // Action to perform when Bag Menu item is selected.
+//                startActivity(new Intent(this, log_in.class));
+//                break;
+//            case R.id.specialoffers:
+//                // Action to perform when Account Menu item is selected.
+//                startActivity(new Intent(this, SpecialOffer.class));
+//                break;
+//        }
+//    }
+
 }

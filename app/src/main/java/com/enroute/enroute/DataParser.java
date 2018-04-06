@@ -10,9 +10,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-// https://www.mytrendin.com/draw-route-two-locations-google-&maps-android/
+/**
+ *
+ * This class is intended for parsing the data and gives back the result
+ *
+ *Programmers: Nirav Jadeja, Abhishek Singh
+ * Reference:
+ * 1. https://www.mytrendin.com/draw-route-two-locations-google-&maps-android/
+ */
 
 public class DataParser {
+
 
     /** Receives a JSONObject and returns a list of lists containing latitude and longitude */
     public List<List<HashMap<String,String>>> parse(JSONObject jObject){
@@ -21,14 +29,26 @@ public class DataParser {
         JSONArray jRoutes;
         JSONArray jLegs;
         JSONArray jSteps;
+        String jDistance; // for getting distance from the JSON data
+        String jDuration; // for getting duration from JSON data
 
         try {
 
             jRoutes = jObject.getJSONArray("routes");
             /** Traversing all routes */
             for(int i=0;i<jRoutes.length();i++){
+                jDistance = ( (JSONObject)jRoutes.get(0)).getJSONArray("legs").getJSONObject(0).getJSONObject("distance").get("text").toString();
+                jDuration = ( (JSONObject)jRoutes.get(0)).getJSONArray("legs").getJSONObject(0).getJSONObject("duration").get("text").toString();
+
                 jLegs = ( (JSONObject)jRoutes.get(i)).getJSONArray("legs");
                 List path = new ArrayList<>();
+
+                HashMap<String, String> hm1 = new HashMap<>();
+                hm1.put("Duration", jDuration );
+                hm1.put("Distance", jDistance );
+
+                path.add(hm1);
+
 
                 /** Traversing all legs */
                 for(int j=0;j<jLegs.length();j++){
@@ -45,6 +65,7 @@ public class DataParser {
                             HashMap<String, String> hm = new HashMap<>();
                             hm.put("lat", Double.toString((list.get(l)).latitude) );
                             hm.put("lng", Double.toString((list.get(l)).longitude) );
+
                             path.add(hm);
                         }
                     }
@@ -56,7 +77,6 @@ public class DataParser {
             e.printStackTrace();
         }catch (Exception e){
         }
-
 
         return routes;
     }
