@@ -23,8 +23,8 @@ One paragraph to describe your project. Your description should include the proj
 
 
 ## Installation Notes
-The app is based on Android 8.0. Beforing running it, the SDK version need to be set as following:
-Android Studio --> File --> Project structure --> app --> Compile Sdk Version --> API 26: Android 8.0(Oreo) --> OK
+The app is based on Android 8.0. Beforing running it, the SDK version need to be set as following:  
+Android Studio --> File --> Project structure --> app --> Compile Sdk Version --> API 26: Android 8.0(Oreo) --> OK  
 If it does not work for the first time, please try more times following the same operations.
 
 ## Code Examples
@@ -128,4 +128,4 @@ http://www.urbaneatery.co.ke/. [Accessed: 02- Apr- 2018]
 [6]"How to Upload Images to Firebase from an Android App", code.tutsplus.com, 2017. [Online]. Available: 
 https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934. [Accessed: 02- Apr- 2018]  
 [7]"the functionality of head image chosen by Android development" blog.csdn.net, 2017. [Online]. Available: 
-https://blog.csdn.net/qq_31546677/article/details/75667163. [Accessed: 26- Mar- 2018]. 
+https://blog.csdn.net/qq_31546677/article/details/75667163. [Accessed: 26- Mar- 2018]  
