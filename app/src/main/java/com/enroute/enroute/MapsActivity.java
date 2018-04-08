@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -74,7 +75,10 @@ import javax.net.ssl.HttpsURLConnection;
  * 2. https://stackoverflow.com/questions/14710744/how-to-draw-road-directions-between-two-geocodes-in-android-google-map-v2?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
  * 3. https://stackoverflow.com/questions/28295199/android-how-to-show-route-between-markers-on-googlemaps?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
  * 4. https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-
+ *
+ *  ToDo ; 1. Here for getting alternate routes uncomment the code below, where it is mentioned.
+ *  ToDo : 2. We have placed many keys in string in below functions (getRestaurantUrl, getRestaurantUrl ) for store and restaurants, for a safekeeping, if you couldn't find any result (store or restaurants), replace with any one of those keys.
+ *
  */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -147,8 +151,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onPlaceSelected(Place place) {
                 dst_lat = place.getLatLng().latitude;
                 dst_lng = place.getLatLng().longitude;
-                //Log.i("test", "Place: " + place.getName());
-                //Log.i("test", "Address: " + place.getAddress());
+                Log.i("test", "Place: " + place.getName());
+                Log.i("test", "Address: " + place.getAddress());
             }
 
             @Override
@@ -241,15 +245,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 conditionFunction("bicycling", "true"); // shows alternate route - cycle mode
                  */
+
                 }
         });
 
     }
 
     /**
-     *
-     * @param origin: take latlang of origin which will be user's live or current location
+     * @param origin: take latlang of origin which will be user's live or current location,
      * @param dest: take user's converted latlang from the entered string
+     * @param travel_mode: this is for selecting travel mode: walk or cycle
+     * @param alternate_route: this is for drawing alternate route or draw minimal route
      * @return: which gives the whole url
      */
     private String getUrl(LatLng origin, LatLng dest, String travel_mode, String alternate_route) {
@@ -276,9 +282,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String radius = "radius=20";                                                // Radius in meters
 
         // Building the parameters to the web service
-        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
+        //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c";
+        //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
-
+        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyDjpzwLHk6RAN3wIDtS8OGmsJxVc1gFKx8";
         String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
         return url;
@@ -294,9 +301,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String radius = "radius=100";                                                // Radius in meters
 
         // Building the parameters to the web service
-        String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
-
+        //String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
+        String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDjpzwLHk6RAN3wIDtS8OGmsJxVc1gFKx8";
         String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
         return url;
@@ -707,19 +714,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
-     * mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
+     * @param travel_mode: either "walk" or "Cycle" mode
+     * @param alternate_mode: true for having alternate route and false for minimal distance route
      */
-
     public void conditionFunction(String travel_mode, String alternate_mode){
         //mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
 
+        /*
+        // Fixed Origin and Destination for test run
+        LatLng origin = new LatLng(44.638061, -63.591360);
+        LatLng dest = new LatLng(44.651775, -63.592513);
+        */
+
+        // For free search of the destination
         LatLng origin = currentLoc;
         LatLng dest = new LatLng(dst_lat ,dst_lng);
 
-        /* Fixed Origin and Destination for test run [DO NOT REMOVE]
-        LatLng origin = new LatLng(44.642750, -63.578449);
-        LatLng dest = new LatLng(44.643875, -63.578472); */
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest, travel_mode, alternate_mode);
@@ -743,7 +754,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(options);
 
         //move map camera
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(dest));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15)); //search path zoom
 
@@ -797,15 +807,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                //Log.d("Restaurants data => ",jsonData[0].toString());
+                Log.d("Restaurants data => ",jsonData[0].toString());
                 RestDataParser restParser = new RestDataParser();
-                //Log.d("ParserRestaurantTask", restParser.toString());
+                Log.d("ParserRestaurantTask", restParser.toString());
 
                 // Starts parsing data
                 restaurants = restParser.parse(jObject);
 
-                //Log.d("ParserRestaurantTask","Executing restaurants");
-                //Log.d("ParserRestaurantTask",restaurants.toString());
+                Log.d("ParserRestaurantTask","Executing restaurants");
+                Log.d("ParserRestaurantTask",restaurants.toString());
 
             } catch (Exception e) {
                 Log.d("ParserRestaurantTask",e.toString());
@@ -864,6 +874,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             TextView tvSnippet = (TextView) v.findViewById(R.id.snippet);
                             // Setting the Title
                             tvTitle.setText(marker.getTitle());
+                            tvTitle.setTypeface(null, Typeface.BOLD_ITALIC);
                             // Setting the rest of details
                             tvSnippet.setText(marker.getSnippet());
                             // Returning the view containing InfoWindow contents
@@ -982,6 +993,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             TextView tvSnippet = (TextView) v.findViewById(R.id.snippet);
                             // Setting the Title
                             tvTitle.setText(marker.getTitle());
+                            tvTitle.setTypeface(null, Typeface.BOLD_ITALIC);
                             // Setting the rest of details
                             tvSnippet.setText(marker.getSnippet());
                             // Returning the view containing InfoWindow contents
