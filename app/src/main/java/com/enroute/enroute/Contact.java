@@ -5,8 +5,10 @@ package com.enroute.enroute;
  *
  * This class is for storing the data on firebase database
  * it stores user name, email and restaurant type from the user
+ * Used for log_in and sign_up activity.
  *
  * Reference: CSCI 3130: Software Engineering 2018 - Assignment 3 by Julaino Franz
+ *
  */
 
 import com.google.firebase.database.Exclude;

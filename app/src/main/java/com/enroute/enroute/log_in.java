@@ -38,6 +38,12 @@ import com.google.firebase.auth.GoogleAuthProvider;
  * 1. https://androidjson.com/add-firebase-google-login-integration/
  * 2. https://firebase.google.com/docs/android/setup
  * 3. https://firebase.google.com/docs/auth/android/custom-auth
+ *
+ * NOTES:
+ * FOR REFERENCE ONLY
+ * THIS LOGIN & SIGN-UP ACTIVITY HAVEN'T USED BY OTHER MEMBERS FOR FURTHER DEVELOPMENT.
+ * BUT IT IS IN WORKING CONDITION AND IT WAS IMPLEMENTED LONG AGO (BEFORE PROJECT UPDATE 1).
+ * GIVEN DEMO IN PROJECT UPDATE 1 AS WELL. (IN PROJECT UPDATE 2 AS WELL ALONG WITH UPDATED FUNCTIONALITY).
  */
 public class log_in extends AppCompatActivity {
 
