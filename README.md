@@ -32,7 +32,9 @@ We have made an app for Dalhousie students who live off campus. Since they must 
 1. Normally, this app can run well on the devices installed Android 6.0 and above. If the Android studio warned the lack of SDK at the attempt to run the app. Please do the confirgurations as the following:  
 Android Studio --> File --> Project structure --> app --> Compile Sdk Version --> API 26: Android 8.0(Oreo) --> OK
 
-2. If you couldn't get any restaurants or convenience store details, It is because of Google Place's API usage restriction for trial run. Kindly replace the key with any of the below key in getRestaurantUrl() and getConvenienceUrl() functions.
+2. If application give "please select android sdk" while trying to run first time then change "minSdkVersion 23" to "minSdkVersion 25" in app.gradle and click on "Sync Now".
+
+3. If you couldn't get any restaurants or convenience store details, It is because of Google Place's API usage restriction for trial run. Kindly replace the key with any of the below key in getRestaurantUrl() and getConvenienceUrl() functions.
 
 	1. AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE
 	2. AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois
