@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -875,6 +876,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             TextView tvSnippet = (TextView) v.findViewById(R.id.snippet);
                             // Setting the Title
                             tvTitle.setText(marker.getTitle());
+                            tvTitle.setTypeface(null, Typeface.BOLD_ITALIC);
                             // Setting the rest of details
                             tvSnippet.setText(marker.getSnippet());
                             // Returning the view containing InfoWindow contents
@@ -993,6 +995,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             TextView tvSnippet = (TextView) v.findViewById(R.id.snippet);
                             // Setting the Title
                             tvTitle.setText(marker.getTitle());
+                            tvTitle.setTypeface(null, Typeface.BOLD_ITALIC);
                             // Setting the rest of details
                             tvSnippet.setText(marker.getSnippet());
                             // Returning the view containing InfoWindow contents
