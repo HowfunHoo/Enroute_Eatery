@@ -26,9 +26,8 @@ We have made an app for Dalhousie students who live off campus. Since they must 
 
 
 ## Installation Notes
-The app is based on Android 8.0. Beforing running it, the SDK version need to be set as following:
+The app is complied on Android 8.0. Beforing running the application, the SDK version need to be set as following if not using default app gradle - 
 Android Studio --> File --> Project structure --> app --> Compile Sdk Version --> API 26: Android 8.0(Oreo) --> OK
-If it does not work for the first time, please try more times following the same operations.
 
 ## Code Examples
 During this project we have came across several challenges which are mentioned as follows:
@@ -165,6 +164,27 @@ public void conditionFunction(String travel_mode, String alternate_mode){
 
 ```
 
+**Problem 4: A reusable class and/or method to find restaurants and/or convenience store while drawing route on Google Map**
+
+Google do provide restaurants and convenience store nearby to specific lat/lang, however we need to show them along with route. To overcome this problem, we collected all lat/lang while route is drawn on map and requested for any nearby eatery and/or store.  
+
+```
+/*  Snippet code from MapsActivity.java */
+
+LatLng position = new LatLng(lat, lng);
+points.add(position);
+//Start showing restaurants
+String restUrl = getRestaurantUrl(position);
+FetchRestUrl FetchRestUrl = new FetchRestUrl();
+// Start downloading json data from Google search nearby API
+FetchRestUrl.execute(restUrl);
+
+/* New JSON parsing class for restaurants and convenience store */
+
+RestDataParser.java
+
+```
+
 
 ## Feature Section
 The application mainly used four features:
@@ -232,4 +252,6 @@ We have achieved most of our functionalities, the status for the same as mention
 [12] "Draw route between two locations, Google Maps in Android" mytredin.com, 2017. [Online]. Available:
 [https://www.mytrendin.com/draw-route-two-locations-google-&maps-android/](https://www.mytrendin.com/draw-route-two-locations-google-&maps-android/). [Accessed: 04- Mar- 2018]
 
+[13] "Customizing InfoWindow Contents in Google Map Android API V2 using InfoWindowAdapter" wptrafficanalyzer.in, 2017. [Online]. Available:
+[http://wptrafficanalyzer.in/blog/customizing-infowindow-contents-in-google-map-android-api-v2-using-infowindowadapter/](http://wptrafficanalyzer.in/blog/customizing-infowindow-contents-in-google-map-android-api-v2-using-infowindowadapter/). [Accessed: 05- Apr- 2018]
 
