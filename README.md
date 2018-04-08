@@ -29,7 +29,6 @@ We have made an app for Dalhousie students who live off campus. Since they must 
 The app is complied on Android 8.0. Beforing running the application, the SDK version need to be set as following if not using default app gradle - 
 Android Studio --> File --> Project structure --> app --> Compile Sdk Version --> API 26: Android 8.0(Oreo) --> OK
 
-
 ## Code Examples
 During this project we have came across several challenges which are mentioned as follows:
 
@@ -255,7 +254,4 @@ We have achieved most of our functionalities, the status for the same as mention
 
 [13] "Customizing InfoWindow Contents in Google Map Android API V2 using InfoWindowAdapter" wptrafficanalyzer.in, 2017. [Online]. Available:
 [http://wptrafficanalyzer.in/blog/customizing-infowindow-contents-in-google-map-android-api-v2-using-infowindowadapter/](http://wptrafficanalyzer.in/blog/customizing-infowindow-contents-in-google-map-android-api-v2-using-infowindowadapter/). [Accessed: 05- Apr- 2018]
-
-
-
 
