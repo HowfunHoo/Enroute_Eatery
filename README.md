@@ -29,7 +29,7 @@ We have made an app for Dalhousie students who live off campus. Since they must 
 
 
 ## Installation Notes
-1. The app is complied on Android 8.0. Beforing running the application, the SDK version need to be set as following if not using default app gradle -
+1. Normally, this app can run well on the devices installed Android 6.0 and above. If the Android studio warned the lack of SDK at the attempt to run the app. Please do the confirgurations as the following:  
 Android Studio --> File --> Project structure --> app --> Compile Sdk Version --> API 26: Android 8.0(Oreo) --> OK
 
 2. If you couldn't get any restaurants or convenience store details, It is because of Google Place's API usage restriction for trial run. Kindly replace the key with any of the below key in getRestaurantUrl() and getConvenienceUrl() functions.
