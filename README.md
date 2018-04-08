@@ -26,8 +26,15 @@ We have made an app for Dalhousie students who live off campus. Since they must 
 
 
 ## Installation Notes
-The app is complied on Android 8.0. Beforing running the application, the SDK version need to be set as following if not using default app gradle - 
+1. The app is complied on Android 8.0. Beforing running the application, the SDK version need to be set as following if not using default app gradle -
 Android Studio --> File --> Project structure --> app --> Compile Sdk Version --> API 26: Android 8.0(Oreo) --> OK
+
+2. If you coudn't get any restaurants or convenience store details, It is because of Google Place's API usage restriction for trail run. Kindly replace the key with any of the below key in getRestaurantUrl() and getConvenienceUrl() functions.
+
+	1. AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE
+	2. AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois
+	3. AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c
+
 
 ## Code Examples
 During this project we have came across several challenges which are mentioned as follows:
