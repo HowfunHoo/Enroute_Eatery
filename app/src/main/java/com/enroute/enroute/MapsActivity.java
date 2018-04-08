@@ -74,7 +74,10 @@ import javax.net.ssl.HttpsURLConnection;
  * 2. https://stackoverflow.com/questions/14710744/how-to-draw-road-directions-between-two-geocodes-in-android-google-map-v2?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
  * 3. https://stackoverflow.com/questions/28295199/android-how-to-show-route-between-markers-on-googlemaps?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
  * 4. https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
-
+ *
+ *  ToDo ; 1. Here for getting alternate routes uncomment the code below, where it is mentioned.
+ *  ToDo : 2. We have placed many keys in string in below functions (getRestaurantUrl, getRestaurantUrl ) for store and restaurants, for a safekeeping, if you couldn't find any result (store or restaurants), replace with any one of those keys.
+ *
  */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
@@ -147,8 +150,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onPlaceSelected(Place place) {
                 dst_lat = place.getLatLng().latitude;
                 dst_lng = place.getLatLng().longitude;
-                //Log.i("test", "Place: " + place.getName());
-                //Log.i("test", "Address: " + place.getAddress());
+                Log.i("test", "Place: " + place.getName());
+                Log.i("test", "Address: " + place.getAddress());
             }
 
             @Override
@@ -298,7 +301,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Building the parameters to the web service
         //String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
-
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
         String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDjpzwLHk6RAN3wIDtS8OGmsJxVc1gFKx8";
         String output = "json";                     // Output format
@@ -806,15 +808,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             try {
                 jObject = new JSONObject(jsonData[0]);
-                //Log.d("Restaurants data => ",jsonData[0].toString());
+                Log.d("Restaurants data => ",jsonData[0].toString());
                 RestDataParser restParser = new RestDataParser();
-                //Log.d("ParserRestaurantTask", restParser.toString());
+                Log.d("ParserRestaurantTask", restParser.toString());
 
                 // Starts parsing data
                 restaurants = restParser.parse(jObject);
 
-                //Log.d("ParserRestaurantTask","Executing restaurants");
-                //Log.d("ParserRestaurantTask",restaurants.toString());
+                Log.d("ParserRestaurantTask","Executing restaurants");
+                Log.d("ParserRestaurantTask",restaurants.toString());
 
             } catch (Exception e) {
                 Log.d("ParserRestaurantTask",e.toString());
