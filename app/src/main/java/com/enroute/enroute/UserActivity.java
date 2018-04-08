@@ -47,15 +47,25 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * Activity for show profile of uers
+ * this activity also include user head image editing function, and image upload, download from firebase
+ * @author:YouranZhang,HaoyuSun
+ * Reference:
+ * 6.https://blog.csdn.net/qq_31546677/article/details/75667163
+ * 7.https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934
+ */
 public class UserActivity extends AppCompatActivity {
 
     private static final String TAG = "UserActivity";
     private Context mcontext=UserActivity.this;
     private static final int ACTIVITY_NUM=3;
 
+    //create those variables for camera and storage functions.
     protected static final int CHOOSE_PICTURE = 0;
     protected static final int TAKE_PICTURE = 1;
     private static final int CROP_SMALL_PICTURE = 2;
@@ -71,8 +81,8 @@ public class UserActivity extends AppCompatActivity {
     FirebaseHelper firebasehelper;
     private int count = 0;
     private String Uemail;
-    private File destDir;
 
+    //firebase storage
     FirebaseStorage storage;
     StorageReference storageReference;
 
@@ -101,8 +111,8 @@ public class UserActivity extends AppCompatActivity {
 
         //storage of firebase
         storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
-        StorageReference pathReference = storageReference.child("images");
+        storageReference = storage.getReferenceFromUrl("gs://enroute-eatery.appspot.com/images");
+
 
         //if not login,jup to login activity
         if(currentUser == null){
@@ -146,8 +156,8 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
-
-         destDir = new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon");
+        //create a empty file for save local image.
+          File   destDir = new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon");
         if (!destDir.exists()) {
             destDir.mkdirs();
         }
@@ -167,30 +177,32 @@ public class UserActivity extends AppCompatActivity {
 
 
 
-
+        //download head image from firebase
         if (destDir.exists() && destDir.isDirectory()) {
             if (destDir.list().length > 0) {
-                pathReference.child(currentUser.getUid()).getFile(destDir).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                        Bitmap bitmap = BitmapFactory.decodeFile(destDir.toString()+ "/image_icon.png");
-                        iv_personal_icon.setImageBitmap(bitmap);
+        try {
+            final File localFile = File.createTempFile("images", "jpg");
+            storageReference.child(currentUser.getUid()).getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    iv_personal_icon.setImageBitmap(bitmap);
 
-                    }
-            }) .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle any errors
-                    }
-                });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {}
 
-            }else {
+            } else {
                 iv_personal_icon.setBackgroundResource(R.drawable.default_personal_image);
             }
         }
     }
 
-
+         //used for picpop window. and choose picture from either camera or storage.
     private View.OnClickListener itemsOnClick = new View.OnClickListener() {
 
         public void onClick(View v) {
@@ -200,8 +212,6 @@ public class UserActivity extends AppCompatActivity {
                     Intent openCameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     tempUri = Uri.fromFile(
                             new File(Environment.getExternalStorageDirectory() + "/AndroidPersonal_icon", "image.jpg"));
-                    Log.d("11111111", tempUri.toString());
-
                     openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, tempUri);
                     startActivityForResult(openCameraIntent, TAKE_PICTURE);
                     break;
@@ -240,7 +250,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
 
-    //cut put picture
+    //cut out picture
     protected void startPhotoZoom(Uri uri) {
         if (uri == null) {
             Log.i("tag", "The uri is not exist.");
@@ -260,7 +270,9 @@ public class UserActivity extends AppCompatActivity {
         startActivityForResult(intent, CROP_SMALL_PICTURE);
     }
 
-    //save the changed picture
+
+     //Save the changed picture and show it in device. upload picture to firebase at the sametime
+
     protected void setImageToView(Intent data) {
         Bundle extras = data.getExtras();
         if (extras != null) {
@@ -272,17 +284,20 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
+   //upload picture to local area
     private void uploadPic(Bitmap bitmap) {
 
         String imagePath = Utils.savePhoto(bitmap,
                 Environment.getExternalStorageDirectory().getAbsolutePath() + "/AndroidPersonal_icon", "image_icon");
+
         Log.d("imagePath", imagePath + "");
         if (imagePath != null) {
 
         }
     }
 
-    private void uploadImage() {
+    //upload image to firebase
+    private void uploadImage( ) {
 
         if(tempUri != null)
         {
@@ -290,7 +305,7 @@ public class UserActivity extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/"+ currentUser.getUid().toString() );
+            StorageReference ref = storageReference.child(currentUser.getUid().toString() );
             ref.putFile(tempUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -317,27 +332,29 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
-    static void deleteAllFiles(File root) {
-        File files[] = root.listFiles();
-        if (files != null)
-            for (File f : files) {
-                if (f.isDirectory()) {
-                    deleteAllFiles(f);
-                    try {
-                        f.delete();
-                    } catch (Exception e) {
-                    }
-                } else {
-                    if (f.exists()) {
-                        deleteAllFiles(f);
-                        try {
-                            f.delete();
-                        } catch (Exception e) {
-                        }
-                    }
-                }
-            }
-    }
+//    static void deleteAllFiles(File root) {
+//        File files[] = root.listFiles();
+//        if (files != null)
+//            for (File f : files) {
+//                if (f.isDirectory()) {
+//                    deleteAllFiles(f);
+//                    try {
+//                        f.delete();
+//                    } catch (Exception e) {
+//                    }
+//                } else {
+//                    if (f.exists()) {
+//                        deleteAllFiles(f);
+//                        try {
+//                            f.delete();
+//                        } catch (Exception e) {
+//                        }
+//                    }
+//                }
+//            }
+//    }
+
+    // the top bar for signout or intent to edit page
     private void setupToolBar(){
         Toolbar toolbar=(Toolbar)findViewById(R.id.profile_Toolbar);
         setSupportActionBar(toolbar);
@@ -369,6 +386,9 @@ public class UserActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * A method to set up navigation view bar for each activity
+     */
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
@@ -383,6 +403,11 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
+    /**
+     *
+     * @param menu
+     * @return the toolbar menu for the users
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.profile_menu,menu);

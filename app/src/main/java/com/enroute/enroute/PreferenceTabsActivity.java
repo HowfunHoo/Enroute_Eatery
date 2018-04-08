@@ -21,6 +21,11 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
+/**
+ * This activity provide multiple preference choices to choose
+ * Other user info. passed from UserSubmitInfoActivity and the preference info.submitted to the firebase together
+ * @author:HaofanHou,YouranZhang
+ */
 public class PreferenceTabsActivity extends AppCompatActivity {
 
     //preference lib
@@ -70,7 +75,6 @@ public class PreferenceTabsActivity extends AppCompatActivity {
         final LayoutInflater mInflater = LayoutInflater.from(PreferenceTabsActivity.this);
         final String Uemail=user.getEmail();
 
-        //mFlowLayout.setMaxSelectCount(3);
         mFlowLayout.setAdapter(new TagAdapter<String>(mVals)
         {
             @Override
@@ -98,7 +102,6 @@ public class PreferenceTabsActivity extends AppCompatActivity {
 
                 }
                 view.setVisibility(View.GONE);
-//                Toast.makeText(PreferenceTabsActivity.this,Preference, Toast.LENGTH_LONG).show();
                 return true;
             }
         });

@@ -40,6 +40,12 @@ public class RestDataParser {
                     hm.put("name",jResults.getJSONObject(i).getString("name"));
                     // Address
                     hm.put("vicinity",jResults.getJSONObject(i).getString("vicinity"));
+                    // Not all restaurants and store has Rating available
+                    if (  jResults.getJSONObject(i).has("rating"))
+                    hm.put("rating",jResults.getJSONObject(i).getString("rating"));
+                    // Not all restaurants and store has Open as of now available
+                    if ( jResults.getJSONObject(i).has("opening_hours") )
+                    hm.put("open_now",jResults.getJSONObject(i).getJSONObject("opening_hours").getString("open_now"));
 
                     path.add(hm);
                     Log.d("Inside parser class", hm.toString());

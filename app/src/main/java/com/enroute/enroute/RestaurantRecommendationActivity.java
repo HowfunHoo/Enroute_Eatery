@@ -22,6 +22,8 @@ import java.util.ArrayList;
  * This Activity is to list the restaurants based on the current user's preferred cuisines.
  * When a listed restaurant is clicked, the app will direct to the map and show the route to
  * the clicked restaurant
+ *
+ * @author Haofan Hou
  */
 
 public class RestaurantRecommendationActivity extends AppCompatActivity  {

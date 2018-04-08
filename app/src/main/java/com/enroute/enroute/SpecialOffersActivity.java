@@ -20,6 +20,8 @@ import java.util.ArrayList;
 
 /**
  * This activity is to list the special offers
+ *
+ * @author Haofan Hou
  */
 public class SpecialOffersActivity extends AppCompatActivity {
 

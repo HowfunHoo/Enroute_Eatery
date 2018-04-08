@@ -21,6 +21,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+/**
+ * The activity is used for Business to login
+ * @author:YouranZhang
+ * Reference:
+ * 1.https://firebase.google.com/docs/android/setup
+ * 2.https://firebase.google.com/docs/auth/android/custom-auth
+ */
 public class RestLoginActivity extends AppCompatActivity {
 
     //set navigation parameter
@@ -37,6 +44,7 @@ public class RestLoginActivity extends AppCompatActivity {
 
     //check input state
     private boolean empty;
+    private Boolean legal;
 
     //firebase
     private FirebaseAuth mAuth;
@@ -74,7 +82,7 @@ public class RestLoginActivity extends AppCompatActivity {
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
-                else if (et_RLogin_Email.toString().contains("@")){
+                else if (checkemaillegal()){
                     Toast.makeText(RestLoginActivity.this,
                             "Your email is illegal",
                             Toast.LENGTH_SHORT).show();
@@ -122,7 +130,10 @@ public class RestLoginActivity extends AppCompatActivity {
 
     }
 
-    //return empty or not state
+    /**
+     * A method to check if the input is empty
+     * @return boolean value
+     */
     private boolean checkemailempty(){
 
         email=et_RLogin_Email.getText().toString();
@@ -135,19 +146,24 @@ public class RestLoginActivity extends AppCompatActivity {
 
         return empty;
     }
-    private boolean checkpasswordempty(){
 
-        password=et_RLogin_Password.getText().toString();
+    /**
+     * A method to check if the email is legal
+     * @return: boolean value
+     */
 
-        if(TextUtils.isEmpty(password)){
-            empty=true;
+    private boolean checkemaillegal(){
+        email=et_RLogin_Email.getText().toString();
+        if(email.contains("@")){
+            legal=false;
         }
-
-        else empty=false;
-
-        return empty;
+        else legal=true;
+        return legal;
     }
 
+    /**
+     * A method to set up navigation view bar for each activity
+     */
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");

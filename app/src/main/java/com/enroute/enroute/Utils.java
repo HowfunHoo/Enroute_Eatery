@@ -1,7 +1,10 @@
 package com.enroute.enroute;
 
 /**
- * Created by haoyu on 2018/4/3.
+ * A method to save image to SD card and cut down picture to a circular.
+ * @author:Haoyu Sun
+ * Reference:
+ * 6.https://blog.csdn.net/qq_31546677/article/details/75667163
  */
 
 import java.io.File;
@@ -22,13 +25,9 @@ import android.util.Log;
 
 public class Utils {
 
-    /**
-     * Save image to the SD card
-     *
-     * @param photoBitmap
-     * @param photoName
-     * @param path
-     */
+
+      //Save image to the SD card
+
     public static String savePhoto(Bitmap photoBitmap, String path,
                                    String photoName) {
         String localPath = null;
@@ -72,14 +71,9 @@ public class Utils {
         return localPath;
     }
 
-    /**
-     * change picture to a circle
-     *
-     * @param bitmap
-     *            save in to Bitmap
-     * @param tempUri
-     * @return
-     */
+
+     // change picture to a circle
+
     public static Bitmap toRoundBitmap(Bitmap bitmap, Uri tempUri) {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();

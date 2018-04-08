@@ -1,7 +1,10 @@
 package com.enroute.enroute;
 
 /**
- * Created by haoyu on 2018/4/3.
+ * A method to edit picpop windows when user click head image
+ * @author:Haoyu Sun
+ * Reference:
+ * 6.https://blog.csdn.net/qq_31546677/article/details/75667163
  */
 
 import android.app.Activity;

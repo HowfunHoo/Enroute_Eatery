@@ -1,7 +1,8 @@
 package com.enroute.enroute;
 
 /**
- * Created by youranzhang on 2018-03-30.
+ * This activity provide a button to apply for a resraurant for business user
+ * @author:YouranZhang
  */
 
 
@@ -35,10 +36,6 @@ public class RestActivity extends AppCompatActivity {
     //ui
     private TextView username;
     private Button btn_busi_add_rest;
-    private TextView rest_info_email;
-    private TextView rest_info_phone;
-    private TextView rest_info_name;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +52,6 @@ public class RestActivity extends AppCompatActivity {
 
         //set ui
         btn_busi_add_rest=(Button)findViewById(R.id.btn_busi_add_rest) ;
-        rest_info_email=(TextView)findViewById(R.id.rest_email);
-        rest_info_phone=(TextView)findViewById(R.id.rest_phone);
-        rest_info_name=(TextView)findViewById(R.id.rest_name);
 
         setupBottomNavigationView();
         setupToolBar();
@@ -70,12 +64,17 @@ public class RestActivity extends AppCompatActivity {
         btn_busi_add_rest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
                 startActivity(new Intent(getApplicationContext(),CreateRestaurantActivity.class));
             }
         });
 
     }
+
+    /**
+     * A method to set the tool bar
+     * There is only one option for business-signout
+     *
+     */
     private void setupToolBar(){
         Toolbar toolbar=(Toolbar)findViewById(R.id.profile_Toolbar);
         setSupportActionBar(toolbar);
@@ -100,6 +99,9 @@ public class RestActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * A method to set up navigation view bar for each activity
+     */
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");
@@ -114,9 +116,14 @@ public class RestActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * A method to set up menu for the tool bar
+     * @param menu
+     * @return the tool bar menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.profile_menu,menu);
+        getMenuInflater().inflate(R.menu.busi_menu,menu);
         return true;
     }
 }

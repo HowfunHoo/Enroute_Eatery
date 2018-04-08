@@ -26,6 +26,7 @@ import java.util.ArrayList;
 
 /**
  * This Adapter is to be bound with the listview showing recommended restaurants
+ * @author Haofan Hou
  */
 public class RestaurantRecommendAdapter extends BaseAdapter{
 

@@ -1,9 +1,8 @@
 package com.enroute.enroute;
-
 /**
- * Created by youranzhang on 2018-03-30.
+ * An activity for users to login
+ * @author:YouranZhang
  */
-
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -55,6 +54,7 @@ public class UserLoginActivity extends AppCompatActivity {
 
     //check input state
     private boolean empty;
+    private Boolean legal;
 
     //variable used for check input
     private String email;
@@ -100,7 +100,7 @@ public class UserLoginActivity extends AppCompatActivity {
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
-                else if (et_LoginEmail.toString().contains("@")){
+                else if (checkemaillegal()){
                     Toast.makeText(UserLoginActivity.this,
                             "Your email is illegal",
                             Toast.LENGTH_SHORT).show();
@@ -110,12 +110,6 @@ public class UserLoginActivity extends AppCompatActivity {
                             "Your password will need at least 6 number",
                             Toast.LENGTH_SHORT).show();
                 }
-                //TODO Vertify email
-//                if(!isEmail(et_LoginEmail.toString())){
-//                    Toast.makeText(UserLoginActivity.this,
-//                            "Please input a legal email",
-//                            Toast.LENGTH_SHORT).show();
-//                }
                 else{
                     progressDialog.setMessage("Log...in...");
                     progressDialog.show();
@@ -169,7 +163,11 @@ public class UserLoginActivity extends AppCompatActivity {
         });
 
     }
-    //return empty or not state
+
+    /**
+     * A method to check if the input is empty
+     * @return boolean value
+     */
     private boolean checkemailempty(){
 
         email=et_LoginEmail.getText().toString();
@@ -182,28 +180,25 @@ public class UserLoginActivity extends AppCompatActivity {
 
         return empty;
     }
-    private boolean checkpasswordempty(){
 
-        password=et_LoginPassword.getText().toString();
+    /**
+     * A method to check if the email is legal
+     * @return: boolean value
+     */
 
-        if(TextUtils.isEmpty(password)){
-            empty=true;
+
+    private boolean checkemaillegal(){
+        email=et_LoginEmail.getText().toString();
+        if(email.contains("@")){
+            legal=false;
         }
-
-        else empty=false;
-
-        return empty;
+        else legal=true;
+        return legal;
     }
 
-    public static boolean isEmail(String strEmail) {
-        String strPattern = "^[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]@[a-zA-Z0-9][\\w\\.-]*[a-zA-Z0-9]\\.[a-zA-Z][a-zA-Z\\.]*[a-zA-Z]$";
-        if (TextUtils.isEmpty(strPattern)) {
-            return false;
-        } else {
-            return strEmail.matches(strPattern);
-        }
-    }
-
+    /**
+     * A method to display the bottom navigation bar
+     */
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");

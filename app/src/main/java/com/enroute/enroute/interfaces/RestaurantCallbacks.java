@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 /**
  * This interface callbacks the a Restaurant instance from searching restaurant in Firebase
+ * @author Haofan Hou
  */
 public interface RestaurantCallbacks {
 

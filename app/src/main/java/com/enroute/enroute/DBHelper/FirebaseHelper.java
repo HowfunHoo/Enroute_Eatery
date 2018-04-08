@@ -18,6 +18,7 @@ import java.util.ArrayList;
 
 /**
  * This helper is to handle the operations with the Firebase Database
+ * @author Haofan Hou
  */
 public class FirebaseHelper {
     private DatabaseReference db;

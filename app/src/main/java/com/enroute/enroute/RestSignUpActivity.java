@@ -21,6 +21,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
+/**
+ * This activity is used for to register a business
+ * @author:YouranZhang
+ *
+ */
+
 public class RestSignUpActivity extends AppCompatActivity {
     //navigation helper
     private static final String TAG = "RestSignUpActivity";
@@ -41,6 +47,7 @@ public class RestSignUpActivity extends AppCompatActivity {
 
     //check input state
     private boolean empty;
+    private Boolean legal;
 
 
     //variable used for check input
@@ -71,7 +78,7 @@ public class RestSignUpActivity extends AppCompatActivity {
                             "please enter email",
                             Toast.LENGTH_SHORT).show();
                 }
-                else if (et_RSignUp_Email.toString().contains("@") ){
+                else if (checkemaillegal() ){
                     Toast.makeText(RestSignUpActivity.this,
                             "Your email is illegal",
                             Toast.LENGTH_SHORT).show();
@@ -122,7 +129,10 @@ public class RestSignUpActivity extends AppCompatActivity {
 
     }
 
-    //return empty or not state
+    /**
+     * A method to check if the input is empty
+     * @return boolean value
+     */
     private boolean checkemailempty(){
 
         email=et_RSignUp_Email.getText().toString();
@@ -135,20 +145,23 @@ public class RestSignUpActivity extends AppCompatActivity {
 
         return empty;
     }
-    private boolean checkpasswordempty(){
 
-        password=et_RSignUp_Password.getText().toString();
+    /**
+     * A method to check if the email is legal
+     * @return: boolean value
+     */
 
-        if(TextUtils.isEmpty(password)){
-            empty=true;
+    private boolean checkemaillegal(){
+        email=et_RSignUp_Email.getText().toString();
+        if(email.contains("@")){
+            legal=false;
         }
-
-        else empty=false;
-
-        return empty;
+        else legal=true;
+        return legal;
     }
-
-    //setup button navigation
+    /**
+     * A method to set up navigation view bar for each activity
+     */
     private void setupBottomNavigationView(){
 
         Log.d(TAG, "BottomNavigationView: setup BottomNavigationView");

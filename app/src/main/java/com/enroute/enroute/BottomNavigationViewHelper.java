@@ -10,7 +10,11 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 
 /**
- * Created by youranzhang on 2018-03-23.
+ * A method to shift between four bottom icon
+ * used an external package BottomNavigationViewEx to canceled the shift animation
+ * @author:YouranZhang
+ * Reference:
+ * 1.https://github.com/ittianyu/BottomNavigationViewEx.git
  */
 
 public class BottomNavigationViewHelper {
