@@ -196,15 +196,40 @@ We have achieved most of our functionalities, the status for the same as mention
 - Polishing UI
 
 ## Sources
-[1]"Getting Bitmap or Drawable based on the url of pictures", Blog.csdn.net, 2017. [Online]. Available: https://blog.csdn.net/sinat_21376777/article/details/75157912. [Accessed: 01- Apr- 2018]
-[2]"Lab 6", Dal.brightspace.com, 2018. [Online]. Available: https://dal.brightspace.com/d2l/le/content/68186/viewContent/939768/View. [Accessed: 01- Apr- 2018]
-[3]"Build an Instagram Clone", Youtube.com, 2017. [Online]. Available:
-https://www.youtube.com/watch?v=qpJRgr6HzAw&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=1. [Accessed: 30- Mar- 2018]
-[4]"What to eat", Osun.com, 2017. [Online]. Avialable:
-https://www.osun.life/2017/07/22/where-to-eat/. [Accessed: 02- Apr- 2018]
-[5]"Eatery", Urbaneatery.com, 2017. [Online]. Available:
-http://www.urbaneatery.co.ke/. [Accessed: 02- Apr- 2018]
-[6]"How to Upload Images to Firebase from an Android App", code.tutsplus.com, 2017. [Online]. Available:
-https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934. [Accessed: 02- Apr- 2018]
-[7]"the functionality of head image chosen by Android development" blog.csdn.net, 2017. [Online]. Available:
-https://blog.csdn.net/qq_31546677/article/details/75667163. [Accessed: 26- Mar- 2018]
+[1] "Getting Bitmap or Drawable based on the url of pictures", Blog.csdn.net, 2017. [Online]. Available: [https://blog.csdn.net/sinat_21376777/article/details/75157912](https://blog.csdn.net/sinat_21376777/article/details/75157912). [Accessed: 01- Apr- 2018]
+
+[2] "Lab 6", Dal.brightspace.com, 2018. [Online]. Available: [https://dal.brightspace.com/d2l/le/content/68186/viewContent/939768/View](https://dal.brightspace.com/d2l/le/content/68186/viewContent/939768/View). [Accessed: 01- Apr- 2018]
+
+[3] "Build an Instagram Clone", Youtube.com, 2017. [Online]. Available:
+[https://www.youtube.com/watch?v=qpJRgr6HzAw&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=1](https://www.youtube.com/watch?v=qpJRgr6HzAw&list=PLgCYzUzKIBE9XqkckEJJA0I1wVKbUAOdv&index=1). [Accessed: 30- Mar- 2018]
+
+[4] "What to eat", Osun.com, 2017. [Online]. Avialable:
+[https://www.osun.life/2017/07/22/where-to-eat/](https://www.osun.life/2017/07/22/where-to-eat/). [Accessed: 02- Apr- 2018]
+
+[5] "Eatery", Urbaneatery.com, 2017. [Online]. Available:
+[http://www.urbaneatery.co.ke/](http://www.urbaneatery.co.ke/). [Accessed: 02- Apr- 2018]
+
+[6] "How to Upload Images to Firebase from an Android App", code.tutsplus.com, 2017. [Online]. Available:
+[https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934](https://code.tutsplus.com/tutorials/image-upload-to-firebase-in-android-application--cms-29934). [Accessed: 02- Apr- 2018]
+
+[7] "the functionality of head image chosen by Android development" blog.csdn.net, 2017. [Online]. Available:
+[https://blog.csdn.net/qq_31546677/article/details/75667163](https://blog.csdn.net/qq_31546677/article/details/75667163). [Accessed: 26- Mar- 2018]
+
+[8] "Google Maps Draw Route between two points using Google Directions" androidtutorialpoint.com, 2017. [Online]. Available:
+[https://www.androidtutorialpoint.com/intermediate/google-maps-draw-path-two-points-using-google-directions-google-map-android-api-v2/](https://www.androidtutorialpoint.com/intermediate/google-maps-draw-path-two-points-using-google-directions-google-map-android-api-v2/). [Accessed: 03- Mar- 2018]
+
+[9] "How to draw road directions between two geocodes in android google map v2?
+" stackoverflow.com, 2017. [Online]. Available:
+[https://stackoverflow.com/questions/14710744/how-to-draw-road-directions-between-two-geocodes-in-android-google-map-v2?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa](https://stackoverflow.com/questions/14710744/how-to-draw-road-directions-between-two-geocodes-in-android-google-map-v2?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa). [Accessed: 03- Mar- 2018]
+
+[10] "Android How to show route between markers on googlemaps" stackoverflow.com, 2017. [Online]. Available:
+[https://stackoverflow.com/questions/28295199/android-how-to-show-route-between-markers-on-googlemaps?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa](https://stackoverflow.com/questions/28295199/android-how-to-show-route-between-markers-on-googlemaps?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa). [Accessed: 03- Mar- 2018]
+
+[11] "Parsing JSON from the google maps DistanceMatrix api in android
+" stackoverflow.com, 2017. [Online]. Available:
+[https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa](https://stackoverflow.com/questions/29439754/parsing-json-from-the-google-maps-distancematrix-api-in-android?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa). [Accessed: 04- Mar- 2018]
+
+[12] "Draw route between two locations, Google Maps in Android" mytredin.com, 2017. [Online]. Available:
+[https://www.mytrendin.com/draw-route-two-locations-google-&maps-android/](https://www.mytrendin.com/draw-route-two-locations-google-&maps-android/). [Accessed: 04- Mar- 2018]
+
+
