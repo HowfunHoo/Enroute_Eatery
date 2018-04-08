@@ -20,7 +20,10 @@ We have made an app for Dalhousie students who live off campus. Since they must 
 
 **org.apache.httpcomponents**
 
-**com.google.android.gms:**
+**com.google.android.gms:**<br />
+	1. com.google.android.gms:play-services-location : For accessing user's location <br />
+	2. com.google.android.gms:play-services-places : For API access which give the details of restaurants and stores <br />
+	3. com.google.android.gms:play-services-maps : For accessing maps<br />
 
 **firebase:**
 
@@ -29,7 +32,7 @@ We have made an app for Dalhousie students who live off campus. Since they must 
 1. The app is complied on Android 8.0. Beforing running the application, the SDK version need to be set as following if not using default app gradle -
 Android Studio --> File --> Project structure --> app --> Compile Sdk Version --> API 26: Android 8.0(Oreo) --> OK
 
-2. If you coudn't get any restaurants or convenience store details, It is because of Google Place's API usage restriction for trail run. Kindly replace the key with any of the below key in getRestaurantUrl() and getConvenienceUrl() functions.
+2. If you couldn't get any restaurants or convenience store details, It is because of Google Place's API usage restriction for trial run. Kindly replace the key with any of the below key in getRestaurantUrl() and getConvenienceUrl() functions.
 
 	1. AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE
 	2. AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois
