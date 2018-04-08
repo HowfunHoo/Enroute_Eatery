@@ -239,15 +239,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 conditionFunction("bicycling", "true"); // shows alternate route - cycle mode
                  */
+
                 }
         });
 
     }
 
     /**
-     *
-     * @param origin: take latlang of origin which will be user's live or current location
+     * @param origin: take latlang of origin which will be user's live or current location,
      * @param dest: take user's converted latlang from the entered string
+     * @param travel_mode: this is for selecting travel mode: walk or cycle
+     * @param alternate_route: this is for drawing alternate route or draw minimal route
      * @return: which gives the whole url
      */
     private String getUrl(LatLng origin, LatLng dest, String travel_mode, String alternate_route) {
@@ -274,9 +276,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String radius = "radius=20";                                                // Radius in meters
 
         // Building the parameters to the web service
-        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c";
+        //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBSuFO5k_nS7L7-MsHBaaJQLKsdwbD0A-c";
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
-
+        String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyDjpzwLHk6RAN3wIDtS8OGmsJxVc1gFKx8";
         String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
         return url;
@@ -292,9 +294,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String radius = "radius=100";                                                // Radius in meters
 
         // Building the parameters to the web service
-        String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
+        //String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDDrOrd1iT25wyrMHajcaluBJoi9Ezuois";
 
         //String parameters = str_poi + "&" + radius + "&type=restaurant&key=AIzaSyBXCCDI4g1xqM4TnNcWSSJWzie5eV8OnWE";    // Need to pass MAP key with each request
+        String parameters = str_poi + "&" + radius + "&type=convenience_store&key=AIzaSyDjpzwLHk6RAN3wIDtS8OGmsJxVc1gFKx8";
         String output = "json";                     // Output format
         String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/" + output + "?" + parameters;
         return url;
@@ -707,15 +710,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     /**
-     * mode check function: it will check for cycle or walk mode and draw path according to destination and user's current location
+     * @param travel_mode: either "walk" or "Cycle" mode
+     * @param alternate_mode: true for having alternate route and false for minimal distance route
      */
-
     public void conditionFunction(String travel_mode, String alternate_mode){
         //mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
 
+        // Fixed Origin and Destination for test run
+        LatLng origin = new LatLng(44.638061, -63.591360);
+        LatLng dest = new LatLng(44.651775, -63.592513);
+
+        /* For free search - uncomment it & put hardcoded lat lng in comment section
         LatLng origin = currentLoc;
         LatLng dest = new LatLng(dst_lat ,dst_lng);
+        */
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest, travel_mode, alternate_mode);
@@ -737,7 +746,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap.addMarker(options);
 
         //move map camera
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(origin));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(dest));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15)); //search path zoom
 
