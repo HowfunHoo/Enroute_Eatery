@@ -1,5 +1,5 @@
 # En-route Eatery
-We have made an app for Dalhousie students who live off campus. Since they must commute to and from the university on daily basis. They can use this app to find en-route eatery or take away food from the eating place. When the user has entered their desired location, it will only show the details of eatery places along with the convenience stores which is on the way for the users. Further, it will show the duration and distance of the destination and it will guide them with minimal distance route. This app supports walk or cycling mode as a mode of travel. It also shows recent offers provided by the vendors along with their reviews. This app has a unique login system for the users and it also stores user’s preferences for suggesting them the restaurants of their choices. These suggestions also show the places which accept DAL card as a mode of payment. If the app is not being used it will also give reminders via notifications when someone passes by some restaurants.
+We have made an app for Dalhousie students who live off campus. Since they must commute to and from the university on daily basis. They can use this app to find en-route eateries or take away food from the eating places. When the user has entered their desired location, it will only show the details of eatery places along with the convenience stores which is on the way for the users. Further, it will show the duration and distance of the destination and it will guide them with minimal distance route. This app supports walk or cycling mode as a mode of travel. It also shows recent offers provided by the vendors. This app has a unique login system for the users and it also stores user’s preferences for suggesting them the restaurants of their choices. These suggestions also show the places which accept DAL card as a choice of payment. If the app is not being used it will also give reminders via notifications when someone passes by some restaurants.
 
 
 
@@ -16,16 +16,16 @@ We have made an app for Dalhousie students who live off campus. Since they must 
 
 **com.hyman:flowlayout-lib:** A layout package to provide flow layout to configure preference labels. Source [here](https://github.com/hongyangAndroid/FlowLayout)
 
-**com.android.volley:** A library which is used for handling HTTP request. it's speed is faster and and it makes networking part easy for the developer [here](https://github.com/google/volley)
+**com.android.volley:** A library which is used for handling HTTP request. it's speed is faster and and it makes networking part easy for the developer. Source [here](https://github.com/google/volley)  
 
-**org.apache.httpcomponents**
+**org.apache.httpcomponents** The Apache HttpComponents™ project is responsible for creating and maintaining a toolset of low level Java components focused on HTTP and associated protocols. Source [here](http://www.apache.org)  
 
 **com.google.android.gms:**<br />
 	1. com.google.android.gms:play-services-location : For accessing user's location <br />
 	2. com.google.android.gms:play-services-places : For API access which give the details of restaurants and stores <br />
 	3. com.google.android.gms:play-services-maps : For accessing maps<br />
 
-**firebase:**
+**firebase:** Firebase is a mobile and web application development platform developed by Firebase, Inc. in 2011, then acquired by Google in 2014. Source [here](http://https://firebase.google.com/)  
 
 
 ## Installation Notes
@@ -223,7 +223,7 @@ We have achieved most of our functionalities, the status for the same as mention
 - It provides recent offers of numerous restaurants which also reveals various payment accepting offers including DAL card (Completed)
 #### Next step for this project (if it were to continue)
 - Add pictures for the suggested restaurants
-- Polishing UI
+- Polishing the UI
 
 ## Sources
 [1] "Getting Bitmap or Drawable based on the url of pictures", Blog.csdn.net, 2017. [Online]. Available: [https://blog.csdn.net/sinat_21376777/article/details/75157912](https://blog.csdn.net/sinat_21376777/article/details/75157912). [Accessed: 01- Apr- 2018]
