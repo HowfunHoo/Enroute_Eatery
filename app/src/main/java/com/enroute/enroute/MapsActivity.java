@@ -721,18 +721,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //mMap.clear(); // clearing the map first
         MarkerOptions options = new MarkerOptions();
 
+        /*
         // Fixed Origin and Destination for test run
         LatLng origin = new LatLng(44.638061, -63.591360);
         LatLng dest = new LatLng(44.651775, -63.592513);
-
-        /* For free search - uncomment it & put hardcoded lat lng in comment section
-        LatLng origin = currentLoc;
-        LatLng dest = new LatLng(dst_lat ,dst_lng);
         */
 
-        /* Fixed Origin and Destination for test run [DO NOT REMOVE]
-        LatLng origin = new LatLng(44.642750, -63.578449);
-        LatLng dest = new LatLng(44.643875, -63.578472); */
+        // For free search of the destination
+        LatLng origin = currentLoc;
+        LatLng dest = new LatLng(dst_lat ,dst_lng);
+
 
         // Getting URL to the Google Directions API
         String url = getUrl(origin, dest, travel_mode, alternate_mode);
