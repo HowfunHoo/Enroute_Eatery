@@ -165,7 +165,7 @@ public void conditionFunction(String travel_mode, String alternate_mode){
 
 ```
 
-**Problem 4: A reusable class and/or method to find restaurants and/or convenience store while drawing route on Google Map **
+**Problem 4: A reusable class and/or method to find restaurants and/or convenience store while drawing route on Google Map**
 
 Google do provide restaurants and convenience store nearby to specific lat/lang, however we need to show them along with route. To overcome this problem, we collected all lat/lang while route is drawn on map and requested for any nearby eatery and/or store.  
 
