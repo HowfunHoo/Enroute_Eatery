@@ -52,7 +52,7 @@ public class SpecialOffersActivity extends AppCompatActivity {
             @Override
             public void onRestaurantCallback(ArrayList<Restaurant> restaurants) {
 
-                adapter = new SpecialOffersAdapter(getApplicationContext(), restaurants);
+                adapter = new SpecialOffersAdapter(SpecialOffersActivity.this, restaurants);
                 lv_offers.setAdapter(adapter);
 
             }

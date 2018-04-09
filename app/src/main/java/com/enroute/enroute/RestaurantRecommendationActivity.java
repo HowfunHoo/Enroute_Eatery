@@ -74,7 +74,7 @@ public class RestaurantRecommendationActivity extends AppCompatActivity  {
                     Log.d("gottenRestaurants", restaurants.get(i).getRname());
                 }
 
-                adapter = new RestaurantRecommendAdapter(getApplicationContext(), restaurants);
+                adapter = new RestaurantRecommendAdapter(RestaurantRecommendationActivity.this, restaurants);
                 lv_suggest.setAdapter(adapter);
             }
         });
